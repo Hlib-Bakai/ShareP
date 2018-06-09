@@ -93,6 +93,16 @@ namespace ShareP.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Document_Find_16 {
+            get {
+                object obj = ResourceManager.GetObject("Document_Find_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Logo_transparent {
             get {
                 object obj = ResourceManager.GetObject("Logo_transparent", resourceCulture);

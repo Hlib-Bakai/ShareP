@@ -11,14 +11,31 @@ using System.Windows.Forms;
 
 namespace ShareP
 {
-    public partial class FormMain : Form
+    public partial class FormStartShare : Form
     {
-        public FormMain()
+        public FormStartShare()
         {
             InitializeComponent();
         }
 
 
+
+ 
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void FormMain_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonShare_Click(object sender, EventArgs e)
+        {
+
+        }
 
         #region Move window
         public const int WM_NCLBUTTONDOWN = 0xA1;
@@ -49,11 +66,5 @@ namespace ShareP
 
 
         #endregion
-
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
     }
 }

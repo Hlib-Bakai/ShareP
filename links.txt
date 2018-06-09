@@ -1,0 +1,2 @@
+https://github.com/evaldsurtans/wcf-sample-server-client
+https://en.wikipedia.org/wiki/Private_network
