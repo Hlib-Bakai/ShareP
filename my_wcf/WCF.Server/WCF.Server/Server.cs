@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.ServiceModel;
 using System.ServiceModel.Description;
 using System.Text;
@@ -12,48 +14,15 @@ namespace WCF
     public interface ICalculator
     {
         [OperationContract]
-        double Add(double n1, double n2);
-        [OperationContract]
-        double Subtract(double n1, double n2);
-        [OperationContract]
-        double Multiply(double n1, double n2);
-        [OperationContract]
-        double Divide(double n1, double n2);
+        bool SendMessage(string message);
     }
 
     public class CalculatorService : ICalculator
     {
-        public double Add(double n1, double n2)
+        public bool SendMessage(string message)
         {
-            double result = n1 + n2;
-            Console.WriteLine("Received Add({0},{1})", n1, n2);
-            // Code added to write output to the console.
-            Console.WriteLine("Return: {0}", result);
-            return result;
-        }
-
-        public double Subtract(double n1, double n2)
-        {
-            double result = n1 - n2;
-            Console.WriteLine("Received Subtract({0},{1})", n1, n2);
-            Console.WriteLine("Return: {0}", result);
-            return result;
-        }
-
-        public double Multiply(double n1, double n2)
-        {
-            double result = n1 * n2;
-            Console.WriteLine("Received Multiply({0},{1})", n1, n2);
-            Console.WriteLine("Return: {0}", result);
-            return result;
-        }
-
-        public double Divide(double n1, double n2)
-        {
-            double result = n1 / n2;
-            Console.WriteLine("Recieved Divide({0},{1})", n1, n2);
-            Console.WriteLine("Return: {0}", result);
-            return result;
+            Console.WriteLine("Received message: '{0}'", message);
+            return true;
         }
     }
 
@@ -61,7 +30,10 @@ namespace WCF
     {
         static void Main(string[] args)
         {
-            Uri BaseAddress = new Uri("http://localhost:8000/WCF/Service");
+        
+            string ipBase = getIPAddress();
+
+            Uri BaseAddress = new Uri("http://" + ipBase + ":8000/WCF/Service");
 
             ServiceHost SelfHost = new ServiceHost(typeof(CalculatorService), BaseAddress);
             try
@@ -87,8 +59,24 @@ namespace WCF
             catch (CommunicationException ce)
             {
                 Console.WriteLine("An exception occured: {0}", ce.Message);
+                Console.ReadLine();
                 SelfHost.Abort();
             }
+        }
+
+        public static string getIPAddress()
+        {
+            IPHostEntry host;
+            string localIP = "";
+            host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (IPAddress ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    localIP = ip.ToString();
+                }
+            }
+            return localIP;
         }
     }
 }
