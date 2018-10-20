@@ -8,31 +8,44 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ShareP.Controllers;
+using ShareP.Forms;
 
 namespace ShareP
 {
     public partial class FormMenu : Form
     {
-
+        
         private Connection m_connection;
         private Group m_group;
         private User m_user;
-
+        private ServerController m_serverController;
+        private ClientController m_clientController;
 
         public FormMenu()
         {
             InitializeComponent();
+            InitializeElements();
             ChangeStatusConnection();
             LoadConnectionTab();
-            CreateTestParams();
+            //CreateTestParams();
+
+            Log.LogInfo("Initial load successful");
+        }
+
+        private void InitializeElements()
+        {
+            m_user = new User();
+            m_serverController = new ServerController();
+            m_clientController = new ClientController();
         }
 
         public void CreateTestParams()
         {
             m_group = new Group();
-            m_group.name = "Preparatory seminar";
+            m_group.name = "Diploma Seminar";
             m_group.hostId = 1;
-            m_group.hostName = "Andrzej Siemiński";
+            m_group.hostName = "Dariusz Król";
             m_connection = new Connection();
             LoadConnectionTab();
         }
@@ -233,6 +246,22 @@ namespace ShareP
         private void pictureBox1_Click(object sender, EventArgs e)
         {
             CreateTestParams();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            m_serverController.StartServer();
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            m_serverController.StopServer();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            FormSearchServers formSearchServers = new FormSearchServers(m_clientController);
+            formSearchServers.ShowDialog();
         }
     }
 }

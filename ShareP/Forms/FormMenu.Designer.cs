@@ -32,22 +32,13 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMenu));
             this.panelBottom = new System.Windows.Forms.Panel();
             this.menuPicker = new System.Windows.Forms.Panel();
-            this.buttonMessages = new System.Windows.Forms.Button();
-            this.buttonPresentation = new System.Windows.Forms.Button();
-            this.buttonConnection = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel6 = new System.Windows.Forms.Panel();
-            this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.panelTop = new System.Windows.Forms.Panel();
             this.panel7 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.statusConnectionRed = new System.Windows.Forms.PictureBox();
-            this.statusConnectionGreen = new System.Windows.Forms.PictureBox();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.panel3 = new System.Windows.Forms.Panel();
             this.timerConnection = new System.Windows.Forms.Timer(this.components);
@@ -72,21 +63,28 @@
             this.presentationTab = new System.Windows.Forms.TabPage();
             this.label2 = new System.Windows.Forms.Label();
             this.messagesTab = new System.Windows.Forms.TabPage();
+            this.button8 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.notConnectedTab = new System.Windows.Forms.TabPage();
             this.button6 = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.statusConnectionRed = new System.Windows.Forms.PictureBox();
+            this.statusConnectionGreen = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.buttonMessages = new System.Windows.Forms.Button();
+            this.buttonPresentation = new System.Windows.Forms.Button();
+            this.buttonConnection = new System.Windows.Forms.Button();
+            this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.panelBottom.SuspendLayout();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
             this.panelTop.SuspendLayout();
             this.panel5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.statusConnectionRed)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.statusConnectionGreen)).BeginInit();
             this.panel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tabsMenu.SuspendLayout();
@@ -97,6 +95,10 @@
             this.presentationTab.SuspendLayout();
             this.messagesTab.SuspendLayout();
             this.notConnectedTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.statusConnectionRed)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.statusConnectionGreen)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
             this.SuspendLayout();
             // 
             // panelBottom
@@ -121,60 +123,6 @@
             this.menuPicker.Size = new System.Drawing.Size(10, 100);
             this.menuPicker.TabIndex = 5;
             // 
-            // buttonMessages
-            // 
-            this.buttonMessages.BackColor = System.Drawing.Color.White;
-            this.buttonMessages.FlatAppearance.BorderSize = 0;
-            this.buttonMessages.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.buttonMessages.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonMessages.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F);
-            this.buttonMessages.ForeColor = System.Drawing.Color.Black;
-            this.buttonMessages.Image = ((System.Drawing.Image)(resources.GetObject("buttonMessages.Image")));
-            this.buttonMessages.Location = new System.Drawing.Point(3, 289);
-            this.buttonMessages.Name = "buttonMessages";
-            this.buttonMessages.Size = new System.Drawing.Size(166, 92);
-            this.buttonMessages.TabIndex = 4;
-            this.buttonMessages.Text = "Messages";
-            this.buttonMessages.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.buttonMessages.UseVisualStyleBackColor = false;
-            this.buttonMessages.Click += new System.EventHandler(this.buttonMessages_Click);
-            // 
-            // buttonPresentation
-            // 
-            this.buttonPresentation.BackColor = System.Drawing.Color.White;
-            this.buttonPresentation.FlatAppearance.BorderSize = 0;
-            this.buttonPresentation.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.buttonPresentation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonPresentation.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F);
-            this.buttonPresentation.ForeColor = System.Drawing.Color.Black;
-            this.buttonPresentation.Image = ((System.Drawing.Image)(resources.GetObject("buttonPresentation.Image")));
-            this.buttonPresentation.Location = new System.Drawing.Point(0, 191);
-            this.buttonPresentation.Name = "buttonPresentation";
-            this.buttonPresentation.Size = new System.Drawing.Size(169, 92);
-            this.buttonPresentation.TabIndex = 3;
-            this.buttonPresentation.Text = "Presentation";
-            this.buttonPresentation.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.buttonPresentation.UseVisualStyleBackColor = false;
-            this.buttonPresentation.Click += new System.EventHandler(this.buttonPresentation_Click);
-            // 
-            // buttonConnection
-            // 
-            this.buttonConnection.BackColor = System.Drawing.Color.White;
-            this.buttonConnection.FlatAppearance.BorderSize = 0;
-            this.buttonConnection.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.buttonConnection.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonConnection.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonConnection.ForeColor = System.Drawing.Color.Black;
-            this.buttonConnection.Image = ((System.Drawing.Image)(resources.GetObject("buttonConnection.Image")));
-            this.buttonConnection.Location = new System.Drawing.Point(0, 93);
-            this.buttonConnection.Name = "buttonConnection";
-            this.buttonConnection.Size = new System.Drawing.Size(170, 92);
-            this.buttonConnection.TabIndex = 2;
-            this.buttonConnection.Text = "Connection";
-            this.buttonConnection.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.buttonConnection.UseVisualStyleBackColor = false;
-            this.buttonConnection.Click += new System.EventHandler(this.buttonConnection_Click);
-            // 
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.White;
@@ -193,16 +141,6 @@
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(195, 10);
             this.panel6.TabIndex = 2;
-            // 
-            // pictureBoxLogo
-            // 
-            this.pictureBoxLogo.Image = global::ShareP.Properties.Resources.Logo_transparent;
-            this.pictureBoxLogo.Location = new System.Drawing.Point(12, 3);
-            this.pictureBoxLogo.Name = "pictureBoxLogo";
-            this.pictureBoxLogo.Size = new System.Drawing.Size(166, 75);
-            this.pictureBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBoxLogo.TabIndex = 0;
-            this.pictureBoxLogo.TabStop = false;
             // 
             // panelTop
             // 
@@ -235,28 +173,6 @@
             this.panel5.Size = new System.Drawing.Size(32, 32);
             this.panel5.TabIndex = 9;
             // 
-            // statusConnectionRed
-            // 
-            this.statusConnectionRed.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.statusConnectionRed.Image = ((System.Drawing.Image)(resources.GetObject("statusConnectionRed.Image")));
-            this.statusConnectionRed.Location = new System.Drawing.Point(0, 0);
-            this.statusConnectionRed.Name = "statusConnectionRed";
-            this.statusConnectionRed.Size = new System.Drawing.Size(32, 32);
-            this.statusConnectionRed.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.statusConnectionRed.TabIndex = 1;
-            this.statusConnectionRed.TabStop = false;
-            // 
-            // statusConnectionGreen
-            // 
-            this.statusConnectionGreen.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.statusConnectionGreen.Image = ((System.Drawing.Image)(resources.GetObject("statusConnectionGreen.Image")));
-            this.statusConnectionGreen.Location = new System.Drawing.Point(0, 0);
-            this.statusConnectionGreen.Name = "statusConnectionGreen";
-            this.statusConnectionGreen.Size = new System.Drawing.Size(32, 32);
-            this.statusConnectionGreen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.statusConnectionGreen.TabIndex = 0;
-            this.statusConnectionGreen.TabStop = false;
-            // 
             // panel4
             // 
             this.panel4.Controls.Add(this.pictureBox1);
@@ -264,18 +180,6 @@
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(32, 32);
             this.panel4.TabIndex = 8;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(32, 32);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // panel1
             // 
@@ -285,32 +189,6 @@
             this.panel1.Size = new System.Drawing.Size(43, 31);
             this.panel1.TabIndex = 7;
             this.panel1.Click += new System.EventHandler(this.panel1_Click);
-            // 
-            // button2
-            // 
-            this.button2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Image = global::ShareP.Properties.Resources.Minus_24;
-            this.button2.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.button2.Location = new System.Drawing.Point(0, 8);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(43, 23);
-            this.button2.TabIndex = 6;
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button1
-            // 
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Image = global::ShareP.Properties.Resources.Close_24;
-            this.button1.Location = new System.Drawing.Point(365, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(34, 32);
-            this.button1.TabIndex = 5;
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // openFileDialog
             // 
@@ -424,6 +302,7 @@
             this.button4.TabIndex = 15;
             this.button4.Text = "Find in WiFi network";
             this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // label10
             // 
@@ -557,6 +436,8 @@
             // 
             // messagesTab
             // 
+            this.messagesTab.Controls.Add(this.button8);
+            this.messagesTab.Controls.Add(this.button7);
             this.messagesTab.Controls.Add(this.label3);
             this.messagesTab.Location = new System.Drawing.Point(4, 22);
             this.messagesTab.Name = "messagesTab";
@@ -564,6 +445,26 @@
             this.messagesTab.TabIndex = 2;
             this.messagesTab.Text = "messagesTab";
             this.messagesTab.UseVisualStyleBackColor = true;
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(3, 115);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(75, 23);
+            this.button8.TabIndex = 3;
+            this.button8.Text = "StopServer";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(3, 85);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(75, 23);
+            this.button7.TabIndex = 2;
+            this.button7.Text = "StartServer";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // label3
             // 
@@ -637,6 +538,130 @@
             this.label8.TabIndex = 2;
             this.label8.Text = "You are";
             // 
+            // statusConnectionRed
+            // 
+            this.statusConnectionRed.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.statusConnectionRed.Image = ((System.Drawing.Image)(resources.GetObject("statusConnectionRed.Image")));
+            this.statusConnectionRed.Location = new System.Drawing.Point(0, 0);
+            this.statusConnectionRed.Name = "statusConnectionRed";
+            this.statusConnectionRed.Size = new System.Drawing.Size(32, 32);
+            this.statusConnectionRed.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.statusConnectionRed.TabIndex = 1;
+            this.statusConnectionRed.TabStop = false;
+            // 
+            // statusConnectionGreen
+            // 
+            this.statusConnectionGreen.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.statusConnectionGreen.Image = ((System.Drawing.Image)(resources.GetObject("statusConnectionGreen.Image")));
+            this.statusConnectionGreen.Location = new System.Drawing.Point(0, 0);
+            this.statusConnectionGreen.Name = "statusConnectionGreen";
+            this.statusConnectionGreen.Size = new System.Drawing.Size(32, 32);
+            this.statusConnectionGreen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.statusConnectionGreen.TabIndex = 0;
+            this.statusConnectionGreen.TabStop = false;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(32, 32);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
+            // button2
+            // 
+            this.button2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.button2.FlatAppearance.BorderSize = 0;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Image = global::ShareP.Properties.Resources.Minus_24;
+            this.button2.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.button2.Location = new System.Drawing.Point(0, 8);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(43, 23);
+            this.button2.TabIndex = 6;
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button1
+            // 
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Image = global::ShareP.Properties.Resources.Close_24;
+            this.button1.Location = new System.Drawing.Point(365, 3);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(34, 32);
+            this.button1.TabIndex = 5;
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // buttonMessages
+            // 
+            this.buttonMessages.BackColor = System.Drawing.Color.White;
+            this.buttonMessages.FlatAppearance.BorderSize = 0;
+            this.buttonMessages.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.buttonMessages.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonMessages.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F);
+            this.buttonMessages.ForeColor = System.Drawing.Color.Black;
+            this.buttonMessages.Image = ((System.Drawing.Image)(resources.GetObject("buttonMessages.Image")));
+            this.buttonMessages.Location = new System.Drawing.Point(3, 289);
+            this.buttonMessages.Name = "buttonMessages";
+            this.buttonMessages.Size = new System.Drawing.Size(166, 92);
+            this.buttonMessages.TabIndex = 4;
+            this.buttonMessages.Text = "Messages";
+            this.buttonMessages.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.buttonMessages.UseVisualStyleBackColor = false;
+            this.buttonMessages.Click += new System.EventHandler(this.buttonMessages_Click);
+            // 
+            // buttonPresentation
+            // 
+            this.buttonPresentation.BackColor = System.Drawing.Color.White;
+            this.buttonPresentation.FlatAppearance.BorderSize = 0;
+            this.buttonPresentation.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.buttonPresentation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonPresentation.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F);
+            this.buttonPresentation.ForeColor = System.Drawing.Color.Black;
+            this.buttonPresentation.Image = ((System.Drawing.Image)(resources.GetObject("buttonPresentation.Image")));
+            this.buttonPresentation.Location = new System.Drawing.Point(0, 191);
+            this.buttonPresentation.Name = "buttonPresentation";
+            this.buttonPresentation.Size = new System.Drawing.Size(169, 92);
+            this.buttonPresentation.TabIndex = 3;
+            this.buttonPresentation.Text = "Presentation";
+            this.buttonPresentation.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.buttonPresentation.UseVisualStyleBackColor = false;
+            this.buttonPresentation.Click += new System.EventHandler(this.buttonPresentation_Click);
+            // 
+            // buttonConnection
+            // 
+            this.buttonConnection.BackColor = System.Drawing.Color.White;
+            this.buttonConnection.FlatAppearance.BorderSize = 0;
+            this.buttonConnection.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.buttonConnection.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonConnection.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonConnection.ForeColor = System.Drawing.Color.Black;
+            this.buttonConnection.Image = ((System.Drawing.Image)(resources.GetObject("buttonConnection.Image")));
+            this.buttonConnection.Location = new System.Drawing.Point(0, 93);
+            this.buttonConnection.Name = "buttonConnection";
+            this.buttonConnection.Size = new System.Drawing.Size(170, 92);
+            this.buttonConnection.TabIndex = 2;
+            this.buttonConnection.Text = "Connection";
+            this.buttonConnection.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.buttonConnection.UseVisualStyleBackColor = false;
+            this.buttonConnection.Click += new System.EventHandler(this.buttonConnection_Click);
+            // 
+            // pictureBoxLogo
+            // 
+            this.pictureBoxLogo.Image = global::ShareP.Properties.Resources.Logo_transparent;
+            this.pictureBoxLogo.Location = new System.Drawing.Point(12, 3);
+            this.pictureBoxLogo.Name = "pictureBoxLogo";
+            this.pictureBoxLogo.Size = new System.Drawing.Size(166, 75);
+            this.pictureBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBoxLogo.TabIndex = 0;
+            this.pictureBoxLogo.TabStop = false;
+            // 
             // FormMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -654,13 +679,9 @@
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormMain_MouseDown);
             this.panelBottom.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
             this.panelTop.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.statusConnectionRed)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.statusConnectionGreen)).EndInit();
             this.panel4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.tabsMenu.ResumeLayout(false);
@@ -676,6 +697,10 @@
             this.messagesTab.PerformLayout();
             this.notConnectedTab.ResumeLayout(false);
             this.notConnectedTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.statusConnectionRed)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.statusConnectionGreen)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -730,6 +755,8 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button button7;
     }
 }
 

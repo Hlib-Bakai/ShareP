@@ -15,7 +15,7 @@ namespace WCF.Client
             {
                 // Step 1: Create an endpoint address and an instance of the WCF client
                 //CalculatorClient client = new CalculatorClient();
-                CalculatorClient client = new CalculatorClient(new WSHttpBinding(), new EndpointAddress("http://156.17.228.84:8000/WCF/Service/CalculatorService"));
+                CalculatorClient client = new CalculatorClient(new BasicHttpBinding(), new EndpointAddress("http://192.168.0.108:8000/WCF/Service/CalculatorService"));
                 Console.WriteLine("Client is working. Write your message.");
                 Console.WriteLine("Enter 'q' to terminate client.");
 

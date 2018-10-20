@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace ShareP
 {
-    class Group
+    public class Group
     {
         public string name;
         public int hostId;
         public string hostName;
+        public string hostIp;
+        public bool passwordProtected;
     }
 }

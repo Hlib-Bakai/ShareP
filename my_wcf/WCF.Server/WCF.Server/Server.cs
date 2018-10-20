@@ -30,7 +30,6 @@ namespace WCF
     {
         static void Main(string[] args)
         {
-        
             string ipBase = getIPAddress();
 
             Uri BaseAddress = new Uri("http://" + ipBase + ":8000/WCF/Service");
@@ -40,7 +39,7 @@ namespace WCF
             {
                 SelfHost.AddServiceEndpoint(
                         typeof(ICalculator),
-                        new WSHttpBinding(),
+                        new BasicHttpBinding(),
                         "CalculatorService");
 
                 ServiceMetadataBehavior smb = new ServiceMetadataBehavior();
@@ -48,7 +47,7 @@ namespace WCF
                 SelfHost.Description.Behaviors.Add(smb);
 
                 SelfHost.Open();
-                Console.WriteLine("The service is ready.");
+                Console.WriteLine("The service is ready on ip: {0}.", BaseAddress.ToString());
                 Console.WriteLine("Press <ENTER> to terminate service.");
                 Console.WriteLine();
                 Console.ReadLine();
