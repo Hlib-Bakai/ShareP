@@ -20,6 +20,7 @@ namespace ShareP.Forms
             InitializeComponent();
             m_clientController = clientController;
             textBox1.Tag = 1;
+            StartSearch();
         }
 
         private void StartSearch()
@@ -30,10 +31,10 @@ namespace ShareP.Forms
 
         }
 
-        public void SearchStopped(int totalPings)
+        public void SearchStopped()
         {
             timer1.Enabled = false;
-            textBox1.Text = "Search finished. Scanned " + totalPings;
+            //textBox1.Text = "Search finished. Found: " + listView1.Items.Count; // TODO
         }
 
         public void AddGroup(Group group)
@@ -50,6 +51,50 @@ namespace ShareP.Forms
             catch (Exception ex)
             {
                 Log.LogException(ex);
+            }
+        }
+
+        public void Connect()
+        {
+            if (listView1.SelectedItems.Count < 1)
+                return;
+
+            string ip = listView1.SelectedItems[0].SubItems[2].Text;
+            string name = listView1.SelectedItems[0].SubItems[0].Text;
+            bool passwordProtected = (listView1.SelectedItems[0].ImageIndex == 0) ? true : false;
+            byte[] password = null;
+            if (!String.IsNullOrEmpty(ip))
+            {
+                if (passwordProtected)
+                {
+                    FormPassword formPassword = new FormPassword(name);
+                    if (formPassword.ShowDialog() == DialogResult.OK)
+                        password = formPassword.Password;
+                    else
+                        return;
+                }
+
+                switch (Connection.EstablishClientConnection(ip, password))
+                {
+                    case Connection.ConnectionResult.Error:
+                        FormAlert formAlertError = new FormAlert("Error", "Some error occured during connection.", true);
+                        formAlertError.ShowDialog();
+                        StartSearch();
+                        break;
+                    case Connection.ConnectionResult.WrongPassword:
+                        FormAlert formAlertPassword = new FormAlert("Wrong password", "Password you entered is incorrect. Prease try again.", true);
+                        formAlertPassword.ShowDialog();
+                        Connect();
+                        break;
+                    case Connection.ConnectionResult.Success:
+                        this.DialogResult = DialogResult.OK;
+                        this.Close();
+                        break;
+                }
+            }
+            else
+            {
+                // TODO
             }
         }
 
@@ -77,6 +122,19 @@ namespace ShareP.Forms
             textBox1.Tag = (int)textBox1.Tag + 1;
         }
 
-#endregion 
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Connect();
+        }
+
+        private void listView1_DoubleClick(object sender, EventArgs e)
+        {
+            Connect();
+        }
+
+
+        #endregion
+
+
     }
 }

@@ -22,10 +22,10 @@ public interface IShareP
     System.Threading.Tasks.Task<System.Collections.Generic.Dictionary<string, string>> RequestServerInfoAsync();
     
     [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/ClientConnect", ReplyAction="http://ShareP/IShareP/ClientConnectResponse")]
-    bool ClientConnect(System.Collections.Generic.Dictionary<string, string> clientInfo);
+    bool ClientConnect(System.Collections.Generic.Dictionary<string, string> clientInfo, byte[] password);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/ClientConnect", ReplyAction="http://ShareP/IShareP/ClientConnectResponse")]
-    System.Threading.Tasks.Task<bool> ClientConnectAsync(System.Collections.Generic.Dictionary<string, string> clientInfo);
+    System.Threading.Tasks.Task<bool> ClientConnectAsync(System.Collections.Generic.Dictionary<string, string> clientInfo, byte[] password);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -72,13 +72,13 @@ public partial class SharePClient : System.ServiceModel.ClientBase<IShareP>, ISh
         return base.Channel.RequestServerInfoAsync();
     }
     
-    public bool ClientConnect(System.Collections.Generic.Dictionary<string, string> clientInfo)
+    public bool ClientConnect(System.Collections.Generic.Dictionary<string, string> clientInfo, byte[] password)
     {
-        return base.Channel.ClientConnect(clientInfo);
+        return base.Channel.ClientConnect(clientInfo, password);
     }
     
-    public System.Threading.Tasks.Task<bool> ClientConnectAsync(System.Collections.Generic.Dictionary<string, string> clientInfo)
+    public System.Threading.Tasks.Task<bool> ClientConnectAsync(System.Collections.Generic.Dictionary<string, string> clientInfo, byte[] password)
     {
-        return base.Channel.ClientConnectAsync(clientInfo);
+        return base.Channel.ClientConnectAsync(clientInfo, password);
     }
 }

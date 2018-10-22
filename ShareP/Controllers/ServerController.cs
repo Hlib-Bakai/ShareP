@@ -17,36 +17,54 @@ namespace ShareP.Controllers
         [OperationContract]
         Dictionary<String, String> RequestServerInfo();
         [OperationContract]
-        bool ClientConnect(Dictionary<String, String> clientInfo);
+        bool ClientConnect(Dictionary<String, String> clientInfo, byte[] password);
     }
 
     public class SharePService : IShareP
     {
+        public bool ClientConnect(Dictionary<string, string> clientInfo, byte[] password)
+        {
+            if (Connection.CurrentGroup.passwordProtected && !Helper.CompareByteArrays(password, Connection.CurrentGroup.password))
+            {
+                return false;
+            }
+            User user = new User();
+            user.ChangeUsername(clientInfo["username"]);
+            user.IP = clientInfo["IP"];
+            Connection.CurrentGroup.AddUser(user);
+            return true;
+        }
+
         public bool ClientConnect(Dictionary<string, string> clientInfo)
         {
-            return true;
+            throw new NotImplementedException();
         }
 
         public Dictionary<string, string> RequestServerInfo()
         {
             var result = new Dictionary<string, string>();
-            result.Add("GroupName", "Diploma Seminar");
-            result.Add("HostName", "Hlib Bakai");
+            result.Add("GroupName", Connection.CurrentGroup.name);
+            result.Add("HostName", Connection.CurrentGroup.hostName);
             result.Add("NumberOfUsers", "20");
-            result.Add("Password", "True");
+            result.Add("Password", Connection.CurrentGroup.passwordProtected.ToString());
             return result;
         }
     }
 
 
-    class ServerController
+    static class ServerController
     {
-
-        ServiceHost SelfHost;
-
-        public void StartServer()
+        public static Group MyGroup
         {
-            string ipBase = getIPAddress();
+            get;
+            set;
+        }
+
+        static ServiceHost SelfHost;
+
+        public static void StartServer()
+        {
+            string ipBase = Helper.GetMyIP();
 
             Uri BaseAddress = new Uri("http://" + ipBase + ":8000/ShareP/Service");
 
@@ -73,25 +91,10 @@ namespace ShareP.Controllers
             }
         }
 
-        public void StopServer()
+        public static void StopServer()
         {
             if (SelfHost.State == CommunicationState.Opened || SelfHost.State == CommunicationState.Opening)
                 SelfHost.Close();
-        }
-
-        private static string getIPAddress()
-        {
-            IPHostEntry host;
-            string localIP = "";
-            host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (IPAddress ip in host.AddressList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    localIP = ip.ToString();
-                }
-            }
-            return localIP;
         }
     }
 }

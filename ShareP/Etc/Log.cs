@@ -21,9 +21,14 @@ namespace ShareP
             _log.Info(text);
         }
 
-        public static void LogException(Exception ex)
+        public static void LogException(Exception ex, String message = "")
         {
-            _log.Error("", ex);
+            _log.Error(message, ex);
+        }
+
+        public static void LogUnhandled(Exception ex)
+        {
+            _log.Fatal("Unhandled exception! ", ex);
         }
     }
 }

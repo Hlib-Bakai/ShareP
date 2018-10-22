@@ -25,7 +25,7 @@ namespace ShareP.Controllers
 
         private void SearchTask()
         {
-            string ipBase = getIPAddress();
+            string ipBase = Helper.GetMyIP();
             string[] ipParts = ipBase.Split('.');
             ipBase = ipParts[0] + "." + ipParts[1] + "." + ipParts[2] + ".";
             m_startedPing = 0;
@@ -58,7 +58,7 @@ namespace ShareP.Controllers
                     SharePClient client = new SharePClient(new BasicHttpBinding(), new EndpointAddress("http://" + ip + ":8000/ShareP/Service/SharePService"));
                     var serverInfo = client.RequestServerInfo();
                     bool pass = (serverInfo["Password"].CompareTo("True") == 0) ? true : false; // CHANGE THIS STRING TO BOOL
-                    m_formSearchServers.AddGroup(new Group { name = serverInfo["GroupName"], hostName = serverInfo["HostName"], hostId = 1, hostIp = ip, passwordProtected = pass });
+                    m_formSearchServers.AddGroup(new Group { name = serverInfo["GroupName"], hostName = serverInfo["HostName"], hostIp = ip, passwordProtected = pass });
                 }
                 catch (Exception ex)
                 {
@@ -68,23 +68,8 @@ namespace ShareP.Controllers
 
             if (m_startedPing - m_finishedPing == 0)
             {
-                m_formSearchServers.SearchStopped(m_startedPing);
+                m_formSearchServers.SearchStopped();
             }
-        }
-
-        public static string getIPAddress()
-        {
-            IPHostEntry host;
-            string localIP = "";
-            host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (IPAddress ip in host.AddressList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    localIP = ip.ToString();
-                }
-            }
-            return localIP;
         }
     }
 }

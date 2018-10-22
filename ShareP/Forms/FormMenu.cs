@@ -15,11 +15,7 @@ namespace ShareP
 {
     public partial class FormMenu : Form
     {
-        
-        private Connection m_connection;
-        private Group m_group;
         private User m_user;
-        private ServerController m_serverController;
         private ClientController m_clientController;
 
         public FormMenu()
@@ -30,24 +26,40 @@ namespace ShareP
             LoadConnectionTab();
             //CreateTestParams();
 
+            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+            {
+                var exception = (Exception)e.ExceptionObject;
+                Log.LogUnhandled(exception);
+            };
             Log.LogInfo("Initial load successful");
         }
 
         private void InitializeElements()
         {
+            textBoxUsername.BackColor = System.Drawing.SystemColors.Window;
+            textBoxIP.BackColor = System.Drawing.SystemColors.Window;
+
             m_user = new User();
-            m_serverController = new ServerController();
+            textBoxUsername.Text = m_user.Username;
+
+            Connection.CurrentUser = m_user;
+
+            textBoxIP.Text = m_user.IP;
+
+            listBox1.DrawItem += new DrawItemEventHandler(listBox_DrawItem);
+
+            //Controllers
             m_clientController = new ClientController();
         }
 
-        public void CreateTestParams()
+        public void FillHostUsersList()
         {
-            m_group = new Group();
-            m_group.name = "Diploma Seminar";
-            m_group.hostId = 1;
-            m_group.hostName = "Dariusz Król";
-            m_connection = new Connection();
-            LoadConnectionTab();
+            listBox1.Items.Clear();
+            foreach(User user in Connection.CurrentGroup.userList)
+            {
+                listBox1.Items.Add(user.Username);
+            }
+            listBox1.Refresh();
         }
 
         private void buttonConnection_Click(object sender, EventArgs e)
@@ -67,8 +79,7 @@ namespace ShareP
 
         private void Disconnect()
         {
-            m_group = null;
-            m_connection = null;
+            Connection.Disconnect();
             LoadConnectionTab();
         }
 
@@ -77,16 +88,20 @@ namespace ShareP
             menuPicker.Height = buttonConnection.Height;
             menuPicker.Top = buttonConnection.Top;
 
-            if (m_connection != null)
+            if (Connection.GetRole() != Connection.Role.Notconnected)
             {
                 labelConStatus.Text = "Connected";
                 labelConStatus.ForeColor = Color.Green;
-                if (m_group != null)
+                labelGroupName.Text = Connection.CurrentGroup.name;
+                labelGroupHost.Text = Connection.CurrentGroup.hostName;
+                buttonDisconnect.Show();
+                if (Connection.GetRole() == Connection.Role.Client)
+                    tabsConnection.SelectTab("tabConnected");
+                else if (Connection.GetRole() == Connection.Role.Host)
                 {
-                    labelGroupName.Text = m_group.name;
-                    labelGroupHost.Text = m_group.hostName;
+                    tabsConnection.SelectTab("tabConnectedHost");
+                    FillHostUsersList();
                 }
-                tabsConnection.SelectTab("tabConnected");
             }
             else
             {
@@ -94,6 +109,7 @@ namespace ShareP
                 labelConStatus.ForeColor = Color.Red;
                 labelGroupName.Text = "<Not connected>";
                 labelGroupHost.Text = "<Not connected>";
+                buttonDisconnect.Hide();
                 tabsConnection.SelectTab("tabNotConnected");
             }
 
@@ -105,7 +121,7 @@ namespace ShareP
             menuPicker.Height = buttonPresentation.Height;
             menuPicker.Top = buttonPresentation.Top;
 
-            if (m_connection == null)
+            if (Connection.GetRole() == Connection.Role.Notconnected)
             {
                 tabsMenu.SelectTab("notConnectedTab");
                 return;
@@ -113,13 +129,14 @@ namespace ShareP
         
             tabsMenu.SelectTab("presentationTab");
         }
+        
 
         private void LoadMessagesTab()
         {
             menuPicker.Height = buttonMessages.Height;
             menuPicker.Top = buttonMessages.Top;
 
-            if (m_connection == null)
+            if (Connection.GetRole() == Connection.Role.Notconnected)
             {
                 tabsMenu.SelectTab("notConnectedTab");
                 return;
@@ -145,7 +162,7 @@ namespace ShareP
 
         private void CheckStatusConnection()
         {
-            if (m_connection == null)
+            if (Connection.GetRole() == Connection.Role.Notconnected)
             {
                 ChangeStatusConnection();
             } 
@@ -153,6 +170,24 @@ namespace ShareP
             {
                 ChangeStatusConnection(true);
             }
+            textBoxIP.Text = Helper.GetMyIP();
+        }
+
+        private void CreateNewGroup(Group newGroup)
+        {
+            if (String.IsNullOrEmpty(newGroup.hostName))
+            {
+                newGroup.hostName = m_user.Username;
+            }
+            if (String.IsNullOrEmpty(newGroup.hostIp))
+            {
+                newGroup.hostIp = Helper.GetMyIP();
+            }
+            newGroup.formMenu = this;
+            Connection.CreateGroup(newGroup);
+            Connection.CurrentGroup.AddUser(m_user);
+            LoadConnectionTab();
+            CheckStatusConnection();
         }
 
         #region System
@@ -165,6 +200,20 @@ namespace ShareP
         private void FormMain_Load(object sender, EventArgs e)
         {
 
+        }
+
+        void listBox_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            ListBox list = (ListBox)sender;
+            if (e.Index > -1)
+            {
+                object item = list.Items[e.Index];
+                e.DrawBackground();
+                e.DrawFocusRectangle();
+                Brush brush = new SolidBrush(e.ForeColor);
+                SizeF size = e.Graphics.MeasureString(item.ToString(), e.Font);
+                e.Graphics.DrawString(item.ToString(), e.Font, brush, e.Bounds.Left + (e.Bounds.Width / 2 - size.Width / 2), e.Bounds.Top + (e.Bounds.Height / 2 - size.Height / 2));
+            }
         }
 
         #endregion
@@ -245,23 +294,83 @@ namespace ShareP
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            CreateTestParams();
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            m_serverController.StartServer();
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-            m_serverController.StopServer();
+           
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             FormSearchServers formSearchServers = new FormSearchServers(m_clientController);
-            formSearchServers.ShowDialog();
+            if (formSearchServers.ShowDialog() == DialogResult.OK)
+            {
+                LoadConnectionTab();
+            }
+        }
+
+        private void textBoxUsername_MouseHover(object sender, EventArgs e)
+        {
+            pictureBoxEditUsername.Show();
+        }
+
+        private void textBoxUsername_MouseLeave(object sender, EventArgs e)
+        {
+            pictureBoxEditUsername.Hide();
+        }
+
+        private void textBoxUsername_Click(object sender, EventArgs e)
+        {
+            FormChangeUsername formChangeUsername = new FormChangeUsername(m_user);
+            formChangeUsername.ShowDialog();
+            textBoxUsername.Text = m_user.Username;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            FormCreateGroup formCreateGroup = new FormCreateGroup();
+            if (formCreateGroup.ShowDialog() == DialogResult.OK)
+            {
+                CreateNewGroup(formCreateGroup.NewGroup);
+            }
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            Connection.Disconnect();
+            LoadConnectionTab();
+            CheckStatusConnection();
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void openFileDialog_FileOk(object sender, CancelEventArgs e)
+        {
+            textBoxFile.Text = openFileDialog.FileName;
+        }
+
+        private void textBoxFile_DoubleClick(object sender, EventArgs e)
+        {
+            openFileDialog.ShowDialog();
+        }
+
+        private void button5_Click_1(object sender, EventArgs e)
+        {
+            string file = textBoxFile.Text;
+            if (file.Length < 1)
+                (new FormAlert("No file", "Please, choose presentation file.", true)).ShowDialog();
+            else
+            {
+                try
+                {
+                    PresentationController.LoadPPT(file);
+                }
+                catch (Exception ex)
+                {
+                    Log.LogException(ex, "Can't load presentation");
+                    (new FormAlert("Error", "Problem occured while opening the file", true)).ShowDialog();
+                }
+            }
         }
     }
 }
