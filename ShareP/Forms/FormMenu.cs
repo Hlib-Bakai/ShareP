@@ -40,9 +40,10 @@ namespace ShareP
             textBoxIP.BackColor = System.Drawing.SystemColors.Window;
 
             m_user = new User();
+            Connection.CurrentUser = m_user;
+            FillCurrentUser();
             textBoxUsername.Text = m_user.Username;
 
-            Connection.CurrentUser = m_user;
 
             textBoxIP.Text = m_user.IP;
 
@@ -52,14 +53,60 @@ namespace ShareP
             m_clientController = new ClientController();
         }
 
+        public void FillCurrentUser()
+        {
+            if (!String.IsNullOrEmpty(Properties.Settings.Default["username"].ToString()))
+            {
+                Connection.CurrentUser.Username = Properties.Settings.Default["username"].ToString();
+            }
+            else
+            {
+                try
+                {
+                    ChangeUsername(System.Environment.MachineName);
+                }
+                catch (Exception e)
+                {
+                    Log.LogException(e, "Can't get computer's name. Using default one");
+                }
+                if (String.IsNullOrEmpty(Connection.CurrentUser.Username))
+                    ChangeUsername("User #" + (new Random(Guid.NewGuid().GetHashCode())).Next(1, 10000).ToString());
+            }
+
+            Connection.CurrentUser.IP = Helper.GetMyIP();
+        }
+
+        
+        public void ChangeUsername(string newUsername)
+        {
+            Connection.CurrentUser.Username = newUsername;
+            Properties.Settings.Default["username"] = newUsername;
+            Properties.Settings.Default.Save();
+            Log.LogInfo(String.Format("Username changed to {0}.", newUsername));
+        }
+
+
+
         public void FillHostUsersList()
         {
-            listBox1.Items.Clear();
-            foreach(User user in Connection.CurrentGroup.userList)
+            if (listBox1.InvokeRequired)  //Accessing element from another thread
             {
-                listBox1.Items.Add(user.Username);
+                listBox1.Invoke(new Action(() => listBox1.Items.Clear()));
+                foreach (User user in Connection.CurrentGroup.userList)
+                {
+                    listBox1.Invoke(new Action<string>((i) => listBox1.Items.Add(i)), user.Username);
+                }
+                listBox1.Invoke(new Action(() => listBox1.Refresh()));
             }
-            listBox1.Refresh();
+            else
+            {
+                listBox1.Items.Clear();
+                foreach (User user in Connection.CurrentGroup.userList)
+                {
+                    listBox1.Items.Add(user.Username);
+                }
+                listBox1.Refresh();
+            }
         }
 
         private void buttonConnection_Click(object sender, EventArgs e)
@@ -88,16 +135,16 @@ namespace ShareP
             menuPicker.Height = buttonConnection.Height;
             menuPicker.Top = buttonConnection.Top;
 
-            if (Connection.GetRole() != Connection.Role.Notconnected)
+            if (Connection.CurrentRole != Connection.Role.Notconnected)
             {
                 labelConStatus.Text = "Connected";
                 labelConStatus.ForeColor = Color.Green;
                 labelGroupName.Text = Connection.CurrentGroup.name;
                 labelGroupHost.Text = Connection.CurrentGroup.hostName;
                 buttonDisconnect.Show();
-                if (Connection.GetRole() == Connection.Role.Client)
+                if (Connection.CurrentRole == Connection.Role.Client)
                     tabsConnection.SelectTab("tabConnected");
-                else if (Connection.GetRole() == Connection.Role.Host)
+                else if (Connection.CurrentRole == Connection.Role.Host)
                 {
                     tabsConnection.SelectTab("tabConnectedHost");
                     FillHostUsersList();
@@ -121,7 +168,7 @@ namespace ShareP
             menuPicker.Height = buttonPresentation.Height;
             menuPicker.Top = buttonPresentation.Top;
 
-            if (Connection.GetRole() == Connection.Role.Notconnected)
+            if (Connection.CurrentRole == Connection.Role.Notconnected)
             {
                 tabsMenu.SelectTab("notConnectedTab");
                 return;
@@ -136,7 +183,7 @@ namespace ShareP
             menuPicker.Height = buttonMessages.Height;
             menuPicker.Top = buttonMessages.Top;
 
-            if (Connection.GetRole() == Connection.Role.Notconnected)
+            if (Connection.CurrentRole == Connection.Role.Notconnected)
             {
                 tabsMenu.SelectTab("notConnectedTab");
                 return;
@@ -162,7 +209,7 @@ namespace ShareP
 
         private void CheckStatusConnection()
         {
-            if (Connection.GetRole() == Connection.Role.Notconnected)
+            if (Connection.CurrentRole == Connection.Role.Notconnected)
             {
                 ChangeStatusConnection();
             } 
@@ -299,6 +346,7 @@ namespace ShareP
 
         private void button4_Click(object sender, EventArgs e)
         {
+            //Connection.EstablishClientConnection("192.168.0.110");
             FormSearchServers formSearchServers = new FormSearchServers(m_clientController);
             if (formSearchServers.ShowDialog() == DialogResult.OK)
             {
@@ -319,7 +367,8 @@ namespace ShareP
         private void textBoxUsername_Click(object sender, EventArgs e)
         {
             FormChangeUsername formChangeUsername = new FormChangeUsername(m_user);
-            formChangeUsername.ShowDialog();
+            if (formChangeUsername.ShowDialog() == DialogResult.OK)
+                ChangeUsername(formChangeUsername.NewUsername);
             textBoxUsername.Text = m_user.Username;
         }
 
@@ -371,6 +420,11 @@ namespace ShareP
                     (new FormAlert("Error", "Problem occured while opening the file", true)).ShowDialog();
                 }
             }
+        }
+
+        private void timerUsers_Tick(object sender, EventArgs e)
+        {
+
         }
     }
 }

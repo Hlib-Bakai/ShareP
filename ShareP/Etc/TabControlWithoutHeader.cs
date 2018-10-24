@@ -14,7 +14,7 @@ namespace ShareP
             if (!this.DesignMode) this.Multiline = true;
         }
 
-        protected override void WndProc(ref Message m)
+        protected override void WndProc(ref System.Windows.Forms.Message m)
         {
             if (m.Msg == 0x1328 && !this.DesignMode)
                 m.Result = new IntPtr(1);

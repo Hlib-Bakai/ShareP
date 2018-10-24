@@ -44,9 +44,16 @@ namespace ShareP.Forms
                 string[] newElement = { group.name, group.hostName, group.hostIp };
                 var newListViewItem = new ListViewItem(newElement);
                 newListViewItem.ImageIndex = (group.passwordProtected) ? 0 : -1;
-                listView1.Items.Add(newListViewItem);
 
-                listView1.Refresh();
+                if (listView1.InvokeRequired)  //Accessing element from another thread
+                {
+                    listView1.Invoke(new Action<ListViewItem>((i) => listView1.Items.Add(i)), newListViewItem);
+                }
+                else
+                {
+                    listView1.Items.Add(newListViewItem);
+                    listView1.Refresh();
+                }
             }
             catch (Exception ex)
             {

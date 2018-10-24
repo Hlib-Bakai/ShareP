@@ -8,24 +8,199 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+namespace ShareP
+{
+    using System.Runtime.Serialization;
+    
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="User", Namespace="http://schemas.datacontract.org/2004/07/ShareP")]
+    public partial class User : object, System.Runtime.Serialization.IExtensibleDataObject
+    {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        private string IPField;
+        
+        private int IdField;
+        
+        private string UsernameField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string IP
+        {
+            get
+            {
+                return this.IPField;
+            }
+            set
+            {
+                this.IPField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Id
+        {
+            get
+            {
+                return this.IdField;
+            }
+            set
+            {
+                this.IdField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Username
+        {
+            get
+            {
+                return this.UsernameField;
+            }
+            set
+            {
+                this.UsernameField = value;
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Message", Namespace="http://schemas.datacontract.org/2004/07/ShareP")]
+    public partial class Message : object, System.Runtime.Serialization.IExtensibleDataObject
+    {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        private string SenderField;
+        
+        private string TextField;
+        
+        private System.DateTime TimeField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Sender
+        {
+            get
+            {
+                return this.SenderField;
+            }
+            set
+            {
+                this.SenderField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Text
+        {
+            get
+            {
+                return this.TextField;
+            }
+            set
+            {
+                this.TextField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime Time
+        {
+            get
+            {
+                return this.TimeField;
+            }
+            set
+            {
+                this.TimeField = value;
+            }
+        }
+    }
+}
 
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-[System.ServiceModel.ServiceContractAttribute(Namespace="http://ShareP", ConfigurationName="IShareP")]
+[System.ServiceModel.ServiceContractAttribute(Namespace="http://ShareP", ConfigurationName="IShareP", CallbackContract=typeof(ISharePCallback), SessionMode=System.ServiceModel.SessionMode.Required)]
 public interface IShareP
 {
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/Connect", ReplyAction="http://ShareP/IShareP/ConnectResponse")]
+    bool Connect(ShareP.User user);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/Connect", ReplyAction="http://ShareP/IShareP/ConnectResponse")]
+    System.Threading.Tasks.Task<bool> ConnectAsync(ShareP.User user);
+    
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/Say")]
+    void Say(ShareP.Message msg);
+    
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/Say")]
+    System.Threading.Tasks.Task SayAsync(ShareP.Message msg);
+    
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/IsWriting")]
+    void IsWriting(ShareP.User user);
+    
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/IsWriting")]
+    System.Threading.Tasks.Task IsWritingAsync(ShareP.User user);
+    
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, IsTerminating=true, Action="http://ShareP/IShareP/Disconnect")]
+    void Disconnect(ShareP.User user);
+    
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, IsTerminating=true, Action="http://ShareP/IShareP/Disconnect")]
+    System.Threading.Tasks.Task DisconnectAsync(ShareP.User user);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/RequestServerInfo", ReplyAction="http://ShareP/IShareP/RequestServerInfoResponse")]
     System.Collections.Generic.Dictionary<string, string> RequestServerInfo();
     
     [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/RequestServerInfo", ReplyAction="http://ShareP/IShareP/RequestServerInfoResponse")]
     System.Threading.Tasks.Task<System.Collections.Generic.Dictionary<string, string>> RequestServerInfoAsync();
+}
+
+[System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+public interface ISharePCallback
+{
     
-    [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/ClientConnect", ReplyAction="http://ShareP/IShareP/ClientConnectResponse")]
-    bool ClientConnect(System.Collections.Generic.Dictionary<string, string> clientInfo, byte[] password);
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/RefreshUsers")]
+    void RefreshUsers(ShareP.User[] users);
     
-    [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/ClientConnect", ReplyAction="http://ShareP/IShareP/ClientConnectResponse")]
-    System.Threading.Tasks.Task<bool> ClientConnectAsync(System.Collections.Generic.Dictionary<string, string> clientInfo, byte[] password);
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/Receive")]
+    void Receive(ShareP.Message msg);
+    
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/IsWritingCallback")]
+    void IsWritingCallback(ShareP.User user);
+    
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/UserJoin")]
+    void UserJoin(ShareP.User user);
+    
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/UserLeave")]
+    void UserLeave(ShareP.User user);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -35,31 +210,72 @@ public interface ISharePChannel : IShareP, System.ServiceModel.IClientChannel
 
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-public partial class SharePClient : System.ServiceModel.ClientBase<IShareP>, IShareP
+public partial class SharePClient : System.ServiceModel.DuplexClientBase<IShareP>, IShareP
 {
     
-    public SharePClient()
+    public SharePClient(System.ServiceModel.InstanceContext callbackInstance) : 
+            base(callbackInstance)
     {
     }
     
-    public SharePClient(string endpointConfigurationName) : 
-            base(endpointConfigurationName)
+    public SharePClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName) : 
+            base(callbackInstance, endpointConfigurationName)
     {
     }
     
-    public SharePClient(string endpointConfigurationName, string remoteAddress) : 
-            base(endpointConfigurationName, remoteAddress)
+    public SharePClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, string remoteAddress) : 
+            base(callbackInstance, endpointConfigurationName, remoteAddress)
     {
     }
     
-    public SharePClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
-            base(endpointConfigurationName, remoteAddress)
+    public SharePClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+            base(callbackInstance, endpointConfigurationName, remoteAddress)
     {
     }
     
-    public SharePClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
-            base(binding, remoteAddress)
+    public SharePClient(System.ServiceModel.InstanceContext callbackInstance, System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+            base(callbackInstance, binding, remoteAddress)
     {
+    }
+    
+    public bool Connect(ShareP.User user)
+    {
+        return base.Channel.Connect(user);
+    }
+    
+    public System.Threading.Tasks.Task<bool> ConnectAsync(ShareP.User user)
+    {
+        return base.Channel.ConnectAsync(user);
+    }
+    
+    public void Say(ShareP.Message msg)
+    {
+        base.Channel.Say(msg);
+    }
+    
+    public System.Threading.Tasks.Task SayAsync(ShareP.Message msg)
+    {
+        return base.Channel.SayAsync(msg);
+    }
+    
+    public void IsWriting(ShareP.User user)
+    {
+        base.Channel.IsWriting(user);
+    }
+    
+    public System.Threading.Tasks.Task IsWritingAsync(ShareP.User user)
+    {
+        return base.Channel.IsWritingAsync(user);
+    }
+    
+    public void Disconnect(ShareP.User user)
+    {
+        base.Channel.Disconnect(user);
+    }
+    
+    public System.Threading.Tasks.Task DisconnectAsync(ShareP.User user)
+    {
+        return base.Channel.DisconnectAsync(user);
     }
     
     public System.Collections.Generic.Dictionary<string, string> RequestServerInfo()
@@ -70,15 +286,5 @@ public partial class SharePClient : System.ServiceModel.ClientBase<IShareP>, ISh
     public System.Threading.Tasks.Task<System.Collections.Generic.Dictionary<string, string>> RequestServerInfoAsync()
     {
         return base.Channel.RequestServerInfoAsync();
-    }
-    
-    public bool ClientConnect(System.Collections.Generic.Dictionary<string, string> clientInfo, byte[] password)
-    {
-        return base.Channel.ClientConnect(clientInfo, password);
-    }
-    
-    public System.Threading.Tasks.Task<bool> ClientConnectAsync(System.Collections.Generic.Dictionary<string, string> clientInfo, byte[] password)
-    {
-        return base.Channel.ClientConnectAsync(clientInfo, password);
     }
 }

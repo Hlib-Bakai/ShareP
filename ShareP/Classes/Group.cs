@@ -11,7 +11,7 @@ namespace ShareP
         public string name;
         public string hostName;
         public string hostIp;
-        public byte[] password; 
+        public byte[] password;
         public bool passwordProtected;
         public bool download;
         public bool viewerspresent;
@@ -24,7 +24,7 @@ namespace ShareP
 
         public List<User> userList;
         private int nextId;
-        
+
 
         public Group()
         {
@@ -39,7 +39,23 @@ namespace ShareP
             userList.Add(user);
             formMenu.FillHostUsersList();
         }
-        
+
+        public void RemoveUser(User user)
+        {
+            User toDelete = null;
+            foreach (User u in userList)
+            {
+                if (u.Username == user.Username)
+                {
+                    toDelete = u;
+                    break;
+                }
+            }
+            if (toDelete != null)
+                userList.Remove(toDelete);
+            formMenu.FillHostUsersList();
+        }
+
         public int GetUsersCount()
         {
             return userList.Count;

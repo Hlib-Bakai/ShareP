@@ -7,6 +7,7 @@ namespace ShareP
 {
     static class Helper
     {
+
         public static string GetMyIP()
         {
             IPHostEntry host;

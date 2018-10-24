@@ -31,33 +31,33 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMenu));
             this.panelBottom = new System.Windows.Forms.Panel();
+            this.pictureBoxEditUsername = new System.Windows.Forms.PictureBox();
             this.panel10 = new System.Windows.Forms.Panel();
             this.label12 = new System.Windows.Forms.Label();
             this.textBoxIP = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.textBoxUsername = new System.Windows.Forms.TextBox();
             this.menuPicker = new System.Windows.Forms.Panel();
+            this.buttonMessages = new System.Windows.Forms.Button();
+            this.buttonPresentation = new System.Windows.Forms.Button();
+            this.buttonConnection = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel6 = new System.Windows.Forms.Panel();
+            this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.panelTop = new System.Windows.Forms.Panel();
             this.panel7 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.statusConnectionRed = new System.Windows.Forms.PictureBox();
+            this.statusConnectionGreen = new System.Windows.Forms.PictureBox();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.panel3 = new System.Windows.Forms.Panel();
             this.timerConnection = new System.Windows.Forms.Timer(this.components);
             this.timerUsers = new System.Windows.Forms.Timer(this.components);
-            this.statusConnectionRed = new System.Windows.Forms.PictureBox();
-            this.statusConnectionGreen = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.pictureBoxEditUsername = new System.Windows.Forms.PictureBox();
-            this.buttonMessages = new System.Windows.Forms.Button();
-            this.buttonPresentation = new System.Windows.Forms.Button();
-            this.buttonConnection = new System.Windows.Forms.Button();
-            this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.tabsMenu = new ShareP.TabControlWithoutHeader();
             this.connectionTab = new System.Windows.Forms.TabPage();
             this.buttonDisconnect = new System.Windows.Forms.Button();
@@ -92,17 +92,17 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.panelBottom.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEditUsername)).BeginInit();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
             this.panelTop.SuspendLayout();
             this.panel5.SuspendLayout();
-            this.panel4.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusConnectionRed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.statusConnectionGreen)).BeginInit();
+            this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEditUsername)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
+            this.panel1.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.tabsMenu.SuspendLayout();
             this.connectionTab.SuspendLayout();
             this.tabsConnection.SuspendLayout();
@@ -132,6 +132,16 @@
             this.panelBottom.Name = "panelBottom";
             this.panelBottom.Size = new System.Drawing.Size(172, 425);
             this.panelBottom.TabIndex = 3;
+            // 
+            // pictureBoxEditUsername
+            // 
+            this.pictureBoxEditUsername.Image = global::ShareP.Properties.Resources.Pencil_16;
+            this.pictureBoxEditUsername.Location = new System.Drawing.Point(153, 83);
+            this.pictureBoxEditUsername.Name = "pictureBoxEditUsername";
+            this.pictureBoxEditUsername.Size = new System.Drawing.Size(16, 16);
+            this.pictureBoxEditUsername.TabIndex = 10;
+            this.pictureBoxEditUsername.TabStop = false;
+            this.pictureBoxEditUsername.Visible = false;
             // 
             // panel10
             // 
@@ -194,164 +204,6 @@
             this.menuPicker.Size = new System.Drawing.Size(10, 100);
             this.menuPicker.TabIndex = 5;
             // 
-            // panel2
-            // 
-            this.panel2.BackColor = System.Drawing.Color.White;
-            this.panel2.Controls.Add(this.panel6);
-            this.panel2.Controls.Add(this.pictureBoxLogo);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(172, 87);
-            this.panel2.TabIndex = 0;
-            // 
-            // panel6
-            // 
-            this.panel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(232)))));
-            this.panel6.Location = new System.Drawing.Point(0, 71);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(195, 10);
-            this.panel6.TabIndex = 2;
-            // 
-            // panelTop
-            // 
-            this.panelTop.Controls.Add(this.panel7);
-            this.panelTop.Controls.Add(this.panel5);
-            this.panelTop.Controls.Add(this.panel4);
-            this.panelTop.Controls.Add(this.panel1);
-            this.panelTop.Controls.Add(this.button1);
-            this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelTop.Location = new System.Drawing.Point(172, 0);
-            this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(421, 84);
-            this.panelTop.TabIndex = 4;
-            this.panelTop.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelTop_MouseDown);
-            // 
-            // panel7
-            // 
-            this.panel7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(232)))));
-            this.panel7.Location = new System.Drawing.Point(0, 71);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(402, 10);
-            this.panel7.TabIndex = 3;
-            // 
-            // panel5
-            // 
-            this.panel5.Controls.Add(this.statusConnectionRed);
-            this.panel5.Controls.Add(this.statusConnectionGreen);
-            this.panel5.Location = new System.Drawing.Point(240, 6);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(32, 32);
-            this.panel5.TabIndex = 9;
-            // 
-            // panel4
-            // 
-            this.panel4.Controls.Add(this.pictureBox1);
-            this.panel4.Location = new System.Drawing.Point(278, 3);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(32, 32);
-            this.panel4.TabIndex = 8;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.button2);
-            this.panel1.Location = new System.Drawing.Point(316, 3);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(43, 31);
-            this.panel1.TabIndex = 7;
-            this.panel1.Click += new System.EventHandler(this.panel1_Click);
-            // 
-            // openFileDialog
-            // 
-            this.openFileDialog.FileName = "openFileDialog1";
-            this.openFileDialog.Filter = "Presentation Files|*.pptx;*.ppt";
-            this.openFileDialog.Title = "Open presentation";
-            this.openFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog_FileOk);
-            // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.tabsMenu);
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(172, 84);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(421, 341);
-            this.panel3.TabIndex = 5;
-            // 
-            // timerConnection
-            // 
-            this.timerConnection.Enabled = true;
-            this.timerConnection.Tick += new System.EventHandler(this.timerConnection_Tick);
-            // 
-            // statusConnectionRed
-            // 
-            this.statusConnectionRed.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.statusConnectionRed.Image = ((System.Drawing.Image)(resources.GetObject("statusConnectionRed.Image")));
-            this.statusConnectionRed.Location = new System.Drawing.Point(0, 0);
-            this.statusConnectionRed.Name = "statusConnectionRed";
-            this.statusConnectionRed.Size = new System.Drawing.Size(32, 32);
-            this.statusConnectionRed.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.statusConnectionRed.TabIndex = 1;
-            this.statusConnectionRed.TabStop = false;
-            // 
-            // statusConnectionGreen
-            // 
-            this.statusConnectionGreen.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.statusConnectionGreen.Image = ((System.Drawing.Image)(resources.GetObject("statusConnectionGreen.Image")));
-            this.statusConnectionGreen.Location = new System.Drawing.Point(0, 0);
-            this.statusConnectionGreen.Name = "statusConnectionGreen";
-            this.statusConnectionGreen.Size = new System.Drawing.Size(32, 32);
-            this.statusConnectionGreen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.statusConnectionGreen.TabIndex = 0;
-            this.statusConnectionGreen.TabStop = false;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(32, 32);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
-            // 
-            // button2
-            // 
-            this.button2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Image = global::ShareP.Properties.Resources.Minus_24;
-            this.button2.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.button2.Location = new System.Drawing.Point(0, 8);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(43, 23);
-            this.button2.TabIndex = 6;
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button1
-            // 
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Image = global::ShareP.Properties.Resources.Close_24;
-            this.button1.Location = new System.Drawing.Point(365, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(34, 32);
-            this.button1.TabIndex = 5;
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // pictureBoxEditUsername
-            // 
-            this.pictureBoxEditUsername.Image = global::ShareP.Properties.Resources.Pencil_16;
-            this.pictureBoxEditUsername.Location = new System.Drawing.Point(153, 83);
-            this.pictureBoxEditUsername.Name = "pictureBoxEditUsername";
-            this.pictureBoxEditUsername.Size = new System.Drawing.Size(16, 16);
-            this.pictureBoxEditUsername.TabIndex = 10;
-            this.pictureBoxEditUsername.TabStop = false;
-            this.pictureBoxEditUsername.Visible = false;
-            // 
             // buttonMessages
             // 
             this.buttonMessages.BackColor = System.Drawing.Color.White;
@@ -406,6 +258,25 @@
             this.buttonConnection.UseVisualStyleBackColor = false;
             this.buttonConnection.Click += new System.EventHandler(this.buttonConnection_Click);
             // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.White;
+            this.panel2.Controls.Add(this.panel6);
+            this.panel2.Controls.Add(this.pictureBoxLogo);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(172, 87);
+            this.panel2.TabIndex = 0;
+            // 
+            // panel6
+            // 
+            this.panel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(232)))));
+            this.panel6.Location = new System.Drawing.Point(0, 71);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(195, 10);
+            this.panel6.TabIndex = 2;
+            // 
             // pictureBoxLogo
             // 
             this.pictureBoxLogo.Image = global::ShareP.Properties.Resources.Logo_transparent;
@@ -415,6 +286,139 @@
             this.pictureBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxLogo.TabIndex = 0;
             this.pictureBoxLogo.TabStop = false;
+            // 
+            // panelTop
+            // 
+            this.panelTop.Controls.Add(this.panel7);
+            this.panelTop.Controls.Add(this.panel5);
+            this.panelTop.Controls.Add(this.panel4);
+            this.panelTop.Controls.Add(this.panel1);
+            this.panelTop.Controls.Add(this.button1);
+            this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelTop.Location = new System.Drawing.Point(172, 0);
+            this.panelTop.Name = "panelTop";
+            this.panelTop.Size = new System.Drawing.Size(421, 84);
+            this.panelTop.TabIndex = 4;
+            this.panelTop.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelTop_MouseDown);
+            // 
+            // panel7
+            // 
+            this.panel7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(232)))));
+            this.panel7.Location = new System.Drawing.Point(0, 71);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(402, 10);
+            this.panel7.TabIndex = 3;
+            // 
+            // panel5
+            // 
+            this.panel5.Controls.Add(this.statusConnectionRed);
+            this.panel5.Controls.Add(this.statusConnectionGreen);
+            this.panel5.Location = new System.Drawing.Point(240, 6);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(32, 32);
+            this.panel5.TabIndex = 9;
+            // 
+            // statusConnectionRed
+            // 
+            this.statusConnectionRed.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.statusConnectionRed.Image = ((System.Drawing.Image)(resources.GetObject("statusConnectionRed.Image")));
+            this.statusConnectionRed.Location = new System.Drawing.Point(0, 0);
+            this.statusConnectionRed.Name = "statusConnectionRed";
+            this.statusConnectionRed.Size = new System.Drawing.Size(32, 32);
+            this.statusConnectionRed.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.statusConnectionRed.TabIndex = 1;
+            this.statusConnectionRed.TabStop = false;
+            // 
+            // statusConnectionGreen
+            // 
+            this.statusConnectionGreen.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.statusConnectionGreen.Image = ((System.Drawing.Image)(resources.GetObject("statusConnectionGreen.Image")));
+            this.statusConnectionGreen.Location = new System.Drawing.Point(0, 0);
+            this.statusConnectionGreen.Name = "statusConnectionGreen";
+            this.statusConnectionGreen.Size = new System.Drawing.Size(32, 32);
+            this.statusConnectionGreen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.statusConnectionGreen.TabIndex = 0;
+            this.statusConnectionGreen.TabStop = false;
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.pictureBox1);
+            this.panel4.Location = new System.Drawing.Point(278, 3);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(32, 32);
+            this.panel4.TabIndex = 8;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(32, 32);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.button2);
+            this.panel1.Location = new System.Drawing.Point(316, 3);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(43, 31);
+            this.panel1.TabIndex = 7;
+            this.panel1.Click += new System.EventHandler(this.panel1_Click);
+            // 
+            // button2
+            // 
+            this.button2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.button2.FlatAppearance.BorderSize = 0;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Image = global::ShareP.Properties.Resources.Minus_24;
+            this.button2.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.button2.Location = new System.Drawing.Point(0, 8);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(43, 23);
+            this.button2.TabIndex = 6;
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button1
+            // 
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Image = global::ShareP.Properties.Resources.Close_24;
+            this.button1.Location = new System.Drawing.Point(365, 3);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(34, 32);
+            this.button1.TabIndex = 5;
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // openFileDialog
+            // 
+            this.openFileDialog.FileName = "openFileDialog1";
+            this.openFileDialog.Filter = "Presentation Files|*.pptx;*.ppt";
+            this.openFileDialog.Title = "Open presentation";
+            this.openFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog_FileOk);
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.tabsMenu);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel3.Location = new System.Drawing.Point(172, 84);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(421, 341);
+            this.panel3.TabIndex = 5;
+            // 
+            // timerConnection
+            // 
+            this.timerConnection.Enabled = true;
+            this.timerConnection.Tick += new System.EventHandler(this.timerConnection_Tick);
+            // 
+            // timerUsers
+            // 
+            this.timerUsers.Tick += new System.EventHandler(this.timerUsers_Tick);
             // 
             // tabsMenu
             // 
@@ -810,17 +814,17 @@
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormMain_MouseDown);
             this.panelBottom.ResumeLayout(false);
             this.panelBottom.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEditUsername)).EndInit();
             this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
             this.panelTop.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
-            this.panel4.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.statusConnectionRed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.statusConnectionGreen)).EndInit();
+            this.panel4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEditUsername)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
             this.tabsMenu.ResumeLayout(false);
             this.connectionTab.ResumeLayout(false);
             this.connectionTab.PerformLayout();

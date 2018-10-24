@@ -13,6 +13,12 @@ namespace ShareP.Forms
     public partial class FormChangeUsername : Form
     {
         User m_user;
+        public String NewUsername
+        {
+            get;
+            set;
+        }
+
         public FormChangeUsername(User user)
         {
             InitializeComponent();
@@ -34,7 +40,8 @@ namespace ShareP.Forms
 
         private void SaveNewUsername()
         {
-            m_user.ChangeUsername(textBox2.Text);
+            NewUsername = textBox2.Text;
+            this.DialogResult = DialogResult.OK;
             this.Close();
         }
 

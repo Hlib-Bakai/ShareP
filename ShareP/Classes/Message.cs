@@ -5,10 +5,10 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShareP.Classes
+namespace ShareP.Server
 {
     [DataContract]
-    class Message
+    public class Message
     {
         private string sender;
         private string text;

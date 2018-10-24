@@ -7,38 +7,167 @@ using System.Net;
 using System.Net.Sockets;
 using System.ServiceModel;
 using System.ServiceModel.Description;
+using ShareP.Server;
 
 namespace ShareP.Controllers
 {
 
-    [ServiceContract(Namespace = "http://ShareP")]
+    [ServiceContract(Namespace = "http://ShareP", CallbackContract = typeof(ISharePCallback),
+                        SessionMode = SessionMode.Required)]
     public interface IShareP
     {
+        //[OperationContract]
+        //Dictionary<String, String> RequestServerInfo();
+
+        //[OperationContract]
+        //bool ClientConnect(Dictionary<String, String> clientInfo, byte[] password);
+
+        [OperationContract(IsInitiating = true)]
+        bool Connect(User user);
+
+        [OperationContract(IsOneWay = true)]
+        void Say(Message msg);
+
+        [OperationContract(IsOneWay = true)]
+        void IsWriting(User user);
+
+        [OperationContract(IsOneWay = true, IsTerminating = true)]
+        void Disconnect(User user);
         [OperationContract]
-        Dictionary<String, String> RequestServerInfo();
-        [OperationContract]
-        bool ClientConnect(Dictionary<String, String> clientInfo, byte[] password);
+        Dictionary<string, string> RequestServerInfo();
     }
 
+    public interface ISharePCallback //Presentation started, slide changed?, end presentation
+    {
+        [OperationContract(IsOneWay = true)]
+        void RefreshUsers(List<User> users);  // Delete
+
+        [OperationContract(IsOneWay = true)]
+        void Receive(Message msg);
+
+        [OperationContract(IsOneWay = true)]
+        void IsWritingCallback(User user);
+        
+        [OperationContract(IsOneWay = true)]
+        void UserJoin(User user);
+
+        [OperationContract(IsOneWay = true)]
+        void UserLeave(User user);
+    }
+
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single,
+                        ConcurrencyMode = ConcurrencyMode.Multiple,
+                        UseSynchronizationContext = false)]
     public class SharePService : IShareP
     {
-        public bool ClientConnect(Dictionary<string, string> clientInfo, byte[] password)
+        Dictionary<User, ISharePCallback> users =
+         new Dictionary<User, ISharePCallback>();
+
+        List<User> userList = new List<User>();
+
+        public ISharePCallback CurrentCallback
         {
-            if (Connection.CurrentGroup.passwordProtected && !Helper.CompareByteArrays(password, Connection.CurrentGroup.password))
+            get
             {
-                return false;
+                return OperationContext.Current.
+                       GetCallbackChannel<ISharePCallback>();
             }
-            User user = new User();
-            user.ChangeUsername(clientInfo["username"]);
-            user.IP = clientInfo["IP"];
-            Connection.CurrentGroup.AddUser(user);
-            return true;
         }
 
-        public bool ClientConnect(Dictionary<string, string> clientInfo)
+        object syncObj = new object();
+
+        private bool SearchUsersByName(string name)
         {
-            throw new NotImplementedException();
+            foreach (User u in users.Keys)
+            {
+                if (u.Username == name)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
+
+
+        /// IShareP
+
+        public bool Connect(User user)
+        {
+            if (!users.ContainsValue(CurrentCallback) && !SearchUsersByName(user.Username))
+            {
+                lock(syncObj)
+                {
+                    Connection.CurrentGroup.AddUser(user);
+                
+                    foreach (User key in users.Keys)
+                    {
+                        ISharePCallback callback = users[key];
+                        try
+                        {
+                            //callback.RefreshUsers(userList);
+                            callback.UserJoin(user);
+                        }
+                        catch
+                        {
+                            users.Remove(key);
+                        }
+                    }
+                    users.Add(user, CurrentCallback);
+                    userList.Add(user);
+
+                }
+                Log.LogInfo("User connected: " + user.Username);
+                return true;
+            }
+            Log.LogInfo("Refused connection from: " + user.Username); 
+            return false;
+        }
+
+        public void Say(Message msg)
+        {
+            lock (syncObj)
+            {
+                foreach(ISharePCallback callback in users.Values)
+                {
+                    callback.Receive(msg);
+                }
+            }
+        }
+
+        public void IsWriting(User user)
+        {
+            lock (syncObj)
+            {
+                foreach (ISharePCallback callback in users.Values)
+                {
+                    callback.IsWritingCallback(user);
+                }
+            }
+        }
+
+        public void Disconnect(User user)
+        {
+            Connection.CurrentGroup.RemoveUser(user);
+
+            foreach (User u in users.Keys)
+            {
+                if (u.Username == user.Username)
+                {
+                    lock(syncObj)
+                    {
+                        this.users.Remove(u);
+                        this.userList.Remove(u);
+                        foreach(ISharePCallback callback in users.Values)
+                        {
+                            callback.RefreshUsers(this.userList);
+                            callback.UserLeave(user);
+                        }
+                    }
+                    return;
+                }
+            }
+        }
+        
 
         public Dictionary<string, string> RequestServerInfo()
         {
@@ -66,35 +195,90 @@ namespace ShareP.Controllers
         {
             string ipBase = Helper.GetMyIP();
 
-            Uri BaseAddress = new Uri("http://" + ipBase + ":8000/ShareP/Service");
+            Uri tcpAdrs = new Uri("net.tcp://" + ipBase + ":8000/ShareP/");
+            Uri httpAdrs = new Uri("http://" + ipBase + ":8001/ShareP/");
 
-            SelfHost = new ServiceHost(typeof(SharePService), BaseAddress);
+            Uri[] baseAdresses = { tcpAdrs, httpAdrs };
+
+            SelfHost = new ServiceHost(
+                            typeof(SharePService), baseAdresses);
+
+            NetTcpBinding tcpBinding = new NetTcpBinding(SecurityMode.None, true);
+            tcpBinding.MaxBufferPoolSize = (int)67108864;
+            tcpBinding.MaxBufferSize = 67108864;
+            tcpBinding.MaxReceivedMessageSize = (int)67108864;
+            tcpBinding.TransferMode = TransferMode.Buffered;
+            tcpBinding.ReaderQuotas.MaxArrayLength = 67108864;
+            tcpBinding.ReaderQuotas.MaxBytesPerRead = 67108864;
+            tcpBinding.ReaderQuotas.MaxStringContentLength = 67108864;
+
+            tcpBinding.MaxConnections = 100; // Maybe change?
+
+            ServiceThrottlingBehavior throttle; //Производительность
+            throttle = SelfHost.Description.Behaviors.Find<ServiceThrottlingBehavior>();
+            if (throttle == null)
+            {
+                throttle = new ServiceThrottlingBehavior();
+                throttle.MaxConcurrentCalls = 100;              //Here as well
+                throttle.MaxConcurrentSessions = 100;           //--
+                SelfHost.Description.Behaviors.Add(throttle);
+            }
+
+            tcpBinding.ReceiveTimeout = new TimeSpan(24, 0, 0); // Keep sessions alive for 24 hours
+            tcpBinding.ReliableSession.Enabled = true;
+            tcpBinding.ReliableSession.InactivityTimeout = new TimeSpan(24, 0, 0);
+
+            SelfHost.AddServiceEndpoint(typeof(IShareP), tcpBinding, "tcp");
+
+            ServiceMetadataBehavior metadataBehavior = new ServiceMetadataBehavior();
+            SelfHost.Description.Behaviors.Add(metadataBehavior);
+
+            SelfHost.AddServiceEndpoint(typeof(IMetadataExchange),
+                MetadataExchangeBindings.CreateMexTcpBinding(),
+                "net.tcp://" + ipBase +
+                ":8002/ShareP/mex");
+
+            
             try
             {
-                SelfHost.AddServiceEndpoint(
-                        typeof(IShareP),
-                        new BasicHttpBinding(),
-                        "SharePService");
-
-                ServiceMetadataBehavior smb = new ServiceMetadataBehavior();
-                smb.HttpGetEnabled = true;
-                SelfHost.Description.Behaviors.Add(smb);
-
                 SelfHost.Open();
-
-                Log.LogInfo(String.Format("Server opened on: {0}", BaseAddress.ToString()));
             }
-            catch (CommunicationException ce)
+            catch (Exception e)
             {
-                Log.LogException(ce);
-                SelfHost.Abort();
+                //
+                Log.LogException(e);
             }
+            finally
+            {
+                if (SelfHost.State == CommunicationState.Opened)
+                {
+                    Log.LogInfo("Server opened on " + ipBase);
+                }
+            }
+            
         }
+        
 
         public static void StopServer()
         {
-            if (SelfHost.State == CommunicationState.Opened || SelfHost.State == CommunicationState.Opening)
-                SelfHost.Close();
+            if (SelfHost != null)
+            {
+                try
+                {
+                    SelfHost.Close();
+                }
+                catch (Exception e)
+                {
+                    Log.LogException(e, "Can't stop server.");
+                }
+                finally
+                {
+                    if (SelfHost.State == CommunicationState.Closed)
+                    {
+                        Log.LogInfo("Server closed");
+                    }
+                }
+            }
         }
     }
 }
