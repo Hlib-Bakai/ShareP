@@ -13,12 +13,8 @@ namespace ShareP
         public string hostIp;
         public byte[] password;
         public bool passwordProtected;
-        public bool download;
-        public bool viewerspresent;
-        public bool nConnected;
-        public bool nDisconnected;
-        public bool nChat;
-        public bool nCheater;
+        public GroupSettings settings;
+  
         public GroupNavigation navigation;
         public FormMenu formMenu;
 
@@ -30,6 +26,7 @@ namespace ShareP
         {
             userList = new List<User>();
             nextId = 0;
+            settings = new GroupSettings();
         }
 
         public void AddUser(User user)

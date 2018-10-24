@@ -41,12 +41,12 @@ namespace ShareP.Forms
                 default:
                     break;
             }
-            NewGroup.download = checkBoxDownload.Checked;
-            NewGroup.viewerspresent = checkBoxViewersPresent.Checked;
-            NewGroup.nConnected = checkBoxNConnected.Checked;
-            NewGroup.nDisconnected = checkBoxNDisconnected.Checked;
-            NewGroup.nChat = checkBoxNChat.Checked;
-            NewGroup.nCheater = checkBoxNCheater.Checked;
+            NewGroup.settings.Download = checkBoxDownload.Checked;
+            NewGroup.settings.Viewerspresent = checkBoxViewersPresent.Checked;
+            NewGroup.settings.NConnected = checkBoxNConnected.Checked;
+            NewGroup.settings.NDisconnected = checkBoxNDisconnected.Checked;
+            NewGroup.settings.NChat = checkBoxNChat.Checked;
+            NewGroup.settings.NCheater = checkBoxNCheater.Checked;
 
             this.DialogResult = DialogResult.OK;
             this.Close();

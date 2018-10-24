@@ -19,15 +19,16 @@ namespace ShareP.Controllers
         static PresentationController()
         {
             app = new Application();
-            app.Visible = MsoTriState.msoTrue;
             ppts = app.Presentations;
         }
 
         static public void LoadPPT(string pptPath)
         {
             ppt = ppts.Open(pptPath, MsoTriState.msoFalse, MsoTriState.msoFalse, MsoTriState.msoFalse);
+            // Make some loading...
             ExportImages(Helper.GetCurrentFolder());
 
+            app.Visible = MsoTriState.msoTrue; // Windows showing
             SlideShowSettings sss = ppt.SlideShowSettings;
             sss.Run();
 

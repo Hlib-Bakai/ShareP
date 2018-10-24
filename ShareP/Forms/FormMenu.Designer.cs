@@ -56,8 +56,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.timerConnection = new System.Windows.Forms.Timer(this.components);
-            this.timerUsers = new System.Windows.Forms.Timer(this.components);
             this.tabsMenu = new ShareP.TabControlWithoutHeader();
             this.connectionTab = new System.Windows.Forms.TabPage();
             this.buttonDisconnect = new System.Windows.Forms.Button();
@@ -81,9 +79,14 @@
             this.labelConStatus = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.presentationTab = new System.Windows.Forms.TabPage();
+            this.panelNotAllowed = new System.Windows.Forms.Panel();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.panelAllowed = new System.Windows.Forms.Panel();
+            this.button5 = new System.Windows.Forms.Button();
             this.textBoxFile = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.button5 = new System.Windows.Forms.Button();
             this.messagesTab = new System.Windows.Forms.TabPage();
             this.label3 = new System.Windows.Forms.Label();
             this.notConnectedTab = new System.Windows.Forms.TabPage();
@@ -91,6 +94,12 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.timerConnection = new System.Windows.Forms.Timer(this.components);
+            this.timerUsers = new System.Windows.Forms.Timer(this.components);
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelBottom.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEditUsername)).BeginInit();
             this.panel2.SuspendLayout();
@@ -109,8 +118,11 @@
             this.tabNotConnected.SuspendLayout();
             this.tabConnectedHost.SuspendLayout();
             this.presentationTab.SuspendLayout();
+            this.panelNotAllowed.SuspendLayout();
+            this.panelAllowed.SuspendLayout();
             this.messagesTab.SuspendLayout();
             this.notConnectedTab.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelBottom
@@ -411,15 +423,6 @@
             this.panel3.Size = new System.Drawing.Size(421, 341);
             this.panel3.TabIndex = 5;
             // 
-            // timerConnection
-            // 
-            this.timerConnection.Enabled = true;
-            this.timerConnection.Tick += new System.EventHandler(this.timerConnection_Tick);
-            // 
-            // timerUsers
-            // 
-            this.timerUsers.Tick += new System.EventHandler(this.timerUsers_Tick);
-            // 
             // tabsMenu
             // 
             this.tabsMenu.Controls.Add(this.connectionTab);
@@ -671,9 +674,8 @@
             // 
             // presentationTab
             // 
-            this.presentationTab.Controls.Add(this.textBoxFile);
-            this.presentationTab.Controls.Add(this.label2);
-            this.presentationTab.Controls.Add(this.button5);
+            this.presentationTab.Controls.Add(this.panelNotAllowed);
+            this.presentationTab.Controls.Add(this.panelAllowed);
             this.presentationTab.Location = new System.Drawing.Point(4, 22);
             this.presentationTab.Name = "presentationTab";
             this.presentationTab.Padding = new System.Windows.Forms.Padding(3);
@@ -682,9 +684,75 @@
             this.presentationTab.Text = "presentationTab";
             this.presentationTab.UseVisualStyleBackColor = true;
             // 
+            // panelNotAllowed
+            // 
+            this.panelNotAllowed.Controls.Add(this.label16);
+            this.panelNotAllowed.Controls.Add(this.label14);
+            this.panelNotAllowed.Controls.Add(this.label15);
+            this.panelNotAllowed.Location = new System.Drawing.Point(6, 50);
+            this.panelNotAllowed.Name = "panelNotAllowed";
+            this.panelNotAllowed.Size = new System.Drawing.Size(401, 158);
+            this.panelNotAllowed.TabIndex = 21;
+            this.panelNotAllowed.Visible = false;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label16.Location = new System.Drawing.Point(32, 97);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(329, 29);
+            this.label16.TabIndex = 4;
+            this.label16.Text = "allowed to share presentation";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label14.ForeColor = System.Drawing.Color.Red;
+            this.label14.Location = new System.Drawing.Point(169, 59);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(66, 29);
+            this.label14.TabIndex = 3;
+            this.label14.Text = "NOT";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label15.Location = new System.Drawing.Point(32, 17);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(338, 29);
+            this.label15.TabIndex = 2;
+            this.label15.Text = "Due to group settings, you are ";
+            // 
+            // panelAllowed
+            // 
+            this.panelAllowed.Controls.Add(this.button5);
+            this.panelAllowed.Controls.Add(this.textBoxFile);
+            this.panelAllowed.Controls.Add(this.label2);
+            this.panelAllowed.Location = new System.Drawing.Point(76, 213);
+            this.panelAllowed.Name = "panelAllowed";
+            this.panelAllowed.Size = new System.Drawing.Size(270, 106);
+            this.panelAllowed.TabIndex = 20;
+            // 
+            // button5
+            // 
+            this.button5.BackColor = System.Drawing.Color.White;
+            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(232)))));
+            this.button5.Location = new System.Drawing.Point(104, 41);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(96, 50);
+            this.button5.TabIndex = 17;
+            this.button5.Text = "Start presentation";
+            this.button5.UseVisualStyleBackColor = false;
+            this.button5.Click += new System.EventHandler(this.button5_Click_1);
+            // 
             // textBoxFile
             // 
-            this.textBoxFile.Location = new System.Drawing.Point(152, 100);
+            this.textBoxFile.Location = new System.Drawing.Point(84, 15);
             this.textBoxFile.Name = "textBoxFile";
             this.textBoxFile.Size = new System.Drawing.Size(128, 20);
             this.textBoxFile.TabIndex = 19;
@@ -695,25 +763,11 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(108, 100);
+            this.label2.Location = new System.Drawing.Point(40, 15);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(38, 20);
             this.label2.TabIndex = 18;
             this.label2.Text = "File:";
-            // 
-            // button5
-            // 
-            this.button5.BackColor = System.Drawing.Color.White;
-            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(232)))));
-            this.button5.Location = new System.Drawing.Point(172, 126);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(96, 50);
-            this.button5.TabIndex = 17;
-            this.button5.Text = "Start presentation";
-            this.button5.UseVisualStyleBackColor = false;
-            this.button5.Click += new System.EventHandler(this.button5_Click_1);
             // 
             // messagesTab
             // 
@@ -797,6 +851,45 @@
             this.label8.TabIndex = 2;
             this.label8.Text = "You are";
             // 
+            // timerConnection
+            // 
+            this.timerConnection.Enabled = true;
+            this.timerConnection.Tick += new System.EventHandler(this.timerConnection_Tick);
+            // 
+            // timerUsers
+            // 
+            this.timerUsers.Tick += new System.EventHandler(this.timerUsers_Tick);
+            // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "TextNotification";
+            this.notifyIcon1.Visible = true;
+            this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openToolStripMenuItem,
+            this.closeToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(104, 48);
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // closeToolStripMenuItem
+            // 
+            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.closeToolStripMenuItem.Text = "Close";
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            // 
             // FormMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -812,6 +905,7 @@
             this.Text = "ShareP";
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormMain_MouseDown);
+            this.Move += new System.EventHandler(this.FormMenu_Move);
             this.panelBottom.ResumeLayout(false);
             this.panelBottom.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEditUsername)).EndInit();
@@ -834,11 +928,15 @@
             this.tabConnectedHost.ResumeLayout(false);
             this.tabConnectedHost.PerformLayout();
             this.presentationTab.ResumeLayout(false);
-            this.presentationTab.PerformLayout();
+            this.panelNotAllowed.ResumeLayout(false);
+            this.panelNotAllowed.PerformLayout();
+            this.panelAllowed.ResumeLayout(false);
+            this.panelAllowed.PerformLayout();
             this.messagesTab.ResumeLayout(false);
             this.messagesTab.PerformLayout();
             this.notConnectedTab.ResumeLayout(false);
             this.notConnectedTab.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -906,6 +1004,15 @@
         private System.Windows.Forms.TextBox textBoxFile;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button5;
+        public System.Windows.Forms.NotifyIcon notifyIcon1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
+        private System.Windows.Forms.Panel panelNotAllowed;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Panel panelAllowed;
     }
 }
 

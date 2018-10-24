@@ -13,9 +13,9 @@ namespace ShareP.Forms
 {
     public partial class FormSearchServers : Form
     {
-        private ClientController m_clientController;
+        private SearchController m_clientController;
 
-        public FormSearchServers(ClientController clientController)
+        public FormSearchServers(SearchController clientController)
         {
             InitializeComponent();
             m_clientController = clientController;

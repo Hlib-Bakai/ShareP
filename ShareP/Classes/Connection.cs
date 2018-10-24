@@ -1,165 +1,8 @@
 ﻿using ShareP.Controllers;
-using ShareP.Forms;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
-using static ShareP.Connection;
 
 namespace ShareP
 {
-    public class ClientConnection : ISharePCallback
-    {
-        SharePClient client = null;
-        string rcvFilesPath = @"TODO";
-        private delegate void FaultedInvoker();
-        List<User> onlineUsers = new List<User>();
-
-
-        void HandleConnection()
-        {
-            // Do something if connection lost or created
-        }
-
-
-        void InnerDuplexChannel_Closed(object sender, EventArgs e)
-        {
-            Log.LogInfo("Channel closed");
-            HandleConnection();
-        }
-
-        void InnerDuplexChannel_Opened(object sender, EventArgs e)
-        {
-            Log.LogInfo("Channel opened");
-            HandleConnection();
-        }
-
-        void InnerDuplexChannel_Faulted(object sender, EventArgs e)
-        {
-            Log.LogInfo("Channel faulted");
-            HandleConnection();
-        }
-
-        public Dictionary<string, string> GetServiceOnIP(string ip)
-        {
-            try
-            {
-                InstanceContext instanceContext = new InstanceContext(this);
-                var temp = new SharePClient(instanceContext);
-                string servicePath = temp.Endpoint.ListenUri.AbsolutePath;
-
-
-                temp.Endpoint.Address = new EndpointAddress("net.tcp://" + ip + ":8000" + servicePath);  
-
-                temp.Open();
-
-                var serviceData = temp.RequestServerInfo();
-
-                temp.Close();
-
-                return serviceData;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-
-        public ConnectionResult EstablishClientConnection(string ip, byte[] password = null)
-        {
-            if (client == null)
-            {
-                try
-                {
-                    InstanceContext instanceContext = new InstanceContext(this);
-                    client = new SharePClient(instanceContext);
-                    string servicePath = client.Endpoint.ListenUri.AbsolutePath;
-
-
-                    client.Endpoint.Address = new EndpointAddress("net.tcp://" + ip + ":8000" + servicePath);  // need ":"?
-
-                    client.Open();
-
-                    Log.LogInfo("Connection opened");
-
-                    client.InnerDuplexChannel.Faulted +=
-                      new EventHandler(InnerDuplexChannel_Faulted);
-                    client.InnerDuplexChannel.Opened +=
-                      new EventHandler(InnerDuplexChannel_Opened);
-                    client.InnerDuplexChannel.Closed +=
-                      new EventHandler(InnerDuplexChannel_Closed);
-
-                    if (client.Connect(Connection.CurrentUser))
-                    {
-                        return ConnectionResult.Success;
-                    }
-                    else
-                        return ConnectionResult.WrongPassword;
-                }
-                catch (Exception e)
-                {
-                    client = null;
-                    Log.LogException(e, "Error during connection.");
-                    return ConnectionResult.Error;
-                }
-            }
-            return ConnectionResult.Error;
-        }
-
-        public Dictionary<string, string> RequestServerInfo()
-        {
-            return client.RequestServerInfo();
-        }
-
-
-        public void Disconnect()
-        {
-            if (client == null)
-                return;
-
-            client.DisconnectAsync(Connection.CurrentUser);
-
-        }
-
-
-        public void IsWritingCallback(User user)
-        {
-            if (user != null)
-            {
-                /// User is writing
-            }
-        }
-
-        public void Receive(Message msg)
-        {
-            // We got message in chat
-        }
-
-        public void RefreshUsers(User[] users)
-        {
-            onlineUsers = new List<User>(users);
-
-            // Refresh list of users
-        }
-
-        public void UserJoin(User user)
-        {
-            FormAlert formAlert = new FormAlert("New user", "Meet new user: " + user.Username, true);
-            formAlert.ShowDialog();
-
-            // NOTIFICATION !
-        }
-
-        public void UserLeave(User user)
-        {
-            FormAlert formAlert = new FormAlert("User left", "Disconnected user: " + user.Username, true);
-            formAlert.ShowDialog();
-        }
-    }
-
     static public class Connection
     {
         static private Group currentGroup;
@@ -170,7 +13,7 @@ namespace ShareP
         static string rcvFilesPath = @"TODO";
         private delegate void FaultedInvoker();
         static List<User> onlineUsers = new List<User>();
-        static ClientConnection clientConnection = new ClientConnection();
+        static ClientController clientConnection = new ClientController();
 
 
         public static ConnectionResult EstablishClientConnection(string ip, byte[] password = null)
@@ -192,6 +35,8 @@ namespace ShareP
             var groupInfo = clientConnection.RequestServerInfo();
             group.name = groupInfo["GroupName"];
             group.hostName = groupInfo["HostName"];
+            group.settings.Download = (groupInfo["Download"].CompareTo("True") == 0) ? true : false;
+            group.settings.Viewerspresent = (groupInfo["ViewersPresent"].CompareTo("True") == 0) ? true : false;
 
             CurrentGroup = group;
         }
@@ -219,7 +64,6 @@ namespace ShareP
         private static void DisconnectClient()
         {
             //Send a server command about disconnect
-            //client.Close();
             clientConnection.Disconnect();
             CurrentGroup = null;
             role = Role.Notconnected;
@@ -231,6 +75,16 @@ namespace ShareP
             ServerController.StopServer();
             CurrentGroup = null;
             role = Role.Notconnected;
+        }
+
+        public static void OnUserJoin(User user)
+        {
+            // Update chat?
+        }
+
+        public static void OnUserLeave(User user)
+        {
+            // Update chat?
         }
 
         public static Group CurrentGroup

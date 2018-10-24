@@ -98,7 +98,8 @@ namespace ShareP.Controllers
                 lock(syncObj)
                 {
                     Connection.CurrentGroup.AddUser(user);
-                
+                    OnUserConnect(user);
+
                     foreach (User key in users.Keys)
                     {
                         ISharePCallback callback = users[key];
@@ -116,11 +117,47 @@ namespace ShareP.Controllers
                     userList.Add(user);
 
                 }
+
                 Log.LogInfo("User connected: " + user.Username);
                 return true;
             }
             Log.LogInfo("Refused connection from: " + user.Username); 
             return false;
+        }
+        public void Disconnect(User user)
+        {
+            Connection.CurrentGroup.RemoveUser(user);
+            OnUserDisconnect(user);
+
+            foreach (User u in users.Keys)
+            {
+                if (u.Username == user.Username)
+                {
+                    lock (syncObj)
+                    {
+                        this.users.Remove(u);
+                        this.userList.Remove(u);
+                        foreach (ISharePCallback callback in users.Values)
+                        {
+                            callback.RefreshUsers(this.userList);
+                            callback.UserLeave(user);
+                        }
+                    }
+                    return;
+                }
+            }
+        }
+
+        private void OnUserConnect(User user)
+        {
+            // Check config
+            Notification.Show("User connected", user.Username + " joined");
+        }
+
+        private void OnUserDisconnect(User user)
+        {
+            // Check config
+            Notification.Show("User disconnected", user.Username + " left");
         }
 
         public void Say(Message msg)
@@ -144,38 +181,16 @@ namespace ShareP.Controllers
                 }
             }
         }
-
-        public void Disconnect(User user)
-        {
-            Connection.CurrentGroup.RemoveUser(user);
-
-            foreach (User u in users.Keys)
-            {
-                if (u.Username == user.Username)
-                {
-                    lock(syncObj)
-                    {
-                        this.users.Remove(u);
-                        this.userList.Remove(u);
-                        foreach(ISharePCallback callback in users.Values)
-                        {
-                            callback.RefreshUsers(this.userList);
-                            callback.UserLeave(user);
-                        }
-                    }
-                    return;
-                }
-            }
-        }
         
-
         public Dictionary<string, string> RequestServerInfo()
         {
             var result = new Dictionary<string, string>();
             result.Add("GroupName", Connection.CurrentGroup.name);
             result.Add("HostName", Connection.CurrentGroup.hostName);
-            result.Add("NumberOfUsers", "20");
+            result.Add("NumberOfUsers", "20");  // TODO
             result.Add("Password", Connection.CurrentGroup.passwordProtected.ToString());
+            result.Add("Download", Connection.CurrentGroup.settings.Download.ToString());
+            result.Add("ViewersPresent", Connection.CurrentGroup.settings.Viewerspresent.ToString());
             return result;
         }
     }

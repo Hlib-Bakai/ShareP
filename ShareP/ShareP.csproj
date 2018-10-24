@@ -52,8 +52,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Connection.cs" />
+    <Compile Include="Classes\GroupSettings.cs" />
     <Compile Include="Classes\Message.cs" />
+    <Compile Include="Classes\Notification.cs" />
     <Compile Include="Controllers\ClientController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\PresentationController.cs" />
     <Compile Include="Controllers\ServerController.cs" />
     <Compile Include="Etc\generatedProxy.cs" />

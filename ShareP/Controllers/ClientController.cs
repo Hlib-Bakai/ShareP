@@ -1,65 +1,156 @@
-﻿using ShareP.Forms;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
+using static ShareP.Connection;
 
-namespace ShareP.Controllers
+namespace ShareP
 {
-    public class ClientController
+    public class ClientController : ISharePCallback
     {
-        FormSearchServers m_formSearchServers;
-        private int m_startedPing;
-        private int m_finishedPing;
+        SharePClient client = null;
+        string rcvFilesPath = @"TODO";
+        private delegate void FaultedInvoker();
+        List<User> onlineUsers = new List<User>();
 
-        public async void FindServersAsync(FormSearchServers form)
+
+        void HandleConnection()
         {
-            m_formSearchServers = form;
-            await Task.Run(() => SearchTask());
+            // Do something if connection lost or created
         }
 
-        private void SearchTask()
-        {
-            string ipBase = Helper.GetMyIP();
-            string[] ipParts = ipBase.Split('.');
-            ipBase = ipParts[0] + "." + ipParts[1] + "." + ipParts[2] + ".";
-            m_startedPing = 0;
-            m_finishedPing = 0;
-            
-            for (int i = 1; i < 255; i++)
-            {
-                string ip = ipBase + i.ToString();
 
-                Ping p = new Ping();
-                p.PingCompleted += new PingCompletedEventHandler(p_PingCompleted);
-                p.SendAsync(ip, 100, ip);
-                m_startedPing++;
+        void InnerDuplexChannel_Closed(object sender, EventArgs e)
+        {
+            Log.LogInfo("Channel closed");
+            HandleConnection();
+        }
+
+        void InnerDuplexChannel_Opened(object sender, EventArgs e)
+        {
+            Log.LogInfo("Channel opened");
+            HandleConnection();
+        }
+
+        void InnerDuplexChannel_Faulted(object sender, EventArgs e)
+        {
+            Log.LogInfo("Channel faulted");
+            HandleConnection();
+        }
+
+        public Dictionary<string, string> GetServiceOnIP(string ip)
+        {
+            try
+            {
+                InstanceContext instanceContext = new InstanceContext(this);
+                var temp = new SharePClient(instanceContext);
+                string servicePath = temp.Endpoint.ListenUri.AbsolutePath;
+
+
+                temp.Endpoint.Address = new EndpointAddress("net.tcp://" + ip + ":8000" + servicePath);
+
+                temp.Open();
+
+                var serviceData = temp.RequestServerInfo();
+
+                temp.Close();
+
+                return serviceData;
+            }
+            catch
+            {
+                return null;
             }
         }
 
-        void p_PingCompleted(object sender, PingCompletedEventArgs e)
+
+        public ConnectionResult EstablishClientConnection(string ip, byte[] password = null)
         {
-            m_finishedPing++;
-            string ip = (string)e.UserState;
-            if (e.Reply != null && e.Reply.Status == IPStatus.Success)
+            if (client == null)
             {
-                var result = Connection.GetServiceOnIP(ip);
-                if (result != null)
+                try
                 {
-                    bool pass = (result["Password"].CompareTo("True") == 0) ? true : false; // CHANGE THIS STRING TO BOOL
-                    m_formSearchServers.AddGroup(new Group { name = result["GroupName"], hostName = result["HostName"], hostIp = ip, passwordProtected = pass });
+                    InstanceContext instanceContext = new InstanceContext(this);
+                    client = new SharePClient(instanceContext);
+                    string servicePath = client.Endpoint.ListenUri.AbsolutePath;
+
+
+                    client.Endpoint.Address = new EndpointAddress("net.tcp://" + ip + ":8000" + servicePath);  // need ":"?
+
+                    client.Open();
+
+                    Log.LogInfo("Connection opened");
+
+                    client.InnerDuplexChannel.Faulted +=
+                      new EventHandler(InnerDuplexChannel_Faulted);
+                    client.InnerDuplexChannel.Opened +=
+                      new EventHandler(InnerDuplexChannel_Opened);
+                    client.InnerDuplexChannel.Closed +=
+                      new EventHandler(InnerDuplexChannel_Closed);
+
+                    if (client.Connect(Connection.CurrentUser))
+                    {
+                        return ConnectionResult.Success;
+                    }
+                    else
+                        return ConnectionResult.WrongPassword;
+                }
+                catch (Exception e)
+                {
+                    client = null;
+                    Log.LogException(e, "Error during connection.");
+                    return ConnectionResult.Error;
                 }
             }
+            return ConnectionResult.Error;
+        }
 
-            if (m_startedPing - m_finishedPing == 0)
+        public Dictionary<string, string> RequestServerInfo()
+        {
+            return client.RequestServerInfo();
+        }
+
+
+        public void Disconnect()
+        {
+            if (client == null)
+                return;
+
+            client.DisconnectAsync(Connection.CurrentUser);
+
+        }
+
+
+        public void IsWritingCallback(User user)
+        {
+            if (user != null)
             {
-                m_formSearchServers.SearchStopped();
+                /// User is writing
             }
+        }
+
+        public void Receive(Message msg)
+        {
+            // We got message in chat
+        }
+
+        public void RefreshUsers(User[] users)
+        {
+            onlineUsers = new List<User>(users);
+
+            // Refresh list of users
+        }
+
+        public void UserJoin(User user)
+        {
+            Connection.OnUserJoin(user);
+        }
+
+        public void UserLeave(User user)
+        {
+            Connection.OnUserLeave(user);
         }
     }
 }

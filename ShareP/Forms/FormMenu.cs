@@ -16,7 +16,7 @@ namespace ShareP
     public partial class FormMenu : Form
     {
         private User m_user;
-        private ClientController m_clientController;
+        private SearchController m_clientController;
 
         public FormMenu()
         {
@@ -39,6 +39,8 @@ namespace ShareP
             textBoxUsername.BackColor = System.Drawing.SystemColors.Window;
             textBoxIP.BackColor = System.Drawing.SystemColors.Window;
 
+            Notification.notifyIcon = notifyIcon1;
+
             m_user = new User();
             Connection.CurrentUser = m_user;
             FillCurrentUser();
@@ -50,7 +52,7 @@ namespace ShareP
             listBox1.DrawItem += new DrawItemEventHandler(listBox_DrawItem);
 
             //Controllers
-            m_clientController = new ClientController();
+            m_clientController = new SearchController();
         }
 
         public void FillCurrentUser()
@@ -174,6 +176,16 @@ namespace ShareP
                 return;
             }
         
+            if (Connection.CurrentRole == Connection.Role.Client && !Connection.CurrentGroup.settings.Viewerspresent)
+            {
+                panelAllowed.Hide();
+                panelNotAllowed.Show();
+            }
+            else
+            {
+                panelNotAllowed.Hide();
+                panelAllowed.Show();
+            }
             tabsMenu.SelectTab("presentationTab");
         }
         
@@ -425,6 +437,31 @@ namespace ShareP
         private void timerUsers_Tick(object sender, EventArgs e)
         {
 
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+        }
+
+        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void FormMenu_Move(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                this.Hide();
+            }
+        }
+
+        private void notifyIcon1_DoubleClick(object sender, EventArgs e)
+        {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
         }
     }
 }
