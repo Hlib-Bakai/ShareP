@@ -4,6 +4,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
+using ShareP.Server;
 using static ShareP.Connection;
 
 namespace ShareP
@@ -151,6 +152,22 @@ namespace ShareP
         public void UserLeave(User user)
         {
             Connection.OnUserLeave(user);
+        }
+        
+
+        public void PresentationNextSlide(int slide)
+        {
+            Notification.Show(slide.ToString(), "Next slide");
+        }
+
+        public void PresentationEnd()
+        {
+            Notification.Show("End", "Presentation end");
+        }
+
+        public void PresentationStarted(Presentation presentation)
+        {
+            Notification.Show("Start", "Presentation started");
         }
     }
 }

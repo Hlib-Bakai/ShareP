@@ -144,6 +144,72 @@ namespace ShareP
             }
         }
     }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Presentation", Namespace="http://schemas.datacontract.org/2004/07/ShareP")]
+    public partial class Presentation : object, System.Runtime.Serialization.IExtensibleDataObject
+    {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        private int CurrentSlideField;
+        
+        private string NameField;
+        
+        private int SlidesTotalField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int CurrentSlide
+        {
+            get
+            {
+                return this.CurrentSlideField;
+            }
+            set
+            {
+                this.CurrentSlideField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Name
+        {
+            get
+            {
+                return this.NameField;
+            }
+            set
+            {
+                this.NameField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int SlidesTotal
+        {
+            get
+            {
+                return this.SlidesTotalField;
+            }
+            set
+            {
+                this.SlidesTotalField = value;
+            }
+        }
+    }
 }
 
 
@@ -201,6 +267,15 @@ public interface ISharePCallback
     
     [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/UserLeave")]
     void UserLeave(ShareP.User user);
+    
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/PresentationStarted")]
+    void PresentationStarted(ShareP.Presentation presentation);
+    
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/PresentationNextSlide")]
+    void PresentationNextSlide(int slide);
+    
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/PresentationEnd")]
+    void PresentationEnd();
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]

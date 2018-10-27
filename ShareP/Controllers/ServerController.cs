@@ -14,14 +14,8 @@ namespace ShareP.Controllers
 
     [ServiceContract(Namespace = "http://ShareP", CallbackContract = typeof(ISharePCallback),
                         SessionMode = SessionMode.Required)]
-    public interface IShareP
+    public interface IShareP                                        // METHODS FOR CLIENTS, SHOULD BE HANDLED IN SERVER
     {
-        //[OperationContract]
-        //Dictionary<String, String> RequestServerInfo();
-
-        //[OperationContract]
-        //bool ClientConnect(Dictionary<String, String> clientInfo, byte[] password);
-
         [OperationContract(IsInitiating = true)]
         bool Connect(User user);
 
@@ -33,11 +27,12 @@ namespace ShareP.Controllers
 
         [OperationContract(IsOneWay = true, IsTerminating = true)]
         void Disconnect(User user);
+
         [OperationContract]
         Dictionary<string, string> RequestServerInfo();
     }
 
-    public interface ISharePCallback //Presentation started, slide changed?, end presentation
+    public interface ISharePCallback                                 // METHODS FOR SERVER TO SEND DATA TO CLIENTS. CLIENTS SHOULD HANDLE
     {
         [OperationContract(IsOneWay = true)]
         void RefreshUsers(List<User> users);  // Delete
@@ -53,6 +48,15 @@ namespace ShareP.Controllers
 
         [OperationContract(IsOneWay = true)]
         void UserLeave(User user);
+        
+        [OperationContract(IsOneWay = true)]
+        void PresentationStarted(Presentation presentation);
+
+        [OperationContract(IsOneWay = true)]
+        void PresentationNextSlide(int slide);
+
+        [OperationContract(IsOneWay = true)]
+        void PresentationEnd();
     }
 
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single,
@@ -86,6 +90,63 @@ namespace ShareP.Controllers
                 }
             }
             return false;
+        }
+
+        public void OnPresentationStart(Presentation presentation)
+        {
+            lock (syncObj)
+            {
+                foreach (User key in users.Keys)
+                {
+                    ISharePCallback callback = users[key];
+                    try
+                    {
+                        callback.PresentationStarted(presentation);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.LogException(ex, "OnPresentationStart Service");
+                    }
+                }
+            }
+        }
+
+        public void OnPresentationNextSlide(int slide)
+        {
+            lock (syncObj)
+            {
+                foreach (User key in users.Keys)
+                {
+                    ISharePCallback callback = users[key];
+                    try
+                    {
+                        callback.PresentationNextSlide(slide);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.LogException(ex, "OnPresentationNextSlide Service");
+                    }
+                }
+            }
+        }
+
+        public void OnPresentationEnd()
+        {
+            lock (syncObj)
+            {
+                foreach (User key in users.Keys)
+                {
+                    ISharePCallback callback = users[key];
+                    try
+                    {
+                        callback.PresentationEnd();
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.LogException(ex, "OnPresentationEnd Service");
+                    }
+                }
+            }
         }
 
 
@@ -215,8 +276,9 @@ namespace ShareP.Controllers
 
             Uri[] baseAdresses = { tcpAdrs, httpAdrs };
 
+            SharePService sharePService = new SharePService();
             SelfHost = new ServiceHost(
-                            typeof(SharePService), baseAdresses);
+                            sharePService, baseAdresses);
 
             NetTcpBinding tcpBinding = new NetTcpBinding(SecurityMode.None, true);
             tcpBinding.MaxBufferPoolSize = (int)67108864;
@@ -271,6 +333,21 @@ namespace ShareP.Controllers
                 }
             }
             
+        }
+
+        public static void OnPresentationStart(Presentation presentation)
+        {
+            ((SharePService)SelfHost.SingletonInstance).OnPresentationStart(presentation);
+        }
+
+        public static void OnPresentationNextSlide(int slide)
+        {
+            ((SharePService)SelfHost.SingletonInstance).OnPresentationNextSlide(slide);
+        }
+
+        public static void OnPresentationEnd()
+        {
+            ((SharePService)SelfHost.SingletonInstance).OnPresentationEnd();
         }
         
 

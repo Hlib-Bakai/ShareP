@@ -56,6 +56,12 @@
             this.button1 = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.timerConnection = new System.Windows.Forms.Timer(this.components);
+            this.timerUsers = new System.Windows.Forms.Timer(this.components);
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabsMenu = new ShareP.TabControlWithoutHeader();
             this.connectionTab = new System.Windows.Forms.TabPage();
             this.buttonDisconnect = new System.Windows.Forms.Button();
@@ -94,12 +100,8 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.timerConnection = new System.Windows.Forms.Timer(this.components);
-            this.timerUsers = new System.Windows.Forms.Timer(this.components);
-            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label17 = new System.Windows.Forms.Label();
+            this.textBoxPresentationName = new System.Windows.Forms.TextBox();
             this.panelBottom.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEditUsername)).BeginInit();
             this.panel2.SuspendLayout();
@@ -112,6 +114,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.tabsMenu.SuspendLayout();
             this.connectionTab.SuspendLayout();
             this.tabsConnection.SuspendLayout();
@@ -122,7 +125,6 @@
             this.panelAllowed.SuspendLayout();
             this.messagesTab.SuspendLayout();
             this.notConnectedTab.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelBottom
@@ -423,6 +425,45 @@
             this.panel3.Size = new System.Drawing.Size(421, 341);
             this.panel3.TabIndex = 5;
             // 
+            // timerConnection
+            // 
+            this.timerConnection.Enabled = true;
+            this.timerConnection.Tick += new System.EventHandler(this.timerConnection_Tick);
+            // 
+            // timerUsers
+            // 
+            this.timerUsers.Tick += new System.EventHandler(this.timerUsers_Tick);
+            // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "ShareP";
+            this.notifyIcon1.Visible = true;
+            this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openToolStripMenuItem,
+            this.closeToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(104, 48);
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // closeToolStripMenuItem
+            // 
+            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.closeToolStripMenuItem.Text = "Close";
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            // 
             // tabsMenu
             // 
             this.tabsMenu.Controls.Add(this.connectionTab);
@@ -674,8 +715,8 @@
             // 
             // presentationTab
             // 
-            this.presentationTab.Controls.Add(this.panelNotAllowed);
             this.presentationTab.Controls.Add(this.panelAllowed);
+            this.presentationTab.Controls.Add(this.panelNotAllowed);
             this.presentationTab.Location = new System.Drawing.Point(4, 22);
             this.presentationTab.Name = "presentationTab";
             this.presentationTab.Padding = new System.Windows.Forms.Padding(3);
@@ -728,12 +769,14 @@
             // 
             // panelAllowed
             // 
+            this.panelAllowed.Controls.Add(this.textBoxPresentationName);
+            this.panelAllowed.Controls.Add(this.label17);
             this.panelAllowed.Controls.Add(this.button5);
             this.panelAllowed.Controls.Add(this.textBoxFile);
             this.panelAllowed.Controls.Add(this.label2);
-            this.panelAllowed.Location = new System.Drawing.Point(76, 213);
+            this.panelAllowed.Location = new System.Drawing.Point(85, 194);
             this.panelAllowed.Name = "panelAllowed";
-            this.panelAllowed.Size = new System.Drawing.Size(270, 106);
+            this.panelAllowed.Size = new System.Drawing.Size(270, 125);
             this.panelAllowed.TabIndex = 20;
             // 
             // button5
@@ -742,9 +785,9 @@
             this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(232)))));
-            this.button5.Location = new System.Drawing.Point(104, 41);
+            this.button5.Location = new System.Drawing.Point(93, 66);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(96, 50);
+            this.button5.Size = new System.Drawing.Size(128, 50);
             this.button5.TabIndex = 17;
             this.button5.Text = "Start presentation";
             this.button5.UseVisualStyleBackColor = false;
@@ -752,7 +795,7 @@
             // 
             // textBoxFile
             // 
-            this.textBoxFile.Location = new System.Drawing.Point(84, 15);
+            this.textBoxFile.Location = new System.Drawing.Point(93, 40);
             this.textBoxFile.Name = "textBoxFile";
             this.textBoxFile.Size = new System.Drawing.Size(128, 20);
             this.textBoxFile.TabIndex = 19;
@@ -763,7 +806,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(40, 15);
+            this.label2.Location = new System.Drawing.Point(49, 40);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(38, 20);
             this.label2.TabIndex = 18;
@@ -851,44 +894,22 @@
             this.label8.TabIndex = 2;
             this.label8.Text = "You are";
             // 
-            // timerConnection
+            // label17
             // 
-            this.timerConnection.Enabled = true;
-            this.timerConnection.Tick += new System.EventHandler(this.timerConnection_Tick);
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label17.Location = new System.Drawing.Point(32, 12);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(55, 20);
+            this.label17.TabIndex = 20;
+            this.label17.Text = "Name:";
             // 
-            // timerUsers
+            // textBoxPresentationName
             // 
-            this.timerUsers.Tick += new System.EventHandler(this.timerUsers_Tick);
-            // 
-            // notifyIcon1
-            // 
-            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
-            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-            this.notifyIcon1.Text = "TextNotification";
-            this.notifyIcon1.Visible = true;
-            this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openToolStripMenuItem,
-            this.closeToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(104, 48);
-            // 
-            // openToolStripMenuItem
-            // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.openToolStripMenuItem.Text = "Open";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
-            // 
-            // closeToolStripMenuItem
-            // 
-            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.closeToolStripMenuItem.Text = "Close";
-            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            this.textBoxPresentationName.Location = new System.Drawing.Point(93, 14);
+            this.textBoxPresentationName.Name = "textBoxPresentationName";
+            this.textBoxPresentationName.Size = new System.Drawing.Size(128, 20);
+            this.textBoxPresentationName.TabIndex = 21;
             // 
             // FormMenu
             // 
@@ -919,6 +940,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.tabsMenu.ResumeLayout(false);
             this.connectionTab.ResumeLayout(false);
             this.connectionTab.PerformLayout();
@@ -936,7 +958,6 @@
             this.messagesTab.PerformLayout();
             this.notConnectedTab.ResumeLayout(false);
             this.notConnectedTab.PerformLayout();
-            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1013,6 +1034,8 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Panel panelAllowed;
+        private System.Windows.Forms.TextBox textBoxPresentationName;
+        private System.Windows.Forms.Label label17;
     }
 }
 

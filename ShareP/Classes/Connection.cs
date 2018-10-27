@@ -1,4 +1,5 @@
 ﻿using ShareP.Controllers;
+using ShareP.Server;
 using System.Collections.Generic;
 
 namespace ShareP
@@ -9,7 +10,9 @@ namespace ShareP
         //private static SharePClient client;
         static private Role role = Role.Notconnected;
         static private User currentUser = null;
-        
+        static private Presentation currentPresentation = null;
+
+
         static string rcvFilesPath = @"TODO";
         private delegate void FaultedInvoker();
         static List<User> onlineUsers = new List<User>();
@@ -121,6 +124,18 @@ namespace ShareP
             set
             {
                 role = value;
+            }
+        }
+
+        public static Presentation CurrentPresentation
+        {
+            get
+            {
+                return currentPresentation;
+            }
+            set
+            {
+                currentPresentation = value;
             }
         }
 

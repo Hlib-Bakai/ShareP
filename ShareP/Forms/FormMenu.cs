@@ -55,6 +55,25 @@ namespace ShareP
             m_clientController = new SearchController();
         }
 
+        public async void StartPresentation(string name)
+        {
+            this.Hide();
+            FormLoading formLoading = new FormLoading("Presentation is preparing for sharing. Please, wait...");
+            formLoading.Show();
+
+            await Task.Run(() => PresentationController.ExportImages(Helper.GetCurrentFolder()));
+
+            formLoading.Close();
+
+            Connection.CurrentPresentation = new Presentation()
+            {
+                Name = name,
+                CurrentSlide = 1
+            };
+
+            PresentationController.StartSlideShow();
+        }
+
         public void FillCurrentUser()
         {
             if (!String.IsNullOrEmpty(Properties.Settings.Default["username"].ToString()))
@@ -408,6 +427,8 @@ namespace ShareP
         private void openFileDialog_FileOk(object sender, CancelEventArgs e)
         {
             textBoxFile.Text = openFileDialog.FileName;
+            if (String.IsNullOrEmpty(textBoxPresentationName.Text))
+                textBoxPresentationName.Text = System.IO.Path.GetFileNameWithoutExtension(openFileDialog.FileName);
         }
 
         private void textBoxFile_DoubleClick(object sender, EventArgs e)
@@ -415,16 +436,22 @@ namespace ShareP
             openFileDialog.ShowDialog();
         }
 
-        private void button5_Click_1(object sender, EventArgs e)
+        private async void button5_Click_1(object sender, EventArgs e)
         {
             string file = textBoxFile.Text;
+            string name = textBoxPresentationName.Text;
             if (file.Length < 1)
                 (new FormAlert("No file", "Please, choose presentation file.", true)).ShowDialog();
             else
             {
                 try
                 {
-                    PresentationController.LoadPPT(file);
+                    FormLoading formLoading = new FormLoading("Loading presentation. Please wait...");
+                    formLoading.Show();
+
+                    await Task.Run(() => PresentationController.LoadPPT(file));
+
+                    formLoading.Close();
                 }
                 catch (Exception ex)
                 {
@@ -432,6 +459,8 @@ namespace ShareP
                     (new FormAlert("Error", "Problem occured while opening the file", true)).ShowDialog();
                 }
             }
+
+            StartPresentation(name);
         }
 
         private void timerUsers_Tick(object sender, EventArgs e)
@@ -463,5 +492,6 @@ namespace ShareP
             this.Show();
             this.WindowState = FormWindowState.Normal;
         }
+        
     }
 }

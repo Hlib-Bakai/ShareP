@@ -55,10 +55,18 @@
     <Compile Include="Classes\GroupSettings.cs" />
     <Compile Include="Classes\Message.cs" />
     <Compile Include="Classes\Notification.cs" />
+    <Compile Include="Classes\Presentation.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\PresentationController.cs" />
     <Compile Include="Controllers\ServerController.cs" />
+    <Compile Include="Etc\Custom Controls\LoadingCircle\LoadingCircle.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Etc\Custom Controls\LoadingCircle\LoadingCircle.Designer.cs" />
+    <Compile Include="Etc\Custom Controls\LoadingCircle\LoadingCircleToolStripMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Etc\generatedProxy.cs" />
     <Compile Include="Etc\Helper.cs" />
     <Compile Include="Etc\Log.cs" />
@@ -79,6 +87,12 @@
     </Compile>
     <Compile Include="Forms\FormCreateGroup.Designer.cs">
       <DependentUpon>FormCreateGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormLoading.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormLoading.Designer.cs">
+      <DependentUpon>FormLoading.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FormMenu.cs">
       <SubType>Form</SubType>
@@ -107,7 +121,7 @@
     <Compile Include="Classes\Group.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Etc\TabControlWithoutHeader.cs">
+    <Compile Include="Etc\Custom Controls\TabControlWithoutHeader.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Classes\User.cs" />
@@ -119,6 +133,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormCreateGroup.resx">
       <DependentUpon>FormCreateGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormLoading.resx">
+      <DependentUpon>FormLoading.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormMenu.resx">
       <DependentUpon>FormMenu.cs</DependentUpon>

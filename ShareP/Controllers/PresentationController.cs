@@ -14,21 +14,31 @@ namespace ShareP.Controllers
     {
         static private Application app;
         static private Presentations ppts;
-        static private Presentation ppt;
+        static private Microsoft.Office.Interop.PowerPoint.Presentation ppt;
 
         static PresentationController()
         {
             app = new Application();
             ppts = app.Presentations;
+
+            app.SlideShowNextSlide += OnNextSlide;
+            app.SlideShowEnd += OnSlideShowEnd;
         }
 
         static public void LoadPPT(string pptPath)
         {
             ppt = ppts.Open(pptPath, MsoTriState.msoFalse, MsoTriState.msoFalse, MsoTriState.msoFalse);
-            // Make some loading...
+        
             ExportImages(Helper.GetCurrentFolder());
+        }
 
-            app.Visible = MsoTriState.msoTrue; // Windows showing
+        static public void StartSlideShow()
+        {
+            Connection.CurrentPresentation.SlidesTotal = ppt.Slides.Count;
+
+            ServerController.OnPresentationStart(Connection.CurrentPresentation);
+
+            app.Visible = MsoTriState.msoTrue; // Window showing
             SlideShowSettings sss = ppt.SlideShowSettings;
             sss.Run();
 
@@ -36,7 +46,6 @@ namespace ShareP.Controllers
 
             SlideShowWindow ssw = ppt.SlideShowWindow;
             SlideShowView ssv = ssw.View;
-
         }
 
         static public void ExportImages(string destinationPath)
@@ -55,12 +64,44 @@ namespace ShareP.Controllers
 
             for (int i = 1; i <= ppt.Slides.Count; i++)
             {
-                ppt.Slides[i].Export(di.FullName + @"\slide" + i + ".jpg", "jpg");
-               
-                //TryUntilSuccess(() =>
-                //{
-                //    ppt.Slides[i].Export(di.FullName + @"\slide" + i + ".jpg", "jpg");
-                //});
+                ppt.Slides[i].Export(di.FullName + @"\slide" + i + ".jpg", "jpg");             
+            }
+        }
+
+        private static void OnNextSlide(SlideShowWindow Wn)
+        {
+            int currentSlide = Wn.View.CurrentShowPosition;
+            ServerController.OnPresentationNextSlide(currentSlide);
+        }
+
+        private static void OnSlideShowEnd(Microsoft.Office.Interop.PowerPoint.Presentation presentation)
+        {
+            ServerController.OnPresentationEnd();
+            Connection.CurrentPresentation = null;
+            CloseApp();
+        }
+
+        private static void CloseApp() //TODO
+        {
+            Slides slides = ppt.Slides;
+            for (int i = 1; i <= slides.Count; i++)
+            {
+                Slide slide = slides[i];
+                String slideName = slide.Name;
+                ReleaseCOM(slide);
+            }
+        }
+
+        private static void ReleaseCOM(object o)
+        {
+            try
+            {
+                System.Runtime.InteropServices.Marshal.FinalReleaseComObject(o);
+            }
+            catch { }
+            finally
+            {
+                o = null;
             }
         }
 
