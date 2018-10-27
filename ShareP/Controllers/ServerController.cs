@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using System.ServiceModel;
 using System.ServiceModel.Description;
 using ShareP.Server;
+using System.IO;
 
 namespace ShareP.Controllers
 {
@@ -30,6 +31,9 @@ namespace ShareP.Controllers
 
         [OperationContract]
         Dictionary<string, string> RequestServerInfo();
+
+        [OperationContract]
+        byte[] RequestSlide(int slide);
     }
 
     public interface ISharePCallback                                 // METHODS FOR SERVER TO SEND DATA TO CLIENTS. CLIENTS SHOULD HANDLE
@@ -253,6 +257,22 @@ namespace ShareP.Controllers
             result.Add("Download", Connection.CurrentGroup.settings.Download.ToString());
             result.Add("ViewersPresent", Connection.CurrentGroup.settings.Viewerspresent.ToString());
             return result;
+        }
+
+        public byte[] RequestSlide(int slide)
+        {
+            try
+            {
+                string pathToSlide = Helper.GetCurrentFolder() + @"slides\slide" + slide.ToString() + ".jpg";
+                byte[] buffer = File.ReadAllBytes(pathToSlide);
+                return buffer;
+            }
+            catch (Exception ex)
+            {
+                Log.LogException(ex, "Failed to send slide");
+                return null;
+            }
+            
         }
     }
 

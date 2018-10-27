@@ -153,6 +153,8 @@ namespace ShareP
         
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
+        private string AuthorField;
+        
         private int CurrentSlideField;
         
         private string NameField;
@@ -168,6 +170,19 @@ namespace ShareP
             set
             {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Author
+        {
+            get
+            {
+                return this.AuthorField;
+            }
+            set
+            {
+                this.AuthorField = value;
             }
         }
         
@@ -247,6 +262,12 @@ public interface IShareP
     
     [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/RequestServerInfo", ReplyAction="http://ShareP/IShareP/RequestServerInfoResponse")]
     System.Threading.Tasks.Task<System.Collections.Generic.Dictionary<string, string>> RequestServerInfoAsync();
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/RequestSlide", ReplyAction="http://ShareP/IShareP/RequestSlideResponse")]
+    byte[] RequestSlide(int slide);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/RequestSlide", ReplyAction="http://ShareP/IShareP/RequestSlideResponse")]
+    System.Threading.Tasks.Task<byte[]> RequestSlideAsync(int slide);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -361,5 +382,15 @@ public partial class SharePClient : System.ServiceModel.DuplexClientBase<IShareP
     public System.Threading.Tasks.Task<System.Collections.Generic.Dictionary<string, string>> RequestServerInfoAsync()
     {
         return base.Channel.RequestServerInfoAsync();
+    }
+    
+    public byte[] RequestSlide(int slide)
+    {
+        return base.Channel.RequestSlide(slide);
+    }
+    
+    public System.Threading.Tasks.Task<byte[]> RequestSlideAsync(int slide)
+    {
+        return base.Channel.RequestSlideAsync(slide);
     }
 }

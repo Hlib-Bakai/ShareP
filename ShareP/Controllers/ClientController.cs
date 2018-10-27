@@ -6,16 +6,21 @@ using System.Text;
 using System.Threading.Tasks;
 using ShareP.Server;
 using static ShareP.Connection;
+using System.IO;
 
 namespace ShareP
 {
     public class ClientController : ISharePCallback
     {
         SharePClient client = null;
-        string rcvFilesPath = @"TODO";
+        string rcvFilesPath = "";
         private delegate void FaultedInvoker();
         List<User> onlineUsers = new List<User>();
 
+        public ClientController()
+        {
+            rcvFilesPath = Helper.GetCurrentFolder() + "downloaded/";
+        }
 
         void HandleConnection()
         {
@@ -41,6 +46,36 @@ namespace ShareP
             HandleConnection();
         }
 
+        public void DownloadPresentationSlidesOnBackground(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            DirectoryInfo di;
+            string path = rcvFilesPath;
+            if (!Directory.Exists(path))
+            {
+                di = Directory.CreateDirectory(path);
+            }
+            else
+            {
+                di = new DirectoryInfo(path);
+            }
+            di.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
+
+            try
+            {
+                Log.LogInfo("Start loading slides (" + Connection.CurrentPresentation.SlidesTotal + ")");
+                for (int i = 1; i <= Connection.CurrentPresentation.SlidesTotal; i++)
+                {
+                    byte[] file = client.RequestSlide(i);
+                    FileStream fileStream = new FileStream(rcvFilesPath + (i.ToString() + ".jpg"), FileMode.Create, FileAccess.ReadWrite);
+                    fileStream.Write(file, 0, file.Length);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.LogException(ex, "Error loading slide");
+            }
+        }
+
         public Dictionary<string, string> GetServiceOnIP(string ip)
         {
             try
@@ -60,8 +95,9 @@ namespace ShareP
 
                 return serviceData;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.LogException(ex); //Delete this
                 return null;
             }
         }
@@ -78,7 +114,7 @@ namespace ShareP
                     string servicePath = client.Endpoint.ListenUri.AbsolutePath;
 
 
-                    client.Endpoint.Address = new EndpointAddress("net.tcp://" + ip + ":8000" + servicePath);  // need ":"?
+                    client.Endpoint.Address = new EndpointAddress("net.tcp://" + ip + ":8000" + servicePath);
 
                     client.Open();
 
@@ -157,17 +193,21 @@ namespace ShareP
 
         public void PresentationNextSlide(int slide)
         {
-            Notification.Show(slide.ToString(), "Next slide");
+            //Notification.Show(slide.ToString(), "Next slide");
+            Connection.CurrentPresentation.CurrentSlide = slide;
         }
 
         public void PresentationEnd()
         {
-            Notification.Show("End", "Presentation end");
+            Connection.CurrentPresentation = null;
+            Connection.FormMenu.OnPresentationFinished();
         }
 
         public void PresentationStarted(Presentation presentation)
         {
-            Notification.Show("Start", "Presentation started");
+            Connection.CurrentPresentation = presentation;
+            Notification.Show("Presentation", "Presentation " + presentation.Name + " started");
+            Connection.FormMenu.OnPresentationStart();
         }
     }
 }

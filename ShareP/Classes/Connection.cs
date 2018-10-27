@@ -11,12 +11,12 @@ namespace ShareP
         static private Role role = Role.Notconnected;
         static private User currentUser = null;
         static private Presentation currentPresentation = null;
-
+        static private FormMenu formMenu = null;
 
         static string rcvFilesPath = @"TODO";
         private delegate void FaultedInvoker();
         static List<User> onlineUsers = new List<User>();
-        static ClientController clientConnection = new ClientController();
+        static public ClientController clientConnection = new ClientController();
 
 
         public static ConnectionResult EstablishClientConnection(string ip, byte[] password = null)
@@ -136,6 +136,18 @@ namespace ShareP
             set
             {
                 currentPresentation = value;
+            }
+        }
+
+        public static FormMenu FormMenu
+        {
+            get
+            {
+                return formMenu;
+            }
+            set
+            {
+                formMenu = value;
             }
         }
 

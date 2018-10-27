@@ -60,6 +60,7 @@
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\PresentationController.cs" />
     <Compile Include="Controllers\ServerController.cs" />
+    <Compile Include="Controllers\ViewerController.cs" />
     <Compile Include="Etc\Custom Controls\LoadingCircle\LoadingCircle.cs">
       <SubType>Component</SubType>
     </Compile>

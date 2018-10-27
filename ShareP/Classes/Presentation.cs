@@ -11,6 +11,13 @@ namespace ShareP.Server
     public class Presentation
     {
         [DataMember]
+        public string Author
+        {
+            get;
+            set;
+        }
+
+        [DataMember]
         public string Name
         {
             get;

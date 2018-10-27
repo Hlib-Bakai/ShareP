@@ -46,6 +46,7 @@ namespace ShareP
             FillCurrentUser();
             textBoxUsername.Text = m_user.Username;
 
+            Connection.FormMenu = this;
 
             textBoxIP.Text = m_user.IP;
 
@@ -55,7 +56,7 @@ namespace ShareP
             m_clientController = new SearchController();
         }
 
-        public async void StartPresentation(string name)
+        public async void StartPresentation(string name)  // Server side
         {
             this.Hide();
             FormLoading formLoading = new FormLoading("Presentation is preparing for sharing. Please, wait...");
@@ -68,10 +69,25 @@ namespace ShareP
             Connection.CurrentPresentation = new Presentation()
             {
                 Name = name,
-                CurrentSlide = 1
+                CurrentSlide = 1,
+                Author = Connection.CurrentUser.Username
             };
 
+            LoadConnectionTab();
+
             PresentationController.StartSlideShow();
+        }
+
+        public void OnPresentationStart()   // Client side
+        {
+            LoadPresentationTab();
+            ViewerController.StartLoadingSlides();
+        }
+
+        public void OnPresentationFinished()  // Client side
+        {
+            LoadPresentationTab();
+            // Suggest download?
         }
 
         public void FillCurrentUser()
@@ -194,16 +210,42 @@ namespace ShareP
                 tabsMenu.SelectTab("notConnectedTab");
                 return;
             }
-        
+
+            if (Connection.CurrentPresentation != null)
+            {
+                labelCurrentName.Text = Connection.CurrentPresentation.Name;
+                labelCurrentAuthor.Text = Connection.CurrentPresentation.Author;
+                labelCurrentSlide.Text = Connection.CurrentPresentation.CurrentSlide.ToString() + "/" +
+                                         Connection.CurrentPresentation.SlidesTotal.ToString();
+            }
+            else
+            {
+
+                labelCurrentName.Text = "<No presentation now>";
+                labelCurrentAuthor.Text = "<No presentation now>";
+                labelCurrentSlide.Text = "0/0";
+
+            }
+
             if (Connection.CurrentRole == Connection.Role.Client && !Connection.CurrentGroup.settings.Viewerspresent)
             {
                 panelAllowed.Hide();
                 panelNotAllowed.Show();
+                panelCurrentPresentation.Show();
             }
             else
             {
                 panelNotAllowed.Hide();
-                panelAllowed.Show();
+                if (Connection.CurrentPresentation == null)
+                {
+                    panelCurrentPresentation.Hide();
+                    panelAllowed.Show();
+                }
+                else
+                {
+                    panelAllowed.Hide();
+                    panelCurrentPresentation.Show();
+                }
             }
             tabsMenu.SelectTab("presentationTab");
         }
@@ -492,6 +534,12 @@ namespace ShareP
             this.Show();
             this.WindowState = FormWindowState.Normal;
         }
-        
+
+        private void notifyIcon1_BalloonTipClicked(object sender, EventArgs e)
+        {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+            LoadPresentationTab();
+        }
     }
 }

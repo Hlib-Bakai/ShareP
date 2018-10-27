@@ -72,6 +72,7 @@ namespace ShareP.Controllers
         {
             int currentSlide = Wn.View.CurrentShowPosition;
             ServerController.OnPresentationNextSlide(currentSlide);
+            Connection.CurrentPresentation.CurrentSlide = currentSlide;
         }
 
         private static void OnSlideShowEnd(Microsoft.Office.Interop.PowerPoint.Presentation presentation)
