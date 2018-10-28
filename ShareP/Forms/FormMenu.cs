@@ -127,6 +127,9 @@ namespace ShareP
 
         public void FillHostUsersList()
         {
+            if (Connection.CurrentGroup == null)
+                return;
+
             if (listBox1.InvokeRequired)  //Accessing element from another thread
             {
                 listBox1.Invoke(new Action(() => listBox1.Items.Clear()));
@@ -164,8 +167,27 @@ namespace ShareP
 
         private void Disconnect()
         {
-            Connection.Disconnect();
-            LoadConnectionTab();
+            if (Connection.CurrentRole == Connection.Role.Host)
+            {
+                FormAlert formAlert = new FormAlert("Confirmation", "Close the group?");
+                if (formAlert.ShowDialog() == DialogResult.OK)
+                {
+                    ServerController.OnGroupClose();
+                    PresentationController.OnAppClosing();
+                    Connection.Disconnect();
+                    LoadConnectionTab();
+                }
+            }
+            else if (Connection.CurrentRole == Connection.Role.Client)
+            {
+                FormAlert formAlert = new FormAlert("Confirmation", "Disconnect from the group?");
+                if (formAlert.ShowDialog() == DialogResult.OK)
+                {
+                    ViewerController.OnAppClosing();
+                    Connection.Disconnect();
+                    LoadConnectionTab();
+                }
+            }
         }
 
         private void LoadConnectionTab()
@@ -333,6 +355,7 @@ namespace ShareP
             {
                 this.Show();
                 this.WindowState = FormWindowState.Normal;
+                this.LoadConnectionTab();
             }
         }
 
@@ -585,6 +608,19 @@ namespace ShareP
         private void button8_Click(object sender, EventArgs e) // Delete
         {
             bool res = ViewerController.IsWorking;
+        }
+
+        private void FormMenu_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (Connection.CurrentRole == Connection.Role.Host)
+            {
+                ServerController.OnGroupClose();
+                PresentationController.OnAppClosing();
+            }
+            else if (Connection.CurrentRole == Connection.Role.Client)
+            {
+                ViewerController.OnAppClosing();
+            }
         }
     }
 }

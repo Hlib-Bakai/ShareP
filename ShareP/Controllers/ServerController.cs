@@ -61,6 +61,8 @@ namespace ShareP.Controllers
 
         [OperationContract(IsOneWay = true)]
         void PresentationEnd();
+        [OperationContract(IsOneWay = true)]
+        void GroupClose();
     }
 
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single,
@@ -110,6 +112,25 @@ namespace ShareP.Controllers
                     catch (Exception ex)
                     {
                         Log.LogException(ex, "OnPresentationStart Service");
+                    }
+                }
+            }
+        }
+
+        public void OnGroupClose()
+        {
+            lock (syncObj)
+            {
+                foreach (User key in users.Keys)
+                {
+                    ISharePCallback callback = users[key];
+                    try
+                    {
+                        callback.GroupClose();
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.LogException(ex, "OnGroupClose Service");
                     }
                 }
             }
@@ -374,6 +395,11 @@ namespace ShareP.Controllers
         public static void OnPresentationEnd()
         {
             ((SharePService)SelfHost.SingletonInstance).OnPresentationEnd();
+        }
+
+        public static void OnGroupClose()
+        {
+            ((SharePService)SelfHost.SingletonInstance).OnGroupClose();
         }
         
 

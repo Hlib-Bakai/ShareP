@@ -67,6 +67,11 @@ namespace ShareP
             Connection.FormMenu.RestoreWindow();
         }
 
+        static public void OnAppClosing()
+        {
+            formViewer.Close();
+        }
+
         static public bool IsWorking
         {
             get

@@ -1,4 +1,5 @@
 ﻿using ShareP.Controllers;
+using ShareP.Forms;
 using ShareP.Server;
 using System.Collections.Generic;
 
@@ -67,6 +68,17 @@ namespace ShareP
                 DisconnectClient();
             else if (role == Role.Host)
                 DisconnectServer();
+        }
+
+        public static void GroupClosed()
+        {
+            ViewerController.OnAppClosing();
+            clientConnection.Disconnect();
+            CurrentGroup = null;
+            role = Role.Notconnected;
+            formMenu.RestoreWindow();
+            FormAlert formAlert = new FormAlert("Group was closed", "Host closed the group", true);
+            formAlert.ShowDialog();
         }
 
         private static void DisconnectClient()

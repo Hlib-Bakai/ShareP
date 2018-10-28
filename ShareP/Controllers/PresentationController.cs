@@ -15,6 +15,7 @@ namespace ShareP.Controllers
         static private Application app;
         static private Presentations ppts;
         static private Microsoft.Office.Interop.PowerPoint.Presentation ppt;
+        static private SlideShowView ssv;
 
         static PresentationController()
         {
@@ -45,7 +46,7 @@ namespace ShareP.Controllers
             while (app.SlideShowWindows.Count <= 0) ;
 
             SlideShowWindow ssw = ppt.SlideShowWindow;
-            SlideShowView ssv = ssw.View;
+            ssv = ssw.View;
         }
 
         static public void ExportImages(string destinationPath)
@@ -83,8 +84,18 @@ namespace ShareP.Controllers
             CloseApp();
         }
 
+        public static void OnAppClosing() //Fix this
+        {
+            return;
+            if (ssv != null)
+                ssv.Exit();
+            CloseApp();
+        }
+
         private static void CloseApp() //TODO
         {
+            if (ppt == null)
+                return;
             Slides slides = ppt.Slides;
             for (int i = 1; i <= slides.Count; i++)
             {

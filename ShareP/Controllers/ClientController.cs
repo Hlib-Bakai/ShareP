@@ -215,5 +215,10 @@ namespace ShareP
             Notification.Show("Presentation", "Presentation " + presentation.Name + " started");
             Connection.FormMenu.OnPresentationStart();
         }
+
+        public void GroupClose()
+        {
+            Connection.GroupClosed();
+        }
     }
 }
