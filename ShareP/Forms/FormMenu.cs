@@ -84,9 +84,10 @@ namespace ShareP
             ViewerController.StartLoadingSlides();
         }
 
-        public void OnPresentationFinished()  // Client side
+        public void OnPresentationFinished()  // Both sides
         {
-            LoadPresentationTab();
+            RestoreWindow();
+            //LoadPresentationTab();
             // Suggest download?
         }
 
@@ -113,7 +114,7 @@ namespace ShareP
             Connection.CurrentUser.IP = Helper.GetMyIP();
         }
 
-        
+
         public void ChangeUsername(string newUsername)
         {
             Connection.CurrentUser.Username = newUsername;
@@ -214,42 +215,52 @@ namespace ShareP
             if (Connection.CurrentPresentation != null)
             {
                 labelCurrentName.Text = Connection.CurrentPresentation.Name;
-                labelCurrentAuthor.Text = Connection.CurrentPresentation.Author;
+                if (Connection.CurrentRole == Connection.Role.Host)
+                {
+                    labelCurrentAuthor.ForeColor = Color.Red;
+                    labelCurrentAuthor.Text += "YOU";
+                }
+                else
+                {
+                    labelCurrentAuthor.ForeColor = Color.FromArgb(0, 162, 232);
+                    labelCurrentAuthor.Text = Connection.CurrentPresentation.Author;
+                }
                 labelCurrentSlide.Text = Connection.CurrentPresentation.CurrentSlide.ToString() + "/" +
                                          Connection.CurrentPresentation.SlidesTotal.ToString();
+                if (Connection.CurrentRole != Connection.Role.Host)  // TODO Check if not already joined
+                    buttonJoin.Visible = true;
+                else
+                    buttonJoin.Visible = false;
             }
             else
             {
-
                 labelCurrentName.Text = "<No presentation now>";
                 labelCurrentAuthor.Text = "<No presentation now>";
+                labelCurrentAuthor.ForeColor = Color.FromArgb(0, 162, 232);
                 labelCurrentSlide.Text = "0/0";
-
+                buttonJoin.Visible = false;
             }
 
             if (Connection.CurrentRole == Connection.Role.Client && !Connection.CurrentGroup.settings.Viewerspresent)
             {
                 panelAllowed.Hide();
-                panelNotAllowed.Show();
-                panelCurrentPresentation.Show();
+
+                if (Connection.CurrentPresentation == null)
+                    panelNotAllowed.Show();
+                else
+                    panelNotAllowed.Hide();
             }
             else
             {
                 panelNotAllowed.Hide();
                 if (Connection.CurrentPresentation == null)
-                {
-                    panelCurrentPresentation.Hide();
                     panelAllowed.Show();
-                }
                 else
-                {
                     panelAllowed.Hide();
-                    panelCurrentPresentation.Show();
-                }
             }
             tabsMenu.SelectTab("presentationTab");
         }
-        
+
 
         private void LoadMessagesTab()
         {
@@ -264,7 +275,7 @@ namespace ShareP
 
             tabsMenu.SelectTab("messagesTab");
         }
-        
+
 
         private void ChangeStatusConnection(bool green = false)
         {
@@ -285,7 +296,7 @@ namespace ShareP
             if (Connection.CurrentRole == Connection.Role.Notconnected)
             {
                 ChangeStatusConnection();
-            } 
+            }
             else
             {
                 ChangeStatusConnection(true);
@@ -308,6 +319,21 @@ namespace ShareP
             Connection.CurrentGroup.AddUser(m_user);
             LoadConnectionTab();
             CheckStatusConnection();
+        }
+
+        public void RestoreWindow()
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() => this.Show()));
+                this.Invoke(new Action(() => this.WindowState = FormWindowState.Normal));
+                this.Invoke(new Action(() => LoadConnectionTab()));
+            }
+            else
+            {
+                this.Show();
+                this.WindowState = FormWindowState.Normal;
+            }
         }
 
         #region System
@@ -414,7 +440,7 @@ namespace ShareP
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-           
+
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -463,7 +489,7 @@ namespace ShareP
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            
+
         }
 
         private void openFileDialog_FileOk(object sender, CancelEventArgs e)
@@ -531,15 +557,34 @@ namespace ShareP
 
         private void notifyIcon1_DoubleClick(object sender, EventArgs e)
         {
-            this.Show();
-            this.WindowState = FormWindowState.Normal;
+            RestoreWindow();
         }
 
         private void notifyIcon1_BalloonTipClicked(object sender, EventArgs e)
         {
-            this.Show();
-            this.WindowState = FormWindowState.Normal;
+            RestoreWindow();
             LoadPresentationTab();
+        }
+
+        private void button7_Click_1(object sender, EventArgs e) // Delete
+        {
+            Connection.CurrentPresentation = new Presentation()
+            {
+                CurrentSlide = 1,
+                SlidesTotal = 10
+            };
+            ViewerController.LoadViewer();
+        }
+
+        private void buttonJoin_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            ViewerController.LoadViewer();
+        }
+
+        private void button8_Click(object sender, EventArgs e) // Delete
+        {
+            bool res = ViewerController.IsWorking;
         }
     }
 }

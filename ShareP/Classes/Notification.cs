@@ -15,5 +15,11 @@ namespace ShareP
         {
             notifyIcon.ShowBalloonTip(1000, title, text, toolTipIcon);
         }
+
+        public static void HideAll()
+        {
+            notifyIcon.Visible = false;
+            notifyIcon.Visible = true;
+        }
     }
 }

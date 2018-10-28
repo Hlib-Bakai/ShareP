@@ -79,6 +79,7 @@ namespace ShareP.Controllers
         {
             ServerController.OnPresentationEnd();
             Connection.CurrentPresentation = null;
+            Connection.FormMenu.OnPresentationFinished();
             CloseApp();
         }
 

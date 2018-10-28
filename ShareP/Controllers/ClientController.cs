@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ShareP.Server;
 using static ShareP.Connection;
 using System.IO;
+using System.ComponentModel;
 
 namespace ShareP
 {
@@ -16,6 +17,7 @@ namespace ShareP
         string rcvFilesPath = "";
         private delegate void FaultedInvoker();
         List<User> onlineUsers = new List<User>();
+        public BackgroundWorker downloadingWorker = null;
 
         public ClientController()
         {
@@ -68,6 +70,7 @@ namespace ShareP
                     byte[] file = client.RequestSlide(i);
                     FileStream fileStream = new FileStream(rcvFilesPath + (i.ToString() + ".jpg"), FileMode.Create, FileAccess.ReadWrite);
                     fileStream.Write(file, 0, file.Length);
+                    downloadingWorker.ReportProgress((i / Connection.CurrentPresentation.SlidesTotal) * 100);
                 }
             }
             catch (Exception ex)
@@ -95,9 +98,8 @@ namespace ShareP
 
                 return serviceData;
             }
-            catch (Exception ex)
+            catch
             {
-                Log.LogException(ex); //Delete this
                 return null;
             }
         }
@@ -189,17 +191,21 @@ namespace ShareP
         {
             Connection.OnUserLeave(user);
         }
-        
+
 
         public void PresentationNextSlide(int slide)
         {
-            //Notification.Show(slide.ToString(), "Next slide");
             Connection.CurrentPresentation.CurrentSlide = slide;
+
+            if (ViewerController.IsWorking)
+                ViewerController.LoadSlide(slide);
         }
 
         public void PresentationEnd()
         {
             Connection.CurrentPresentation = null;
+            if (ViewerController.IsWorking)
+                ViewerController.EndPresentation();
             Connection.FormMenu.OnPresentationFinished();
         }
 

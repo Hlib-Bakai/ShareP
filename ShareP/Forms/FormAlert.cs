@@ -17,6 +17,7 @@ namespace ShareP.Forms
                 button2.Hide();
                 button3.Hide();
                 button4.Show();
+                buttonClose.Hide();
             }
         }
 

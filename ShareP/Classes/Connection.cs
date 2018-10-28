@@ -40,7 +40,12 @@ namespace ShareP
             group.hostName = groupInfo["HostName"];
             group.settings.Download = (groupInfo["Download"].CompareTo("True") == 0) ? true : false;
             group.settings.Viewerspresent = (groupInfo["ViewersPresent"].CompareTo("True") == 0) ? true : false;
-
+            if (groupInfo["GroupNavigation"].CompareTo("Backwards") == 0)
+                group.navigation = GroupNavigation.Backwards;
+            else if (groupInfo["GroupNavigation"].CompareTo("Both") == 0)
+                group.navigation = GroupNavigation.BothDirections;
+            else if (groupInfo["GroupNavigation"].CompareTo("Follow") == 0)
+                group.navigation = GroupNavigation.FollowOnly;
             CurrentGroup = group;
         }
 

@@ -256,6 +256,12 @@ namespace ShareP.Controllers
             result.Add("Password", Connection.CurrentGroup.passwordProtected.ToString());
             result.Add("Download", Connection.CurrentGroup.settings.Download.ToString());
             result.Add("ViewersPresent", Connection.CurrentGroup.settings.Viewerspresent.ToString());
+            if (Connection.CurrentGroup.navigation == GroupNavigation.Backwards)
+                result.Add("GroupNavigation", "Backwards");
+            else if (Connection.CurrentGroup.navigation == GroupNavigation.BothDirections)
+                result.Add("GroupNavigation", "Both");
+            else if (Connection.CurrentGroup.navigation == GroupNavigation.FollowOnly)
+                result.Add("GroupNavigation", "Follow");
             return result;
         }
 

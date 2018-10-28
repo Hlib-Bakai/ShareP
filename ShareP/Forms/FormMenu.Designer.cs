@@ -80,6 +80,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.presentationTab = new System.Windows.Forms.TabPage();
             this.panelCurrentPresentation = new System.Windows.Forms.Panel();
+            this.panel13 = new System.Windows.Forms.Panel();
+            this.buttonJoin = new System.Windows.Forms.Button();
             this.panel12 = new System.Windows.Forms.Panel();
             this.labelCurrentSlide = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
@@ -99,6 +101,7 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.messagesTab = new System.Windows.Forms.TabPage();
+            this.button7 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.notConnectedTab = new System.Windows.Forms.TabPage();
             this.button6 = new System.Windows.Forms.Button();
@@ -111,6 +114,7 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button8 = new System.Windows.Forms.Button();
             this.panelBottom.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEditUsername)).BeginInit();
             this.panel2.SuspendLayout();
@@ -699,6 +703,8 @@
             // 
             // panelCurrentPresentation
             // 
+            this.panelCurrentPresentation.Controls.Add(this.panel13);
+            this.panelCurrentPresentation.Controls.Add(this.buttonJoin);
             this.panelCurrentPresentation.Controls.Add(this.panel12);
             this.panelCurrentPresentation.Controls.Add(this.labelCurrentSlide);
             this.panelCurrentPresentation.Controls.Add(this.label23);
@@ -707,16 +713,38 @@
             this.panelCurrentPresentation.Controls.Add(this.labelCurrentName);
             this.panelCurrentPresentation.Controls.Add(this.label19);
             this.panelCurrentPresentation.Controls.Add(this.label20);
-            this.panelCurrentPresentation.Location = new System.Drawing.Point(7, 177);
+            this.panelCurrentPresentation.Location = new System.Drawing.Point(7, 12);
             this.panelCurrentPresentation.Name = "panelCurrentPresentation";
             this.panelCurrentPresentation.Size = new System.Drawing.Size(398, 132);
             this.panelCurrentPresentation.TabIndex = 22;
-            this.panelCurrentPresentation.Visible = false;
+            // 
+            // panel13
+            // 
+            this.panel13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(232)))));
+            this.panel13.Location = new System.Drawing.Point(3, 31);
+            this.panel13.Name = "panel13";
+            this.panel13.Size = new System.Drawing.Size(388, 3);
+            this.panel13.TabIndex = 16;
+            // 
+            // buttonJoin
+            // 
+            this.buttonJoin.BackColor = System.Drawing.Color.White;
+            this.buttonJoin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonJoin.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonJoin.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.buttonJoin.Location = new System.Drawing.Point(305, 88);
+            this.buttonJoin.Name = "buttonJoin";
+            this.buttonJoin.Size = new System.Drawing.Size(86, 32);
+            this.buttonJoin.TabIndex = 23;
+            this.buttonJoin.Text = "Join";
+            this.buttonJoin.UseVisualStyleBackColor = false;
+            this.buttonJoin.Visible = false;
+            this.buttonJoin.Click += new System.EventHandler(this.buttonJoin_Click);
             // 
             // panel12
             // 
             this.panel12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(232)))));
-            this.panel12.Location = new System.Drawing.Point(7, 8);
+            this.panel12.Location = new System.Drawing.Point(3, 126);
             this.panel12.Name = "panel12";
             this.panel12.Size = new System.Drawing.Size(388, 3);
             this.panel12.TabIndex = 15;
@@ -725,7 +753,7 @@
             // 
             this.labelCurrentSlide.AutoSize = true;
             this.labelCurrentSlide.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelCurrentSlide.Location = new System.Drawing.Point(171, 103);
+            this.labelCurrentSlide.Location = new System.Drawing.Point(105, 82);
             this.labelCurrentSlide.Name = "labelCurrentSlide";
             this.labelCurrentSlide.Size = new System.Drawing.Size(34, 20);
             this.labelCurrentSlide.TabIndex = 14;
@@ -735,7 +763,7 @@
             // 
             this.label23.AutoSize = true;
             this.label23.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label23.Location = new System.Drawing.Point(63, 103);
+            this.label23.Location = new System.Drawing.Point(6, 82);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(102, 20);
             this.label23.TabIndex = 13;
@@ -745,7 +773,7 @@
             // 
             this.labelCurrentAuthor.AutoSize = true;
             this.labelCurrentAuthor.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelCurrentAuthor.Location = new System.Drawing.Point(171, 77);
+            this.labelCurrentAuthor.Location = new System.Drawing.Point(105, 62);
             this.labelCurrentAuthor.Name = "labelCurrentAuthor";
             this.labelCurrentAuthor.Size = new System.Drawing.Size(194, 20);
             this.labelCurrentAuthor.TabIndex = 12;
@@ -755,7 +783,7 @@
             // 
             this.label21.AutoSize = true;
             this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label21.Location = new System.Drawing.Point(80, 77);
+            this.label21.Location = new System.Drawing.Point(6, 62);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(85, 20);
             this.label21.TabIndex = 11;
@@ -765,7 +793,7 @@
             // 
             this.labelCurrentName.AutoSize = true;
             this.labelCurrentName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelCurrentName.Location = new System.Drawing.Point(171, 49);
+            this.labelCurrentName.Location = new System.Drawing.Point(105, 42);
             this.labelCurrentName.Name = "labelCurrentName";
             this.labelCurrentName.Size = new System.Drawing.Size(194, 20);
             this.labelCurrentName.TabIndex = 10;
@@ -775,7 +803,7 @@
             // 
             this.label19.AutoSize = true;
             this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label19.Location = new System.Drawing.Point(110, 49);
+            this.label19.Location = new System.Drawing.Point(6, 42);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(55, 20);
             this.label19.TabIndex = 9;
@@ -785,7 +813,7 @@
             // 
             this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label20.Location = new System.Drawing.Point(15, 17);
+            this.label20.Location = new System.Drawing.Point(5, 0);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(202, 29);
             this.label20.TabIndex = 8;
@@ -858,7 +886,7 @@
             this.panelNotAllowed.Controls.Add(this.label16);
             this.panelNotAllowed.Controls.Add(this.label14);
             this.panelNotAllowed.Controls.Add(this.label15);
-            this.panelNotAllowed.Location = new System.Drawing.Point(6, 12);
+            this.panelNotAllowed.Location = new System.Drawing.Point(6, 154);
             this.panelNotAllowed.Name = "panelNotAllowed";
             this.panelNotAllowed.Size = new System.Drawing.Size(401, 158);
             this.panelNotAllowed.TabIndex = 21;
@@ -897,6 +925,8 @@
             // 
             // messagesTab
             // 
+            this.messagesTab.Controls.Add(this.button8);
+            this.messagesTab.Controls.Add(this.button7);
             this.messagesTab.Controls.Add(this.label3);
             this.messagesTab.Location = new System.Drawing.Point(4, 22);
             this.messagesTab.Name = "messagesTab";
@@ -904,6 +934,16 @@
             this.messagesTab.TabIndex = 2;
             this.messagesTab.Text = "messagesTab";
             this.messagesTab.UseVisualStyleBackColor = true;
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(56, 126);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(75, 36);
+            this.button7.TabIndex = 2;
+            this.button7.Text = "ShowViewer test";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click_1);
             // 
             // label3
             // 
@@ -1016,6 +1056,16 @@
             this.closeToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(56, 185);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(75, 38);
+            this.button8.TabIndex = 3;
+            this.button8.Text = "Check ifWorking";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // FormMenu
             // 
@@ -1153,6 +1203,10 @@
         private System.Windows.Forms.Label labelCurrentSlide;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Panel panel12;
+        private System.Windows.Forms.Button buttonJoin;
+        private System.Windows.Forms.Panel panel13;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button button8;
     }
 }
 
