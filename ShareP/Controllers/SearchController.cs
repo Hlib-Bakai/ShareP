@@ -52,7 +52,7 @@ namespace ShareP.Controllers
                 if (result != null)
                 {
                     bool pass = (result["Password"].CompareTo("True") == 0) ? true : false; // CHANGE THIS STRING TO BOOL
-                    m_formSearchServers.AddGroup(new Group { name = result["GroupName"], hostName = result["HostName"], hostIp = ip, passwordProtected = pass });
+                    m_formSearchServers.AddGroup(new Group { name = result["GroupName"], hostName = result["HostName"], hostIp = ip, passwordProtected = pass }, result["NumberOfUsers"]);
                 }
             }
 

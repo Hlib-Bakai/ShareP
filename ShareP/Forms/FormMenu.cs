@@ -16,7 +16,7 @@ namespace ShareP
     public partial class FormMenu : Form
     {
         private User m_user;
-        private SearchController m_clientController;
+        private SearchController m_searchController;
 
         public FormMenu()
         {
@@ -36,24 +36,23 @@ namespace ShareP
 
         private void InitializeElements()
         {
-            textBoxUsername.BackColor = System.Drawing.SystemColors.Window;
-            textBoxIP.BackColor = System.Drawing.SystemColors.Window;
-
             Notification.notifyIcon = notifyIcon1;
 
             m_user = new User();
             Connection.CurrentUser = m_user;
             FillCurrentUser();
-            textBoxUsername.Text = m_user.Username;
+            labelUsername.Text = m_user.Username;
 
             Connection.FormMenu = this;
 
-            textBoxIP.Text = m_user.IP;
+            labelIP.Text = m_user.IP;
 
             listBox1.DrawItem += new DrawItemEventHandler(listBox_DrawItem);
 
+            CleanTempFiles();
+
             //Controllers
-            m_clientController = new SearchController();
+            m_searchController = new SearchController();
         }
 
         public async void StartPresentation(string name)  // Server side
@@ -61,6 +60,8 @@ namespace ShareP
             this.Hide();
             FormLoading formLoading = new FormLoading("Presentation is preparing for sharing. Please, wait...");
             formLoading.Show();
+
+            PresentationController.StartApp();
 
             await Task.Run(() => PresentationController.ExportImages(Helper.GetCurrentFolder()));
 
@@ -80,6 +81,8 @@ namespace ShareP
 
         public void OnPresentationStart()   // Client side
         {
+            if (this.WindowState != FormWindowState.Normal) ;
+                Notification.Show("Presentation", "Presentation " + Connection.CurrentPresentation.Name + " started");
             LoadPresentationTab();
             ViewerController.StartLoadingSlides();
         }
@@ -165,12 +168,12 @@ namespace ShareP
             LoadMessagesTab();
         }
 
-        private void Disconnect()
+        private void Disconnect(bool force = false)
         {
             if (Connection.CurrentRole == Connection.Role.Host)
             {
                 FormAlert formAlert = new FormAlert("Confirmation", "Close the group?");
-                if (formAlert.ShowDialog() == DialogResult.OK)
+                if (force || formAlert.ShowDialog() == DialogResult.OK)
                 {
                     ServerController.OnGroupClose();
                     PresentationController.OnAppClosing();
@@ -181,13 +184,27 @@ namespace ShareP
             else if (Connection.CurrentRole == Connection.Role.Client)
             {
                 FormAlert formAlert = new FormAlert("Confirmation", "Disconnect from the group?");
-                if (formAlert.ShowDialog() == DialogResult.OK)
+                if (force || formAlert.ShowDialog() == DialogResult.OK)
                 {
                     ViewerController.OnAppClosing();
                     Connection.Disconnect();
                     LoadConnectionTab();
                 }
             }
+        }
+
+        private void StartViewer()
+        {
+            buttonJoin.Enabled = false;
+            this.Hide();
+            ViewerController.LoadViewer();
+            ViewerController.LoadSlide(Connection.CurrentPresentation.CurrentSlide);
+        }
+
+        public void OnViewerClosed()
+        {
+            buttonJoin.Enabled = true;
+            RestoreWindow();
         }
 
         private void LoadConnectionTab()
@@ -322,8 +339,18 @@ namespace ShareP
             else
             {
                 ChangeStatusConnection(true);
+                string newIp = Helper.GetMyIP();
+                if (newIp.CompareTo(labelIP.Text) != 0)
+                {
+                    timerConnection.Enabled = false;
+                    FormAlert formAlert = new FormAlert("IP Changed", "Probably network was changed. You will be disconnected.", true);
+                    formAlert.ShowDialog();
+                    Disconnect(true);
+                    labelIP.Text = Helper.GetMyIP();
+                    timerConnection.Enabled = true;
+                }
             }
-            textBoxIP.Text = Helper.GetMyIP();
+            labelIP.Text = Helper.GetMyIP();
         }
 
         private void CreateNewGroup(Group newGroup)
@@ -336,7 +363,6 @@ namespace ShareP
             {
                 newGroup.hostIp = Helper.GetMyIP();
             }
-            newGroup.formMenu = this;
             Connection.CreateGroup(newGroup);
             Connection.CurrentGroup.AddUser(m_user);
             LoadConnectionTab();
@@ -469,30 +495,14 @@ namespace ShareP
         private void button4_Click(object sender, EventArgs e)
         {
             //Connection.EstablishClientConnection("192.168.0.110");
-            FormSearchServers formSearchServers = new FormSearchServers(m_clientController);
+            FormSearchServers formSearchServers = new FormSearchServers(m_searchController);
             if (formSearchServers.ShowDialog() == DialogResult.OK)
             {
                 LoadConnectionTab();
             }
         }
-
-        private void textBoxUsername_MouseHover(object sender, EventArgs e)
-        {
-            pictureBoxEditUsername.Show();
-        }
-
-        private void textBoxUsername_MouseLeave(object sender, EventArgs e)
-        {
-            pictureBoxEditUsername.Hide();
-        }
-
-        private void textBoxUsername_Click(object sender, EventArgs e)
-        {
-            FormChangeUsername formChangeUsername = new FormChangeUsername(m_user);
-            if (formChangeUsername.ShowDialog() == DialogResult.OK)
-                ChangeUsername(formChangeUsername.NewUsername);
-            textBoxUsername.Text = m_user.Username;
-        }
+        
+        
 
         private void button3_Click(object sender, EventArgs e)
         {
@@ -527,8 +537,22 @@ namespace ShareP
             openFileDialog.ShowDialog();
         }
 
+        private bool CheckLengthPresentationName()
+        {
+            labelLength.Hide();
+            int length = textBoxPresentationName.Text.Length;
+            if (length < 2 || length > 10)
+            {
+                labelLength.Show();
+                return false;
+            }
+            return true;
+        }
+
         private async void button5_Click_1(object sender, EventArgs e)
         {
+            if (!CheckLengthPresentationName())
+                return;
             string file = textBoxFile.Text;
             string name = textBoxPresentationName.Text;
             if (file.Length < 1)
@@ -539,6 +563,7 @@ namespace ShareP
                 {
                     FormLoading formLoading = new FormLoading("Loading presentation. Please wait...");
                     formLoading.Show();
+                    
 
                     await Task.Run(() => PresentationController.LoadPPT(file));
 
@@ -601,8 +626,7 @@ namespace ShareP
 
         private void buttonJoin_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            ViewerController.LoadViewer();
+            StartViewer();
         }
 
         private void button8_Click(object sender, EventArgs e) // Delete
@@ -621,6 +645,36 @@ namespace ShareP
             {
                 ViewerController.OnAppClosing();
             }
+            CleanTempFiles();
+        }
+
+        private void CleanTempFiles()
+        {
+            PresentationController.CleanTempFiles();
+            ViewerController.CleanTempFiles();
+        }
+
+        private void labelUsername_MouseHover(object sender, EventArgs e)
+        {
+            pictureBoxEditUsername.Show();
+        }
+
+        private void labelUsername_MouseLeave(object sender, EventArgs e)
+        {
+            pictureBoxEditUsername.Hide();
+        }
+
+        private void labelUsername_Click(object sender, EventArgs e)
+        {
+            FormChangeUsername formChangeUsername = new FormChangeUsername(m_user);
+            if (formChangeUsername.ShowDialog() == DialogResult.OK)
+                ChangeUsername(formChangeUsername.NewUsername);
+            labelUsername.Text = m_user.Username;
+        }
+
+        private void buttonOpenFile_Click(object sender, EventArgs e)
+        {
+            openFileDialog.ShowDialog();
         }
     }
 }

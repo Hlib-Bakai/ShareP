@@ -38,6 +38,7 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.labelLength = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -56,12 +57,12 @@
             this.panel7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(232)))));
             this.panel7.Location = new System.Drawing.Point(16, 50);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(248, 10);
+            this.panel7.Size = new System.Drawing.Size(248, 6);
             this.panel7.TabIndex = 10;
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(129, 82);
+            this.textBox1.Location = new System.Drawing.Point(128, 66);
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(135, 20);
@@ -71,7 +72,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(25, 82);
+            this.label2.Location = new System.Drawing.Point(24, 66);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(92, 16);
             this.label2.TabIndex = 13;
@@ -81,7 +82,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.Location = new System.Drawing.Point(25, 118);
+            this.label3.Location = new System.Drawing.Point(24, 102);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(98, 16);
             this.label3.TabIndex = 14;
@@ -89,26 +90,26 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(129, 117);
+            this.textBox2.Location = new System.Drawing.Point(128, 101);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(135, 20);
             this.textBox2.TabIndex = 15;
+            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             this.textBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox2_KeyDown);
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(232)))));
-            this.panel1.Location = new System.Drawing.Point(16, 108);
+            this.panel1.Location = new System.Drawing.Point(15, 92);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(248, 3);
             this.panel1.TabIndex = 11;
             // 
             // button3
             // 
-            this.button3.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.button3.Location = new System.Drawing.Point(62, 157);
+            this.button3.Location = new System.Drawing.Point(59, 140);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 28);
             this.button3.TabIndex = 16;
@@ -120,7 +121,7 @@
             // 
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.ForeColor = System.Drawing.Color.Red;
-            this.button2.Location = new System.Drawing.Point(143, 157);
+            this.button2.Location = new System.Drawing.Point(140, 140);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 28);
             this.button2.TabIndex = 17;
@@ -140,12 +141,24 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // labelLength
+            // 
+            this.labelLength.AutoSize = true;
+            this.labelLength.ForeColor = System.Drawing.Color.Red;
+            this.labelLength.Location = new System.Drawing.Point(72, 124);
+            this.labelLength.Name = "labelLength";
+            this.labelLength.Size = new System.Drawing.Size(192, 13);
+            this.labelLength.TabIndex = 18;
+            this.labelLength.Text = "Please, provide from 2 to 10 characters";
+            this.labelLength.Visible = false;
+            // 
             // FormChangeUsername
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(285, 197);
+            this.ClientSize = new System.Drawing.Size(285, 177);
+            this.Controls.Add(this.labelLength);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.panel1);
@@ -178,5 +191,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label labelLength;
     }
 }

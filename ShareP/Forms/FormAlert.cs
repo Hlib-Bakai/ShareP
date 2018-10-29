@@ -8,9 +8,8 @@ namespace ShareP.Forms
         public FormAlert(string title, string message, bool oneButton = false)
         {
             InitializeComponent();
-            textBox1.BackColor = SystemColors.Window;
             label1.Text = title;
-            textBox1.Text = message;
+            label2.Text = message;
 
             if (oneButton)
             {

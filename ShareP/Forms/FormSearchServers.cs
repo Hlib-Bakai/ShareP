@@ -37,11 +37,11 @@ namespace ShareP.Forms
             //textBox1.Text = "Search finished. Found: " + listView1.Items.Count; // TODO
         }
 
-        public void AddGroup(Group group)
+        public void AddGroup(Group group, string nUsers)
         {
             try
             {
-                string[] newElement = { group.name, group.hostName, group.hostIp };
+                string[] newElement = { group.name, nUsers, group.hostName, group.hostIp};
                 var newListViewItem = new ListViewItem(newElement);
                 newListViewItem.ImageIndex = (group.passwordProtected) ? 0 : -1;
 

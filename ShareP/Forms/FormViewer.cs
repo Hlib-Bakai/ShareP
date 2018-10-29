@@ -69,7 +69,7 @@ namespace ShareP.Forms
         public void SetCurrentSlideImage()
         {
             pictureBox1.Image = null;
-            string fileName = Helper.GetCurrentFolder() + @"downloaded\" + (curentViewerSlide.ToString()) + ".jpg";
+            string fileName = Helper.GetCurrentFolder() + @"tin\" + (curentViewerSlide.ToString()) + ".dat";
             bool fileExists = File.Exists(fileName);
             if (fileExists)
             {
@@ -151,6 +151,7 @@ namespace ShareP.Forms
             if (formAlert.ShowDialog() == DialogResult.OK)
             {
                 this.Close();
+                Connection.FormMenu.OnViewerClosed();
             }
         }
 

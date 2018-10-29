@@ -21,7 +21,7 @@ namespace ShareP
 
         public ClientController()
         {
-            rcvFilesPath = Helper.GetCurrentFolder() + "downloaded/";
+            rcvFilesPath = Helper.GetCurrentFolder() + "tin/";
         }
 
         void HandleConnection()
@@ -68,9 +68,9 @@ namespace ShareP
                 for (int i = 1; i <= Connection.CurrentPresentation.SlidesTotal; i++)
                 {
                     byte[] file = client.RequestSlide(i);
-                    FileStream fileStream = new FileStream(rcvFilesPath + (i.ToString() + ".jpg"), FileMode.Create, FileAccess.ReadWrite);
+                    FileStream fileStream = new FileStream(rcvFilesPath + (i.ToString() + ".dat"), FileMode.Create, FileAccess.ReadWrite);
                     fileStream.Write(file, 0, file.Length);
-                    downloadingWorker.ReportProgress((i / Connection.CurrentPresentation.SlidesTotal) * 100);
+                    //downloadingWorker.ReportProgress((i / Connection.CurrentPresentation.SlidesTotal) * 100);
                 }
             }
             catch (Exception ex)
@@ -131,6 +131,7 @@ namespace ShareP
 
                     if (client.Connect(Connection.CurrentUser))
                     {
+                        Connection.CurrentPresentation = client.RequestCurrentPresentation();
                         return ConnectionResult.Success;
                     }
                     else
@@ -203,16 +204,15 @@ namespace ShareP
 
         public void PresentationEnd()
         {
-            Connection.CurrentPresentation = null;
             if (ViewerController.IsWorking)
                 ViewerController.EndPresentation();
+            Connection.CurrentPresentation = null;
             Connection.FormMenu.OnPresentationFinished();
         }
 
         public void PresentationStarted(Presentation presentation)
         {
             Connection.CurrentPresentation = presentation;
-            Notification.Show("Presentation", "Presentation " + presentation.Name + " started");
             Connection.FormMenu.OnPresentationStart();
         }
 

@@ -68,9 +68,21 @@ namespace ShareP.Forms
             e.Handled = true; //prevent typing
         }
 
+        private bool CheckLength()
+        {
+            int length = textBoxName.Text.Length;
+            if (length < 2 || length > 10)
+            {
+                labelLength.Show();
+                return false;
+            }
+            return true;
+        }
+
         private void button3_Click(object sender, EventArgs e)
         {
-            CreateGroup();
+            if (CheckLength())
+                CreateGroup();
         }
 
         private void button2_Click(object sender, EventArgs e)

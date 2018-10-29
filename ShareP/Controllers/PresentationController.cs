@@ -2,6 +2,7 @@
 using Microsoft.Office.Interop.PowerPoint;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,11 @@ namespace ShareP.Controllers
 
         static PresentationController()
         {
+            
+        }
+
+        static public void StartApp()
+        {
             app = new Application();
             ppts = app.Presentations;
 
@@ -28,6 +34,9 @@ namespace ShareP.Controllers
 
         static public void LoadPPT(string pptPath)
         {
+            if (app == null)
+                StartApp();
+
             ppt = ppts.Open(pptPath, MsoTriState.msoFalse, MsoTriState.msoFalse, MsoTriState.msoFalse);
         
             ExportImages(Helper.GetCurrentFolder());
@@ -43,7 +52,7 @@ namespace ShareP.Controllers
             SlideShowSettings sss = ppt.SlideShowSettings;
             sss.Run();
 
-            while (app.SlideShowWindows.Count <= 0) ;
+            //while (app.SlideShowWindows.Count <= 0) ;
 
             SlideShowWindow ssw = ppt.SlideShowWindow;
             ssv = ssw.View;
@@ -52,7 +61,7 @@ namespace ShareP.Controllers
         static public void ExportImages(string destinationPath)
         {
             DirectoryInfo di;
-            string path = destinationPath + "slides"; 
+            string path = destinationPath + "tout"; 
             if (!Directory.Exists(path))
             {
                 di = Directory.CreateDirectory(path);
@@ -65,7 +74,7 @@ namespace ShareP.Controllers
 
             for (int i = 1; i <= ppt.Slides.Count; i++)
             {
-                ppt.Slides[i].Export(di.FullName + @"\slide" + i + ".jpg", "jpg");             
+                ppt.Slides[i].Export(di.FullName + @"\" + i + ".dat", "jpg");             
             }
         }
 
@@ -84,24 +93,19 @@ namespace ShareP.Controllers
             CloseApp();
         }
 
-        public static void OnAppClosing() //Fix this
+        public static void OnAppClosing() 
         {
-            return;
-            if (ssv != null)
-                ssv.Exit();
             CloseApp();
         }
 
-        private static void CloseApp() //TODO
+        private static void CloseApp()  //Maybe not the best variant; didn't find other ways
         {
             if (ppt == null)
                 return;
-            Slides slides = ppt.Slides;
-            for (int i = 1; i <= slides.Count; i++)
+            Process[] processes = Process.GetProcessesByName("powerpnt");
+            for (int i = 0; i < processes.Count(); i++)
             {
-                Slide slide = slides[i];
-                String slideName = slide.Name;
-                ReleaseCOM(slide);
+                processes[i].Kill();
             }
         }
 
@@ -115,6 +119,17 @@ namespace ShareP.Controllers
             finally
             {
                 o = null;
+            }
+        }
+
+        public static void CleanTempFiles()
+        {
+            DirectoryInfo di;
+            string path = Helper.GetCurrentFolder() + "tout";
+            if (Directory.Exists(path))
+            {
+                di = new DirectoryInfo(path);
+                di.Delete(true);
             }
         }
 

@@ -54,6 +54,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.labelLength = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -206,8 +207,6 @@
             // checkBoxNConnected
             // 
             this.checkBoxNConnected.AutoSize = true;
-            this.checkBoxNConnected.Checked = true;
-            this.checkBoxNConnected.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxNConnected.Location = new System.Drawing.Point(314, 151);
             this.checkBoxNConnected.Name = "checkBoxNConnected";
             this.checkBoxNConnected.Size = new System.Drawing.Size(15, 14);
@@ -227,8 +226,6 @@
             // checkBoxNDisconnected
             // 
             this.checkBoxNDisconnected.AutoSize = true;
-            this.checkBoxNDisconnected.Checked = true;
-            this.checkBoxNDisconnected.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxNDisconnected.Location = new System.Drawing.Point(314, 168);
             this.checkBoxNDisconnected.Name = "checkBoxNDisconnected";
             this.checkBoxNDisconnected.Size = new System.Drawing.Size(15, 14);
@@ -299,7 +296,6 @@
             // 
             // button3
             // 
-            this.button3.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.button3.Location = new System.Drawing.Point(101, 241);
@@ -318,12 +314,24 @@
             this.panel1.Size = new System.Drawing.Size(332, 3);
             this.panel1.TabIndex = 11;
             // 
+            // labelLength
+            // 
+            this.labelLength.AutoSize = true;
+            this.labelLength.ForeColor = System.Drawing.Color.Red;
+            this.labelLength.Location = new System.Drawing.Point(79, 216);
+            this.labelLength.Name = "labelLength";
+            this.labelLength.Size = new System.Drawing.Size(221, 13);
+            this.labelLength.TabIndex = 37;
+            this.labelLength.Text = "Please, provide name from 2 to 10 characters";
+            this.labelLength.Visible = false;
+            // 
             // FormCreateGroup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(356, 278);
+            this.Controls.Add(this.labelLength);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button3);
@@ -388,5 +396,6 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label labelLength;
     }
 }

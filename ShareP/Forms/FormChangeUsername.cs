@@ -35,7 +35,19 @@ namespace ShareP.Forms
 
         private void button3_Click(object sender, EventArgs e)
         {
-            SaveNewUsername();
+            if (CheckLength())
+                SaveNewUsername();
+        }
+
+        private bool CheckLength()
+        {
+            int length = textBox2.Text.Length;
+            if (length < 2 || length > 10)
+            {
+                labelLength.Show();
+                return false;
+            }
+            return true;
         }
 
         private void SaveNewUsername()
@@ -56,6 +68,10 @@ namespace ShareP.Forms
         private void button2_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
         }
     }
 }

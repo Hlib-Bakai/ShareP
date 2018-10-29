@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,13 @@ namespace ShareP
             // Use progress somewhere
             // https://stackoverflow.com/questions/6481304/how-to-use-a-backgroundworker
         }
+
+        static public void DowlonadSlides()
+        {
+
+        }
+
+        
 
         static public void LoadViewer()
         {
@@ -54,29 +62,58 @@ namespace ShareP
                 Log.LogInfo("IsWorking returned false");
             }
         }
+
+        static public void CleanTempFiles()
+        {
+            DirectoryInfo di;
+            string path = Helper.GetCurrentFolder() + "tin";
+            if (Directory.Exists(path))
+            {
+                di = new DirectoryInfo(path);
+                try
+                {
+                    di.Delete(true);
+                }
+                catch (Exception ex)
+                {
+                    Log.LogException(ex, "Error deleting temp");
+                }
+            }
+        }
         
         static public void EndPresentation()
         {
             formViewer.Close();
             formViewer = null;
 
-            // Suggest download if available
-
-            FormAlert formAlert = new FormAlert("Presentation finished", "Thank you for using ShareP!", true);
-            formAlert.ShowDialog();
-            Connection.FormMenu.RestoreWindow();
+            if (Connection.CurrentGroup.settings.Download)
+            {
+                FormAlert formAlert1 = new FormAlert("Presentation finished", "Would you like to download slides?");
+                if (formAlert1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    FormProgress formProgress = new FormProgress();
+                    formProgress.ShowDialog();
+                }
+            }
+            else
+            {
+                FormAlert formAlert2 = new FormAlert("Presentation finished", "Thank you for using ShareP!", true);
+                formAlert2.ShowDialog();
+            }
+            Connection.FormMenu.OnViewerClosed();
         }
 
         static public void OnAppClosing()
-        {
-            formViewer.Close();
+        {   if (IsWorking)
+                formViewer.Close();
+            formViewer = null;
         }
 
         static public bool IsWorking
         {
             get
             {
-                return (formViewer != null);
+                return (formViewer != null && !formViewer.IsDisposed);
             }
         }
     }

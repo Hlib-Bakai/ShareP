@@ -16,7 +16,6 @@ namespace ShareP
         public GroupSettings settings;
   
         public GroupNavigation navigation;
-        public FormMenu formMenu;
 
         public List<User> userList;
         private int nextId;
@@ -34,7 +33,7 @@ namespace ShareP
             user.Id = nextId;
             nextId++;
             userList.Add(user);
-            formMenu.FillHostUsersList();
+            Connection.FormMenu.FillHostUsersList();
         }
 
         public void RemoveUser(User user)
@@ -50,7 +49,7 @@ namespace ShareP
             }
             if (toDelete != null)
                 userList.Remove(toDelete);
-            formMenu.FillHostUsersList();
+            Connection.FormMenu.FillHostUsersList();
         }
 
         public int GetUsersCount()

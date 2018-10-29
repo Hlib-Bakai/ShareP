@@ -42,6 +42,7 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.button1 = new System.Windows.Forms.Button();
+            this.columnUsers = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // panel7
@@ -67,6 +68,7 @@
             // 
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnName,
+            this.columnUsers,
             this.columnHost,
             this.columnIp});
             this.listView1.FullRowSelect = true;
@@ -88,12 +90,12 @@
             // columnHost
             // 
             this.columnHost.Text = "Host Name";
-            this.columnHost.Width = 150;
+            this.columnHost.Width = 130;
             // 
             // columnIp
             // 
             this.columnIp.Text = "IP";
-            this.columnIp.Width = 118;
+            this.columnIp.Width = 98;
             // 
             // imageList1
             // 
@@ -149,6 +151,11 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // columnUsers
+            // 
+            this.columnUsers.Text = "Users";
+            this.columnUsers.Width = 40;
+            // 
             // FormSearchServers
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -186,5 +193,6 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.ColumnHeader columnUsers;
     }
 }

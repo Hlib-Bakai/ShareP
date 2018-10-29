@@ -34,6 +34,9 @@ namespace ShareP.Controllers
 
         [OperationContract]
         byte[] RequestSlide(int slide);
+
+        [OperationContract]
+        Presentation RequestCurrentPresentation();
     }
 
     public interface ISharePCallback                                 // METHODS FOR SERVER TO SEND DATA TO CLIENTS. CLIENTS SHOULD HANDLE
@@ -46,13 +49,13 @@ namespace ShareP.Controllers
 
         [OperationContract(IsOneWay = true)]
         void IsWritingCallback(User user);
-        
+
         [OperationContract(IsOneWay = true)]
         void UserJoin(User user);
 
         [OperationContract(IsOneWay = true)]
         void UserLeave(User user);
-        
+
         [OperationContract(IsOneWay = true)]
         void PresentationStarted(Presentation presentation);
 
@@ -181,7 +184,7 @@ namespace ShareP.Controllers
         {
             if (!users.ContainsValue(CurrentCallback) && !SearchUsersByName(user.Username))
             {
-                lock(syncObj)
+                lock (syncObj)
                 {
                     Connection.CurrentGroup.AddUser(user);
                     OnUserConnect(user);
@@ -207,7 +210,7 @@ namespace ShareP.Controllers
                 Log.LogInfo("User connected: " + user.Username);
                 return true;
             }
-            Log.LogInfo("Refused connection from: " + user.Username); 
+            Log.LogInfo("Refused connection from: " + user.Username);
             return false;
         }
         public void Disconnect(User user)
@@ -236,21 +239,21 @@ namespace ShareP.Controllers
 
         private void OnUserConnect(User user)
         {
-            // Check config
-            Notification.Show("User connected", user.Username + " joined");
+            if (Connection.CurrentGroup.settings.NConnected)
+                Notification.Show("User connected", user.Username + " joined");
         }
 
         private void OnUserDisconnect(User user)
         {
-            // Check config
-            Notification.Show("User disconnected", user.Username + " left");
+            if (Connection.CurrentGroup.settings.NDisconnected)
+                Notification.Show("User disconnected", user.Username + " left");
         }
 
         public void Say(Message msg)
         {
             lock (syncObj)
             {
-                foreach(ISharePCallback callback in users.Values)
+                foreach (ISharePCallback callback in users.Values)
                 {
                     callback.Receive(msg);
                 }
@@ -267,13 +270,13 @@ namespace ShareP.Controllers
                 }
             }
         }
-        
+
         public Dictionary<string, string> RequestServerInfo()
         {
             var result = new Dictionary<string, string>();
             result.Add("GroupName", Connection.CurrentGroup.name);
             result.Add("HostName", Connection.CurrentGroup.hostName);
-            result.Add("NumberOfUsers", "20");  // TODO
+            result.Add("NumberOfUsers", Connection.CurrentGroup.GetUsersCount().ToString());  // TODO
             result.Add("Password", Connection.CurrentGroup.passwordProtected.ToString());
             result.Add("Download", Connection.CurrentGroup.settings.Download.ToString());
             result.Add("ViewersPresent", Connection.CurrentGroup.settings.Viewerspresent.ToString());
@@ -290,7 +293,7 @@ namespace ShareP.Controllers
         {
             try
             {
-                string pathToSlide = Helper.GetCurrentFolder() + @"slides\slide" + slide.ToString() + ".jpg";
+                string pathToSlide = Helper.GetCurrentFolder() + @"tout\" + slide.ToString() + ".dat";
                 byte[] buffer = File.ReadAllBytes(pathToSlide);
                 return buffer;
             }
@@ -299,7 +302,12 @@ namespace ShareP.Controllers
                 Log.LogException(ex, "Failed to send slide");
                 return null;
             }
-            
+
+        }
+
+        public Presentation RequestCurrentPresentation()
+        {
+            return Connection.CurrentPresentation;
         }
     }
 
@@ -362,7 +370,7 @@ namespace ShareP.Controllers
                 "net.tcp://" + ipBase +
                 ":8002/ShareP/mex");
 
-            
+
             try
             {
                 SelfHost.Open();
@@ -379,7 +387,7 @@ namespace ShareP.Controllers
                     Log.LogInfo("Server opened on " + ipBase);
                 }
             }
-            
+
         }
 
         public static void OnPresentationStart(Presentation presentation)
@@ -401,7 +409,7 @@ namespace ShareP.Controllers
         {
             ((SharePService)SelfHost.SingletonInstance).OnGroupClose();
         }
-        
+
 
         public static void StopServer()
         {

@@ -31,12 +31,12 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMenu));
             this.panelBottom = new System.Windows.Forms.Panel();
+            this.labelUsername = new System.Windows.Forms.Label();
+            this.labelIP = new System.Windows.Forms.Label();
             this.pictureBoxEditUsername = new System.Windows.Forms.PictureBox();
             this.panel10 = new System.Windows.Forms.Panel();
             this.label12 = new System.Windows.Forms.Label();
-            this.textBoxIP = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.textBoxUsername = new System.Windows.Forms.TextBox();
             this.menuPicker = new System.Windows.Forms.Panel();
             this.buttonMessages = new System.Windows.Forms.Button();
             this.buttonPresentation = new System.Windows.Forms.Button();
@@ -56,12 +56,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.timerConnection = new System.Windows.Forms.Timer(this.components);
-            this.timerUsers = new System.Windows.Forms.Timer(this.components);
-            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabsMenu = new ShareP.TabControlWithoutHeader();
             this.connectionTab = new System.Windows.Forms.TabPage();
             this.buttonDisconnect = new System.Windows.Forms.Button();
@@ -97,6 +91,8 @@
             this.label19 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.panelAllowed = new System.Windows.Forms.Panel();
+            this.buttonOpenFile = new System.Windows.Forms.Button();
+            this.label18 = new System.Windows.Forms.Label();
             this.textBoxPresentationName = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.button5 = new System.Windows.Forms.Button();
@@ -115,6 +111,13 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.timerConnection = new System.Windows.Forms.Timer(this.components);
+            this.timerUsers = new System.Windows.Forms.Timer(this.components);
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.labelLength = new System.Windows.Forms.Label();
             this.panelBottom.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEditUsername)).BeginInit();
             this.panel2.SuspendLayout();
@@ -127,7 +130,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
             this.tabsMenu.SuspendLayout();
             this.connectionTab.SuspendLayout();
             this.tabsConnection.SuspendLayout();
@@ -139,17 +141,18 @@
             this.panelNotAllowed.SuspendLayout();
             this.messagesTab.SuspendLayout();
             this.notConnectedTab.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelBottom
             // 
             this.panelBottom.BackColor = System.Drawing.Color.White;
+            this.panelBottom.Controls.Add(this.labelUsername);
+            this.panelBottom.Controls.Add(this.labelIP);
             this.panelBottom.Controls.Add(this.pictureBoxEditUsername);
             this.panelBottom.Controls.Add(this.panel10);
             this.panelBottom.Controls.Add(this.label12);
-            this.panelBottom.Controls.Add(this.textBoxIP);
             this.panelBottom.Controls.Add(this.label11);
-            this.panelBottom.Controls.Add(this.textBoxUsername);
             this.panelBottom.Controls.Add(this.menuPicker);
             this.panelBottom.Controls.Add(this.buttonMessages);
             this.panelBottom.Controls.Add(this.buttonPresentation);
@@ -160,6 +163,29 @@
             this.panelBottom.Name = "panelBottom";
             this.panelBottom.Size = new System.Drawing.Size(172, 425);
             this.panelBottom.TabIndex = 3;
+            // 
+            // labelUsername
+            // 
+            this.labelUsername.ForeColor = System.Drawing.Color.Black;
+            this.labelUsername.Location = new System.Drawing.Point(76, 84);
+            this.labelUsername.Name = "labelUsername";
+            this.labelUsername.Size = new System.Drawing.Size(69, 13);
+            this.labelUsername.TabIndex = 12;
+            this.labelUsername.Text = "#Username#";
+            this.labelUsername.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelUsername.Click += new System.EventHandler(this.labelUsername_Click);
+            this.labelUsername.MouseLeave += new System.EventHandler(this.labelUsername_MouseLeave);
+            this.labelUsername.MouseHover += new System.EventHandler(this.labelUsername_MouseHover);
+            // 
+            // labelIP
+            // 
+            this.labelIP.ForeColor = System.Drawing.Color.Black;
+            this.labelIP.Location = new System.Drawing.Point(76, 100);
+            this.labelIP.Name = "labelIP";
+            this.labelIP.Size = new System.Drawing.Size(69, 13);
+            this.labelIP.TabIndex = 11;
+            this.labelIP.Text = "#ip#";
+            this.labelIP.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pictureBoxEditUsername
             // 
@@ -188,18 +214,6 @@
             this.label12.TabIndex = 9;
             this.label12.Text = "IP:";
             // 
-            // textBoxIP
-            // 
-            this.textBoxIP.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxIP.Cursor = System.Windows.Forms.Cursors.Default;
-            this.textBoxIP.Location = new System.Drawing.Point(69, 100);
-            this.textBoxIP.Name = "textBoxIP";
-            this.textBoxIP.ReadOnly = true;
-            this.textBoxIP.Size = new System.Drawing.Size(83, 13);
-            this.textBoxIP.TabIndex = 8;
-            this.textBoxIP.Text = "#ip#";
-            this.textBoxIP.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // label11
             // 
             this.label11.AutoSize = true;
@@ -208,21 +222,6 @@
             this.label11.Size = new System.Drawing.Size(58, 13);
             this.label11.TabIndex = 7;
             this.label11.Text = "Username:";
-            // 
-            // textBoxUsername
-            // 
-            this.textBoxUsername.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxUsername.Cursor = System.Windows.Forms.Cursors.Default;
-            this.textBoxUsername.Location = new System.Drawing.Point(69, 84);
-            this.textBoxUsername.Name = "textBoxUsername";
-            this.textBoxUsername.ReadOnly = true;
-            this.textBoxUsername.Size = new System.Drawing.Size(83, 13);
-            this.textBoxUsername.TabIndex = 6;
-            this.textBoxUsername.Text = "#username#";
-            this.textBoxUsername.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBoxUsername.Click += new System.EventHandler(this.textBoxUsername_Click);
-            this.textBoxUsername.MouseLeave += new System.EventHandler(this.textBoxUsername_MouseLeave);
-            this.textBoxUsername.MouseHover += new System.EventHandler(this.textBoxUsername_MouseHover);
             // 
             // menuPicker
             // 
@@ -438,46 +437,6 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(421, 341);
             this.panel3.TabIndex = 5;
-            // 
-            // timerConnection
-            // 
-            this.timerConnection.Enabled = true;
-            this.timerConnection.Tick += new System.EventHandler(this.timerConnection_Tick);
-            // 
-            // timerUsers
-            // 
-            this.timerUsers.Tick += new System.EventHandler(this.timerUsers_Tick);
-            // 
-            // notifyIcon1
-            // 
-            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
-            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-            this.notifyIcon1.Text = "ShareP";
-            this.notifyIcon1.Visible = true;
-            this.notifyIcon1.BalloonTipClicked += new System.EventHandler(this.notifyIcon1_BalloonTipClicked);
-            this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openToolStripMenuItem,
-            this.closeToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(104, 48);
-            // 
-            // openToolStripMenuItem
-            // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.openToolStripMenuItem.Text = "Open";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
-            // 
-            // closeToolStripMenuItem
-            // 
-            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.closeToolStripMenuItem.Text = "Close";
-            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
             // tabsMenu
             // 
@@ -861,32 +820,57 @@
             // 
             // panelAllowed
             // 
+            this.panelAllowed.Controls.Add(this.labelLength);
+            this.panelAllowed.Controls.Add(this.buttonOpenFile);
+            this.panelAllowed.Controls.Add(this.label18);
             this.panelAllowed.Controls.Add(this.textBoxPresentationName);
             this.panelAllowed.Controls.Add(this.label17);
             this.panelAllowed.Controls.Add(this.button5);
             this.panelAllowed.Controls.Add(this.textBoxFile);
             this.panelAllowed.Controls.Add(this.label2);
-            this.panelAllowed.Location = new System.Drawing.Point(85, 194);
+            this.panelAllowed.Location = new System.Drawing.Point(9, 157);
             this.panelAllowed.Name = "panelAllowed";
-            this.panelAllowed.Size = new System.Drawing.Size(270, 125);
+            this.panelAllowed.Size = new System.Drawing.Size(395, 162);
             this.panelAllowed.TabIndex = 20;
+            // 
+            // buttonOpenFile
+            // 
+            this.buttonOpenFile.FlatAppearance.BorderSize = 0;
+            this.buttonOpenFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonOpenFile.Image = global::ShareP.Properties.Resources.Document_Find_16;
+            this.buttonOpenFile.Location = new System.Drawing.Point(361, 75);
+            this.buttonOpenFile.Name = "buttonOpenFile";
+            this.buttonOpenFile.Size = new System.Drawing.Size(28, 19);
+            this.buttonOpenFile.TabIndex = 25;
+            this.buttonOpenFile.UseVisualStyleBackColor = true;
+            this.buttonOpenFile.Click += new System.EventHandler(this.buttonOpenFile_Click);
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label18.Location = new System.Drawing.Point(3, 0);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(216, 29);
+            this.label18.TabIndex = 24;
+            this.label18.Text = "Share presentation";
             // 
             // textBoxPresentationName
             // 
-            this.textBoxPresentationName.Location = new System.Drawing.Point(93, 14);
+            this.textBoxPresentationName.Location = new System.Drawing.Point(218, 48);
             this.textBoxPresentationName.Name = "textBoxPresentationName";
-            this.textBoxPresentationName.Size = new System.Drawing.Size(128, 20);
+            this.textBoxPresentationName.Size = new System.Drawing.Size(168, 20);
             this.textBoxPresentationName.TabIndex = 21;
             // 
             // label17
             // 
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label17.Location = new System.Drawing.Point(32, 12);
+            this.label17.Location = new System.Drawing.Point(65, 46);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(55, 20);
+            this.label17.Size = new System.Drawing.Size(147, 20);
             this.label17.TabIndex = 20;
-            this.label17.Text = "Name:";
+            this.label17.Text = "Presentation name:";
             // 
             // button5
             // 
@@ -894,7 +878,7 @@
             this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(232)))));
-            this.button5.Location = new System.Drawing.Point(93, 66);
+            this.button5.Location = new System.Drawing.Point(131, 100);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(128, 50);
             this.button5.TabIndex = 17;
@@ -904,9 +888,9 @@
             // 
             // textBoxFile
             // 
-            this.textBoxFile.Location = new System.Drawing.Point(93, 40);
+            this.textBoxFile.Location = new System.Drawing.Point(218, 74);
             this.textBoxFile.Name = "textBoxFile";
-            this.textBoxFile.Size = new System.Drawing.Size(128, 20);
+            this.textBoxFile.Size = new System.Drawing.Size(140, 20);
             this.textBoxFile.TabIndex = 19;
             this.textBoxFile.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             this.textBoxFile.DoubleClick += new System.EventHandler(this.textBoxFile_DoubleClick);
@@ -915,11 +899,11 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(49, 40);
+            this.label2.Location = new System.Drawing.Point(89, 72);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(38, 20);
+            this.label2.Size = new System.Drawing.Size(123, 20);
             this.label2.TabIndex = 18;
-            this.label2.Text = "File:";
+            this.label2.Text = "Presentation file";
             // 
             // panelNotAllowed
             // 
@@ -1067,6 +1051,57 @@
             this.label8.TabIndex = 2;
             this.label8.Text = "You are";
             // 
+            // timerConnection
+            // 
+            this.timerConnection.Enabled = true;
+            this.timerConnection.Tick += new System.EventHandler(this.timerConnection_Tick);
+            // 
+            // timerUsers
+            // 
+            this.timerUsers.Tick += new System.EventHandler(this.timerUsers_Tick);
+            // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "ShareP";
+            this.notifyIcon1.Visible = true;
+            this.notifyIcon1.BalloonTipClicked += new System.EventHandler(this.notifyIcon1_BalloonTipClicked);
+            this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openToolStripMenuItem,
+            this.closeToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(104, 48);
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // closeToolStripMenuItem
+            // 
+            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.closeToolStripMenuItem.Text = "Close";
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            // 
+            // labelLength
+            // 
+            this.labelLength.AutoSize = true;
+            this.labelLength.ForeColor = System.Drawing.Color.Red;
+            this.labelLength.Location = new System.Drawing.Point(165, 32);
+            this.labelLength.Name = "labelLength";
+            this.labelLength.Size = new System.Drawing.Size(221, 13);
+            this.labelLength.TabIndex = 38;
+            this.labelLength.Text = "Please, provide name from 2 to 10 characters";
+            this.labelLength.Visible = false;
+            // 
             // FormMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1097,7 +1132,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
-            this.contextMenuStrip1.ResumeLayout(false);
             this.tabsMenu.ResumeLayout(false);
             this.connectionTab.ResumeLayout(false);
             this.connectionTab.PerformLayout();
@@ -1117,6 +1151,7 @@
             this.messagesTab.PerformLayout();
             this.notConnectedTab.ResumeLayout(false);
             this.notConnectedTab.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1170,9 +1205,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.TextBox textBoxUsername;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox textBoxIP;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Panel panel10;
         private System.Windows.Forms.PictureBox pictureBoxEditUsername;
@@ -1208,6 +1241,11 @@
         private System.Windows.Forms.Panel panel13;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Label labelIP;
+        private System.Windows.Forms.Label labelUsername;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Button buttonOpenFile;
+        private System.Windows.Forms.Label labelLength;
     }
 }
 
