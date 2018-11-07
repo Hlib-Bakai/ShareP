@@ -18,7 +18,7 @@ namespace ShareP.Forms
             comboBoxNavigation.SelectedIndex = 0;
         }
 
-        private void CreateGroup() //TODO: Check name length, password etc
+        private void CreateGroup()
         {
             NewGroup = new Group();
             NewGroup.name = textBoxName.Text;

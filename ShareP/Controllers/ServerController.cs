@@ -57,6 +57,12 @@ namespace ShareP.Controllers
         void UserLeave(User user);
 
         [OperationContract(IsOneWay = true)]
+        void KickUser();
+
+        [OperationContract(IsOneWay = true)]
+        void GroupSettingsChanged(Dictionary<string, string> newSettings);
+
+        [OperationContract(IsOneWay = true)]
         void PresentationStarted(Presentation presentation);
 
         [OperationContract(IsOneWay = true)]
@@ -64,6 +70,7 @@ namespace ShareP.Controllers
 
         [OperationContract(IsOneWay = true)]
         void PresentationEnd();
+
         [OperationContract(IsOneWay = true)]
         void GroupClose();
     }
@@ -177,6 +184,35 @@ namespace ShareP.Controllers
             }
         }
 
+        public void OnGroupSettingsChanged()
+        {
+            lock (syncObj)
+            {
+                foreach (User key in users.Keys)
+                {
+                    ISharePCallback callback = users[key];
+                    try
+                    {
+                        var result = new Dictionary<string, string>();
+                        result.Add("Download", Connection.CurrentGroup.settings.Download.ToString());
+                        result.Add("ViewersPresent", Connection.CurrentGroup.settings.Viewerspresent.ToString());
+                        if (Connection.CurrentGroup.navigation == GroupNavigation.Backwards)
+                            result.Add("GroupNavigation", "Backwards");
+                        else if (Connection.CurrentGroup.navigation == GroupNavigation.BothDirections)
+                            result.Add("GroupNavigation", "Both");
+                        else if (Connection.CurrentGroup.navigation == GroupNavigation.FollowOnly)
+                            result.Add("GroupNavigation", "Follow");
+
+                        callback.GroupSettingsChanged(result);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.LogException(ex, "OnGroupSettingsChanged Service");
+                    }
+                }
+            }
+        }
+
 
         /// IShareP
 
@@ -276,7 +312,7 @@ namespace ShareP.Controllers
             var result = new Dictionary<string, string>();
             result.Add("GroupName", Connection.CurrentGroup.name);
             result.Add("HostName", Connection.CurrentGroup.hostName);
-            result.Add("NumberOfUsers", Connection.CurrentGroup.GetUsersCount().ToString());  // TODO
+            result.Add("NumberOfUsers", Connection.CurrentGroup.GetUsersCount().ToString()); 
             result.Add("Password", Connection.CurrentGroup.passwordProtected.ToString());
             result.Add("Download", Connection.CurrentGroup.settings.Download.ToString());
             result.Add("ViewersPresent", Connection.CurrentGroup.settings.Viewerspresent.ToString());
@@ -410,6 +446,11 @@ namespace ShareP.Controllers
             ((SharePService)SelfHost.SingletonInstance).OnGroupClose();
         }
 
+        public static void OnGroupSettingsChanged()
+        {
+            ((SharePService)SelfHost.SingletonInstance).OnGroupSettingsChanged();
+        }
+
 
         public static void StopServer()
         {
@@ -417,7 +458,7 @@ namespace ShareP.Controllers
             {
                 try
                 {
-                    SelfHost.Close();
+                    SelfHost.Abort();
                 }
                 catch (Exception e)
                 {

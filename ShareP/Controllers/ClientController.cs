@@ -5,7 +5,6 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using ShareP.Server;
-using static ShareP.Connection;
 using System.IO;
 using System.ComponentModel;
 
@@ -105,7 +104,7 @@ namespace ShareP
         }
 
 
-        public ConnectionResult EstablishClientConnection(string ip, byte[] password = null)
+        public Connection.ConnectionResult EstablishClientConnection(string ip, byte[] password = null)
         {
             if (client == null)
             {
@@ -132,19 +131,19 @@ namespace ShareP
                     if (client.Connect(Connection.CurrentUser))
                     {
                         Connection.CurrentPresentation = client.RequestCurrentPresentation();
-                        return ConnectionResult.Success;
+                        return Connection.ConnectionResult.Success;
                     }
                     else
-                        return ConnectionResult.WrongPassword;
+                        return Connection.ConnectionResult.WrongPassword;
                 }
                 catch (Exception e)
                 {
                     client = null;
                     Log.LogException(e, "Error during connection.");
-                    return ConnectionResult.Error;
+                    return Connection.ConnectionResult.Error;
                 }
             }
-            return ConnectionResult.Error;
+            return Connection.ConnectionResult.Error;
         }
 
         public Dictionary<string, string> RequestServerInfo()
@@ -159,7 +158,7 @@ namespace ShareP
                 return;
 
             client.DisconnectAsync(Connection.CurrentUser);
-
+            client = null;
         }
 
 
@@ -219,6 +218,32 @@ namespace ShareP
         public void GroupClose()
         {
             Connection.GroupClosed();
+        }
+
+        public void KickUser()
+        {
+            // TODO ?
+        }
+
+        public void GroupSettingsChanged(Dictionary<string, string> newSettings)
+        {
+            if (newSettings.ContainsKey("GroupName"))
+                Connection.CurrentGroup.name = newSettings["GroupName"];
+            if (newSettings.ContainsKey("HostName"))
+                Connection.CurrentGroup.hostName = newSettings["HostName"];
+            if (newSettings.ContainsKey("Download"))
+                Connection.CurrentGroup.settings.Download = (newSettings["Download"].CompareTo("True") == 0) ? true : false;
+            if (newSettings.ContainsKey("ViewersPresent"))
+                Connection.CurrentGroup.settings.Viewerspresent = (newSettings["ViewersPresent"].CompareTo("True") == 0) ? true : false;
+            if (newSettings.ContainsKey("GroupNavigation"))
+            {
+                if (newSettings["GroupNavigation"].CompareTo("Backwards") == 0)
+                    Connection.CurrentGroup.navigation = GroupNavigation.Backwards;
+                else if (newSettings["GroupNavigation"].CompareTo("Both") == 0)
+                    Connection.CurrentGroup.navigation = GroupNavigation.BothDirections;
+                else if (newSettings["GroupNavigation"].CompareTo("Follow") == 0)
+                    Connection.CurrentGroup.navigation = GroupNavigation.FollowOnly;
+            }
         }
     }
 }

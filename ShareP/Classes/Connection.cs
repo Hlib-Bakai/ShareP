@@ -13,8 +13,7 @@ namespace ShareP
         static private User currentUser = null;
         static private Presentation currentPresentation = null;
         static private FormMenu formMenu = null;
-
-        static string rcvFilesPath = @"TODO";
+        
         private delegate void FaultedInvoker();
         static List<User> onlineUsers = new List<User>();
         static public ClientController clientConnection = new ClientController();

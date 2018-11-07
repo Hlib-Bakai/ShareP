@@ -225,6 +225,46 @@ namespace ShareP
                 {
                     tabsConnection.SelectTab("tabConnectedHost");
                     FillHostUsersList();
+                    if (Connection.CurrentGroup != null)
+                    {
+                        if (Connection.CurrentGroup.settings.Download)
+                        {
+                            labelSDownload.Text = "YES";
+                            labelSDownload.ForeColor = Color.FromArgb(0, 192, 0);
+                        }
+                        else
+                        {
+                            labelSDownload.Text = "NO";
+                            labelSDownload.ForeColor = Color.Red;
+                        }
+
+                        if (Connection.CurrentGroup.settings.Viewerspresent)
+                        {
+                            labelSPresent.Text = "YES";
+                            labelSPresent.ForeColor = Color.FromArgb(0, 192, 0);
+                        }
+                        else
+                        {
+                            labelSPresent.Text = "NO";
+                            labelSPresent.ForeColor = Color.Red;
+                        }
+
+                        if (Connection.CurrentGroup.navigation == GroupNavigation.Backwards)
+                        {
+                            labelSNavigation.Text = "Backwards";
+                            labelSNavigation.ForeColor = Color.FromArgb(0, 192, 0);
+                        }
+                        else if (Connection.CurrentGroup.navigation == GroupNavigation.BothDirections)
+                        {
+                            labelSNavigation.Text = "YES";
+                            labelSNavigation.ForeColor = Color.FromArgb(0, 192, 0);
+                        }
+                        else if (Connection.CurrentGroup.navigation == GroupNavigation.FollowOnly)
+                        {
+                            labelSNavigation.Text = "NO";
+                            labelSNavigation.ForeColor = Color.Red;
+                        }
+                    }
                 }
             }
             else
@@ -714,6 +754,19 @@ namespace ShareP
         {
             FormProgress formProgress = new FormProgress();
             formProgress.ShowDialog();
+        }
+
+        private void buttonChangeGroupS_Click(object sender, EventArgs e)
+        {
+            int overlay = Helper.ShowOverlay(this);
+
+            FormChangeGroupSettings formChangeGroupSettings = new FormChangeGroupSettings();
+            if (formChangeGroupSettings.ShowDialog() == DialogResult.OK)
+            {
+                ServerController.OnGroupSettingsChanged();
+                LoadConnectionTab();
+            }
+            Helper.HideOverlay(overlay);
         }
     }
 }

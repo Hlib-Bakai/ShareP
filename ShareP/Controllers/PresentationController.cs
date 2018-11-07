@@ -34,8 +34,7 @@ namespace ShareP.Controllers
 
         static public void LoadPPT(string pptPath)
         {
-            if (app == null)
-                StartApp();
+            StartApp();
 
             ppt = ppts.Open(pptPath, MsoTriState.msoFalse, MsoTriState.msoFalse, MsoTriState.msoFalse);
         
@@ -109,19 +108,6 @@ namespace ShareP.Controllers
             }
         }
 
-        private static void ReleaseCOM(object o)
-        {
-            try
-            {
-                System.Runtime.InteropServices.Marshal.FinalReleaseComObject(o);
-            }
-            catch { }
-            finally
-            {
-                o = null;
-            }
-        }
-
         public static void CleanTempFiles()
         {
             DirectoryInfo di;
@@ -132,25 +118,6 @@ namespace ShareP.Controllers
                 di.Delete(true);
             }
         }
-
-        private static void TryUntilSuccess(Action action)  //Delete if no need
-        {
-            //bool success = false;
-            //while (!success)
-            //{
-            //    try
-            //    {
-            //        action();
-            //        success = true;
-            //    }
-
-            //    catch (System.Runtime.InteropServices.COMException e)
-            //    {
-            //        // Excel is busy
-            //        Thread.Sleep(500); // Wait, and...
-            //        success = false;  // ...try again
-            //    }
-            //}
-        }
+       
     }
 }

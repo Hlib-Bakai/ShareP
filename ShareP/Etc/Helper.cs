@@ -93,8 +93,8 @@ namespace ShareP
             overlay.Size = parent.Size;
             nLast++;
             overlayList.Add(nLast, overlay);
-            overlay.Show();
             overlay.BringToFront();
+            overlay.Show();
             return nLast;
         }
 

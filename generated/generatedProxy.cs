@@ -295,6 +295,12 @@ public interface ISharePCallback
     [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/UserLeave")]
     void UserLeave(ShareP.User user);
     
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/KickUser")]
+    void KickUser();
+    
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/GroupSettingsChanged")]
+    void GroupSettingsChanged(System.Collections.Generic.Dictionary<string, string> newSettings);
+    
     [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/PresentationStarted")]
     void PresentationStarted(ShareP.Presentation presentation);
     
