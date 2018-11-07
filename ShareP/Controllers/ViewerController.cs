@@ -85,7 +85,7 @@ namespace ShareP
         {
             formViewer.Close();
             formViewer = null;
-
+            
             if (Connection.CurrentGroup.settings.Download)
             {
                 FormAlert formAlert1 = new FormAlert("Presentation finished", "Would you like to download slides?");

@@ -34,5 +34,41 @@ namespace ShareP.Properties {
                 this["username"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool autojoin {
+            get {
+                return ((bool)(this["autojoin"]));
+            }
+            set {
+                this["autojoin"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool nPresentation {
+            get {
+                return ((bool)(this["nPresentation"]));
+            }
+            set {
+                this["nPresentation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool nChat {
+            get {
+                return ((bool)(this["nChat"]));
+            }
+            set {
+                this["nChat"] = value;
+            }
+        }
     }
 }

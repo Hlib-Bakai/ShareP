@@ -19,13 +19,13 @@ namespace ShareP.Forms
             set;
         }
 
-        public FormChangeUsername(User user)
+        public FormChangeUsername()
         {
             InitializeComponent();
-            m_user = user;
+            m_user = Connection.CurrentUser;
 
             textBox1.BackColor = System.Drawing.SystemColors.Window;
-            textBox1.Text = user.Username;
+            textBox1.Text = m_user.Username;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -53,6 +53,10 @@ namespace ShareP.Forms
         private void SaveNewUsername()
         {
             NewUsername = textBox2.Text;
+            Connection.CurrentUser.Username = NewUsername;
+            Properties.Settings.Default["username"] = NewUsername;
+            Properties.Settings.Default.Save();
+            Log.LogInfo(String.Format("Username changed to {0}.", NewUsername));
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

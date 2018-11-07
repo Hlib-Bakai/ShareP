@@ -1,12 +1,23 @@
-﻿using System;
+﻿using ShareP.Forms;
+using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography;
+using System.Windows.Forms;
 
 namespace ShareP
 {
     static class Helper
     {
+        static Dictionary<int, Overlay> overlayList;
+        static int nLast;
+
+        static Helper()
+        {
+            overlayList = new Dictionary<int, Overlay>();
+            nLast = 0;
+        }
 
         public static string GetMyIP()
         {
@@ -64,6 +75,33 @@ namespace ShareP
         public static string GetCurrentFolder()
         {
             return AppDomain.CurrentDomain.BaseDirectory;
+        }
+
+        public static int ShowOverlay(Form parent = null)
+        {
+            //if (overlay != null && overlay.Visible)
+            //    return;
+
+            if (parent == null)
+                parent = Connection.FormMenu;
+            Overlay overlay = new Overlay();
+            overlay.StartPosition = FormStartPosition.Manual;
+            
+            //overlay.Parent = parent;
+            overlay.Left = parent.Left;
+            overlay.Top = parent.Top;
+            overlay.Size = parent.Size;
+            nLast++;
+            overlayList.Add(nLast, overlay);
+            overlay.Show();
+            overlay.BringToFront();
+            return nLast;
+        }
+
+        public static void HideOverlay(int id)
+        {
+            if (overlayList.ContainsKey(id))
+                overlayList[id].Hide();
         }
     }
 }

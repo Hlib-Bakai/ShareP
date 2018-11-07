@@ -24,6 +24,7 @@ namespace ShareP.Forms
         {
             InitializeComponent();
             this.groupName = groupName;
+            textBox1.Focus();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -40,10 +41,21 @@ namespace ShareP.Forms
 
         private void button3_Click(object sender, EventArgs e)
         {
+            SaveAndExit();
+        }
+
+        private void SaveAndExit()
+        {
             Password = Helper.GenerateSaltedHash(Encoding.UTF8.GetBytes(textBox1.Text),
                                                                     Encoding.UTF8.GetBytes(groupName));
             this.DialogResult = DialogResult.OK;
             this.Close();
+        }
+
+        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                SaveAndExit();
         }
     }
 }

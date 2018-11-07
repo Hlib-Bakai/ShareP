@@ -91,6 +91,7 @@
             this.label19 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.panelAllowed = new System.Windows.Forms.Panel();
+            this.labelLength = new System.Windows.Forms.Label();
             this.buttonOpenFile = new System.Windows.Forms.Button();
             this.label18 = new System.Windows.Forms.Label();
             this.textBoxPresentationName = new System.Windows.Forms.TextBox();
@@ -117,7 +118,7 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.labelLength = new System.Windows.Forms.Label();
+            this.button9 = new System.Windows.Forms.Button();
             this.panelBottom.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEditUsername)).BeginInit();
             this.panel2.SuspendLayout();
@@ -180,12 +181,12 @@
             // labelIP
             // 
             this.labelIP.ForeColor = System.Drawing.Color.Black;
-            this.labelIP.Location = new System.Drawing.Point(76, 100);
+            this.labelIP.Location = new System.Drawing.Point(38, 102);
             this.labelIP.Name = "labelIP";
-            this.labelIP.Size = new System.Drawing.Size(69, 13);
+            this.labelIP.Size = new System.Drawing.Size(107, 13);
             this.labelIP.TabIndex = 11;
             this.labelIP.Text = "#ip#";
-            this.labelIP.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelIP.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // pictureBoxEditUsername
             // 
@@ -833,6 +834,17 @@
             this.panelAllowed.Size = new System.Drawing.Size(395, 162);
             this.panelAllowed.TabIndex = 20;
             // 
+            // labelLength
+            // 
+            this.labelLength.AutoSize = true;
+            this.labelLength.ForeColor = System.Drawing.Color.Red;
+            this.labelLength.Location = new System.Drawing.Point(165, 32);
+            this.labelLength.Name = "labelLength";
+            this.labelLength.Size = new System.Drawing.Size(221, 13);
+            this.labelLength.TabIndex = 38;
+            this.labelLength.Text = "Please, provide name from 2 to 10 characters";
+            this.labelLength.Visible = false;
+            // 
             // buttonOpenFile
             // 
             this.buttonOpenFile.FlatAppearance.BorderSize = 0;
@@ -949,6 +961,7 @@
             // 
             // messagesTab
             // 
+            this.messagesTab.Controls.Add(this.button9);
             this.messagesTab.Controls.Add(this.button8);
             this.messagesTab.Controls.Add(this.button7);
             this.messagesTab.Controls.Add(this.label3);
@@ -1091,16 +1104,15 @@
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
-            // labelLength
+            // button9
             // 
-            this.labelLength.AutoSize = true;
-            this.labelLength.ForeColor = System.Drawing.Color.Red;
-            this.labelLength.Location = new System.Drawing.Point(165, 32);
-            this.labelLength.Name = "labelLength";
-            this.labelLength.Size = new System.Drawing.Size(221, 13);
-            this.labelLength.TabIndex = 38;
-            this.labelLength.Text = "Please, provide name from 2 to 10 characters";
-            this.labelLength.Visible = false;
+            this.button9.Location = new System.Drawing.Point(158, 126);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(69, 36);
+            this.button9.TabIndex = 4;
+            this.button9.Text = "Download slides";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // FormMenu
             // 
@@ -1114,6 +1126,7 @@
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(232)))));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormMenu";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ShareP";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMenu_FormClosing);
             this.Load += new System.EventHandler(this.FormMain_Load);
@@ -1246,6 +1259,7 @@
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Button buttonOpenFile;
         private System.Windows.Forms.Label labelLength;
+        private System.Windows.Forms.Button button9;
     }
 }
 

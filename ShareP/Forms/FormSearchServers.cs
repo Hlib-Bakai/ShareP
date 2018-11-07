@@ -66,7 +66,7 @@ namespace ShareP.Forms
             if (listView1.SelectedItems.Count < 1)
                 return;
 
-            string ip = listView1.SelectedItems[0].SubItems[2].Text;
+            string ip = listView1.SelectedItems[0].SubItems[3].Text;
             string name = listView1.SelectedItems[0].SubItems[0].Text;
             bool passwordProtected = (listView1.SelectedItems[0].ImageIndex == 0) ? true : false;
             byte[] password = null;
@@ -75,22 +75,33 @@ namespace ShareP.Forms
                 if (passwordProtected)
                 {
                     FormPassword formPassword = new FormPassword(name);
+                    int overlay = Helper.ShowOverlay(this);
                     if (formPassword.ShowDialog() == DialogResult.OK)
+                    {
                         password = formPassword.Password;
+                        Helper.HideOverlay(overlay);
+                    }
                     else
+                    {
+                        Helper.HideOverlay(overlay);
                         return;
+                    }
                 }
 
                 switch (Connection.EstablishClientConnection(ip, password))
                 {
                     case Connection.ConnectionResult.Error:
+                        int overlay = Helper.ShowOverlay(this);
                         FormAlert formAlertError = new FormAlert("Error", "Some error occured during connection.", true);
                         formAlertError.ShowDialog();
+                        Helper.HideOverlay(overlay);
                         StartSearch();
                         break;
                     case Connection.ConnectionResult.WrongPassword:
+                        int overlay2 = Helper.ShowOverlay(this);
                         FormAlert formAlertPassword = new FormAlert("Wrong password", "Password you entered is incorrect. Prease try again.", true);
                         formAlertPassword.ShowDialog();
+                        Helper.HideOverlay(overlay2);
                         Connect();
                         break;
                     case Connection.ConnectionResult.Success:

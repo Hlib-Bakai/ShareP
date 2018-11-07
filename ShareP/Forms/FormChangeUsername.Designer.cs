@@ -37,8 +37,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.labelLength = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -129,6 +129,17 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // labelLength
+            // 
+            this.labelLength.AutoSize = true;
+            this.labelLength.ForeColor = System.Drawing.Color.Red;
+            this.labelLength.Location = new System.Drawing.Point(72, 124);
+            this.labelLength.Name = "labelLength";
+            this.labelLength.Size = new System.Drawing.Size(192, 13);
+            this.labelLength.TabIndex = 18;
+            this.labelLength.Text = "Please, provide from 2 to 10 characters";
+            this.labelLength.Visible = false;
+            // 
             // button1
             // 
             this.button1.FlatAppearance.BorderSize = 0;
@@ -140,17 +151,6 @@
             this.button1.TabIndex = 9;
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // labelLength
-            // 
-            this.labelLength.AutoSize = true;
-            this.labelLength.ForeColor = System.Drawing.Color.Red;
-            this.labelLength.Location = new System.Drawing.Point(72, 124);
-            this.labelLength.Name = "labelLength";
-            this.labelLength.Size = new System.Drawing.Size(192, 13);
-            this.labelLength.TabIndex = 18;
-            this.labelLength.Text = "Please, provide from 2 to 10 characters";
-            this.labelLength.Visible = false;
             // 
             // FormChangeUsername
             // 
@@ -172,6 +172,8 @@
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(232)))));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormChangeUsername";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "FormChangeUsername";
             this.ResumeLayout(false);

@@ -78,7 +78,9 @@ namespace ShareP
             role = Role.Notconnected;
             formMenu.RestoreWindow();
             FormAlert formAlert = new FormAlert("Group was closed", "Host closed the group", true);
+            int overlay = Helper.ShowOverlay();
             formAlert.ShowDialog();
+            Helper.HideOverlay(overlay);
         }
 
         private static void DisconnectClient()

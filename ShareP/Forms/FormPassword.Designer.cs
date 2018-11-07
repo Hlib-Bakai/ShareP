@@ -31,9 +31,9 @@
             this.button3 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button3
@@ -67,18 +67,6 @@
             this.panel7.Size = new System.Drawing.Size(227, 12);
             this.panel7.TabIndex = 13;
             // 
-            // button1
-            // 
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Image = global::ShareP.Properties.Resources.Close_24;
-            this.button1.Location = new System.Drawing.Point(205, 9);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(34, 32);
-            this.button1.TabIndex = 12;
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // textBox1
             // 
             this.textBox1.Location = new System.Drawing.Point(12, 77);
@@ -86,6 +74,7 @@
             this.textBox1.Size = new System.Drawing.Size(226, 20);
             this.textBox1.TabIndex = 16;
             this.textBox1.UseSystemPasswordChar = true;
+            this.textBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
             // 
             // button2
             // 
@@ -98,6 +87,18 @@
             this.button2.Text = "Cancel";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button1
+            // 
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Image = global::ShareP.Properties.Resources.Close_24;
+            this.button1.Location = new System.Drawing.Point(205, 9);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(34, 32);
+            this.button1.TabIndex = 12;
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // FormPassword
             // 

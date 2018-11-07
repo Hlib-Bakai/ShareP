@@ -137,6 +137,12 @@
     <Compile Include="Forms\FormSearchServers.Designer.cs">
       <DependentUpon>FormSearchServers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FormSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormSettings.Designer.cs">
+      <DependentUpon>FormSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FormStartShare.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -149,6 +155,12 @@
     </Compile>
     <Compile Include="Forms\FormViewer.Designer.cs">
       <DependentUpon>FormViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Overlay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Overlay.Designer.cs">
+      <DependentUpon>Overlay.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -180,11 +192,17 @@
     <EmbeddedResource Include="Forms\FormSearchServers.resx">
       <DependentUpon>FormSearchServers.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormSettings.resx">
+      <DependentUpon>FormSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormStartShare.resx">
       <DependentUpon>FormStartShare.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormViewer.resx">
       <DependentUpon>FormViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Overlay.resx">
+      <DependentUpon>Overlay.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

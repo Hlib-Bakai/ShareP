@@ -47,14 +47,18 @@ namespace ShareP.Forms
             else if (e.Error != null)
             {
                 Log.LogException(e.Error, "Error during converting");
+                int overlay = Helper.ShowOverlay(this);
                 FormAlert formAlert = new FormAlert("Error", "Error occured", true);
                 formAlert.ShowDialog();
+                Helper.HideOverlay(overlay);
                 this.Close();
             }
             else
             {
+                int overlay = Helper.ShowOverlay(this);
                 FormAlert formAlert = new FormAlert("Finished", "Slides downloaded to " + dest, true);
                 formAlert.ShowDialog();
+                Helper.HideOverlay(overlay);
                 this.Close();
             }
         }
@@ -81,7 +85,7 @@ namespace ShareP.Forms
                 for (int i = 1; i <= Connection.CurrentPresentation.SlidesTotal; i++)
                 {
                     File.Copy(sourceFolder + i.ToString() + ".dat", destinationFolder + "Slide" + i.ToString() + ".jpg", true);
-                    backgroundWorker.ReportProgress((i / total) * 100);
+                    backgroundWorker.ReportProgress((int)(((float)i / (float)total) * 100));
                     Thread.Sleep(500);
                 }
             }

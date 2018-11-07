@@ -81,10 +81,13 @@ namespace ShareP
 
         public void OnPresentationStart()   // Client side
         {
-            if (this.WindowState != FormWindowState.Normal) ;
+            if (this.WindowState != FormWindowState.Normal && (bool)Properties.Settings.Default["nPresentation"] &&
+                                                              !(bool)Properties.Settings.Default["autojoin"])
                 Notification.Show("Presentation", "Presentation " + Connection.CurrentPresentation.Name + " started");
             LoadPresentationTab();
             ViewerController.StartLoadingSlides();
+            if ((bool)Properties.Settings.Default["autojoin"])
+                StartViewer();
         }
 
         public void OnPresentationFinished()  // Both sides
@@ -115,15 +118,6 @@ namespace ShareP
             }
 
             Connection.CurrentUser.IP = Helper.GetMyIP();
-        }
-
-
-        public void ChangeUsername(string newUsername)
-        {
-            Connection.CurrentUser.Username = newUsername;
-            Properties.Settings.Default["username"] = newUsername;
-            Properties.Settings.Default.Save();
-            Log.LogInfo(String.Format("Username changed to {0}.", newUsername));
         }
 
 
@@ -172,24 +166,30 @@ namespace ShareP
         {
             if (Connection.CurrentRole == Connection.Role.Host)
             {
+                int overlay = Helper.ShowOverlay(this);
                 FormAlert formAlert = new FormAlert("Confirmation", "Close the group?");
                 if (force || formAlert.ShowDialog() == DialogResult.OK)
                 {
+                    Helper.HideOverlay(overlay);
                     ServerController.OnGroupClose();
                     PresentationController.OnAppClosing();
                     Connection.Disconnect();
                     LoadConnectionTab();
                 }
+                Helper.HideOverlay(overlay);
             }
             else if (Connection.CurrentRole == Connection.Role.Client)
             {
+                int overlay = Helper.ShowOverlay(this);
                 FormAlert formAlert = new FormAlert("Confirmation", "Disconnect from the group?");
                 if (force || formAlert.ShowDialog() == DialogResult.OK)
                 {
+                    Helper.HideOverlay(overlay);
                     ViewerController.OnAppClosing();
                     Connection.Disconnect();
                     LoadConnectionTab();
                 }
+                Helper.HideOverlay(overlay);
             }
         }
 
@@ -254,15 +254,15 @@ namespace ShareP
             if (Connection.CurrentPresentation != null)
             {
                 labelCurrentName.Text = Connection.CurrentPresentation.Name;
+                labelCurrentAuthor.Text = Connection.CurrentPresentation.Author;
                 if (Connection.CurrentRole == Connection.Role.Host)
                 {
                     labelCurrentAuthor.ForeColor = Color.Red;
-                    labelCurrentAuthor.Text += "YOU";
+                    labelCurrentAuthor.Text += " [YOU]";
                 }
                 else
                 {
                     labelCurrentAuthor.ForeColor = Color.FromArgb(0, 162, 232);
-                    labelCurrentAuthor.Text = Connection.CurrentPresentation.Author;
                 }
                 labelCurrentSlide.Text = Connection.CurrentPresentation.CurrentSlide.ToString() + "/" +
                                          Connection.CurrentPresentation.SlidesTotal.ToString();
@@ -343,8 +343,10 @@ namespace ShareP
                 if (newIp.CompareTo(labelIP.Text) != 0)
                 {
                     timerConnection.Enabled = false;
+                    int overlay = Helper.ShowOverlay();
                     FormAlert formAlert = new FormAlert("IP Changed", "Probably network was changed. You will be disconnected.", true);
                     formAlert.ShowDialog();
+                    Helper.HideOverlay(overlay);
                     Disconnect(true);
                     labelIP.Text = Helper.GetMyIP();
                     timerConnection.Enabled = true;
@@ -352,6 +354,15 @@ namespace ShareP
             }
             labelIP.Text = Helper.GetMyIP();
         }
+
+        public void ChangeUsername(string newUsername)
+        {
+            Connection.CurrentUser.Username = newUsername;
+            Properties.Settings.Default["username"] = newUsername;
+            Properties.Settings.Default.Save();
+            Log.LogInfo(String.Format("Username changed to {0}.", newUsername));
+        }
+
 
         private void CreateNewGroup(Group newGroup)
         {
@@ -489,17 +500,25 @@ namespace ShareP
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-
+            int overlay = Helper.ShowOverlay(this);
+            FormSettings formSettings = new FormSettings();
+            if (formSettings.ShowDialog() == DialogResult.OK)
+            {
+                labelUsername.Text = Connection.CurrentUser.Username;
+            }
+            Helper.HideOverlay(overlay);
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             //Connection.EstablishClientConnection("192.168.0.110");
             FormSearchServers formSearchServers = new FormSearchServers(m_searchController);
+            int overlay = Helper.ShowOverlay(this);
             if (formSearchServers.ShowDialog() == DialogResult.OK)
             {
                 LoadConnectionTab();
             }
+            Helper.HideOverlay(overlay);
         }
         
         
@@ -507,10 +526,13 @@ namespace ShareP
         private void button3_Click(object sender, EventArgs e)
         {
             FormCreateGroup formCreateGroup = new FormCreateGroup();
+            int overlay = Helper.ShowOverlay(this);
             if (formCreateGroup.ShowDialog() == DialogResult.OK)
             {
+                Helper.HideOverlay(overlay);
                 CreateNewGroup(formCreateGroup.NewGroup);
             }
+            Helper.HideOverlay(overlay);
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -555,6 +577,7 @@ namespace ShareP
                 return;
             string file = textBoxFile.Text;
             string name = textBoxPresentationName.Text;
+            int overlay = Helper.ShowOverlay();
             if (file.Length < 1)
                 (new FormAlert("No file", "Please, choose presentation file.", true)).ShowDialog();
             else
@@ -568,6 +591,7 @@ namespace ShareP
                     await Task.Run(() => PresentationController.LoadPPT(file));
 
                     formLoading.Close();
+                    StartPresentation(name);
                 }
                 catch (Exception ex)
                 {
@@ -575,8 +599,7 @@ namespace ShareP
                     (new FormAlert("Error", "Problem occured while opening the file", true)).ShowDialog();
                 }
             }
-
-            StartPresentation(name);
+            Helper.HideOverlay(overlay);
         }
 
         private void timerUsers_Tick(object sender, EventArgs e)
@@ -666,15 +689,31 @@ namespace ShareP
 
         private void labelUsername_Click(object sender, EventArgs e)
         {
-            FormChangeUsername formChangeUsername = new FormChangeUsername(m_user);
-            if (formChangeUsername.ShowDialog() == DialogResult.OK)
-                ChangeUsername(formChangeUsername.NewUsername);
+            FormChangeUsername formChangeUsername = new FormChangeUsername();
+
+            int overlay = Helper.ShowOverlay(this);
+
+            if (Connection.CurrentRole != Connection.Role.Notconnected)
+            {
+                FormAlert formAlert = new FormAlert("Error", "You are not allowed to change username when connected.", true);
+                formAlert.ShowDialog();
+            }
+            else
+                formChangeUsername.ShowDialog();
+
+            Helper.HideOverlay(overlay);
             labelUsername.Text = m_user.Username;
         }
 
         private void buttonOpenFile_Click(object sender, EventArgs e)
         {
             openFileDialog.ShowDialog();
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            FormProgress formProgress = new FormProgress();
+            formProgress.ShowDialog();
         }
     }
 }

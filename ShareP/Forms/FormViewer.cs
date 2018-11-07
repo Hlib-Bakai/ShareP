@@ -147,12 +147,24 @@ namespace ShareP.Forms
 
         private void CloseViewer()
         {
+            int overlay = Helper.ShowOverlay(this);
             FormAlert formAlert = new FormAlert("Confirm exit", "Exit viewer?");
             if (formAlert.ShowDialog() == DialogResult.OK)
             {
+                if (Connection.CurrentGroup.settings.Download)
+                {
+                    FormAlert formAlert1 = new FormAlert("Slides available", "Would you like to download slides?");
+                    if (formAlert1.ShowDialog() == DialogResult.OK)
+                    {
+                        FormProgress formProgress = new FormProgress();
+                        formProgress.ShowDialog();
+                    }
+                }
+                Helper.HideOverlay(overlay);
                 this.Close();
                 Connection.FormMenu.OnViewerClosed();
             }
+            Helper.HideOverlay(overlay);
         }
 
         private void buttonPrevious_Click(object sender, EventArgs e)
