@@ -28,13 +28,20 @@ namespace ShareP.Forms
             listView1.Items.Clear();
             timer1.Enabled = true;
             m_clientController.FindServersAsync(this);
-
         }
 
         public void SearchStopped()
         {
+
             timer1.Enabled = false;
-            //textBox1.Text = "Search finished. Found: " + listView1.Items.Count; // TODO
+            if (textBox1.InvokeRequired)  //Accessing element from another thread
+            {
+                textBox1.Invoke(new Action<string>((s) => textBox1.Text = s), "Search finished. Found: " + listView1.Items.Count);
+            }
+            else
+            {
+                textBox1.Text = "Search finished. Found: " + listView1.Items.Count;
+            }
         }
 
         public void AddGroup(Group group, string nUsers)
@@ -134,7 +141,9 @@ namespace ShareP.Forms
             {
                 textBox1.Tag = 1;
             }
-            textBox1.Text = "Searching";
+
+           textBox1.Text = "Searching";
+
             for (int i = 0; i < (int)textBox1.Tag; i++)
                 textBox1.AppendText(".");
             textBox1.Tag = (int)textBox1.Tag + 1;

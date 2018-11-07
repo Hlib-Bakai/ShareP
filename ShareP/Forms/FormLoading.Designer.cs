@@ -48,14 +48,14 @@
             // 
             this.loadingCircle1.Active = true;
             this.loadingCircle1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(232)))));
-            this.loadingCircle1.InnerCircleRadius = 8;
+            this.loadingCircle1.InnerCircleRadius = 5;
             this.loadingCircle1.Location = new System.Drawing.Point(110, 87);
             this.loadingCircle1.Name = "loadingCircle1";
-            this.loadingCircle1.NumberSpoke = 36;
-            this.loadingCircle1.OuterCircleRadius = 10;
+            this.loadingCircle1.NumberSpoke = 12;
+            this.loadingCircle1.OuterCircleRadius = 11;
             this.loadingCircle1.RotationSpeed = 20;
             this.loadingCircle1.Size = new System.Drawing.Size(75, 29);
-            this.loadingCircle1.SpokeThickness = 4;
+            this.loadingCircle1.SpokeThickness = 2;
             this.loadingCircle1.StylePreset = ShareP.LoadingCircle.StylePresets.MacOSX;
             this.loadingCircle1.TabIndex = 23;
             this.loadingCircle1.Text = "loadingCircle1";
@@ -72,6 +72,7 @@
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(232)))));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormLoading";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormLoading";
             this.ResumeLayout(false);

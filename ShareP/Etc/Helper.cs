@@ -86,7 +86,6 @@ namespace ShareP
                 parent = Connection.FormMenu;
             Overlay overlay = new Overlay();
             overlay.StartPosition = FormStartPosition.Manual;
-            
             //overlay.Parent = parent;
             overlay.Left = parent.Left;
             overlay.Top = parent.Top;
@@ -94,14 +93,23 @@ namespace ShareP
             nLast++;
             overlayList.Add(nLast, overlay);
             overlay.BringToFront();
-            overlay.Show();
+            
+            overlay.Show(parent);
+
             return nLast;
         }
 
         public static void HideOverlay(int id)
         {
             if (overlayList.ContainsKey(id))
+            {
+                try
+                {
+                    overlayList[id].Owner.Focus();
+                }
+                catch { }
                 overlayList[id].Hide();
+            }
         }
     }
 }

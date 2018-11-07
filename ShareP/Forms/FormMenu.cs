@@ -567,7 +567,7 @@ namespace ShareP
         {
             FormCreateGroup formCreateGroup = new FormCreateGroup();
             int overlay = Helper.ShowOverlay(this);
-            if (formCreateGroup.ShowDialog() == DialogResult.OK)
+            if (formCreateGroup.ShowDialog(this) == DialogResult.OK)
             {
                 Helper.HideOverlay(overlay);
                 CreateNewGroup(formCreateGroup.NewGroup);
@@ -707,6 +707,7 @@ namespace ShareP
             else if (Connection.CurrentRole == Connection.Role.Client)
             {
                 ViewerController.OnAppClosing();
+                Connection.Disconnect();
             }
             CleanTempFiles();
         }

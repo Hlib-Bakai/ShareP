@@ -28,9 +28,10 @@ namespace ShareP.Controllers
             string ipBase = Helper.GetMyIP();
             string[] ipParts = ipBase.Split('.');
             ipBase = ipParts[0] + "." + ipParts[1] + "." + ipParts[2] + ".";
+            string ipBaseSmaller = ipParts[0] + "." + ipParts[1] + ".";
             m_startedPing = 0;
             m_finishedPing = 0;
-            
+
             for (int i = 1; i < 255; i++)
             {
                 string ip = ipBase + i.ToString();
@@ -40,6 +41,21 @@ namespace ShareP.Controllers
                 p.SendAsync(ip, 100, ip);
                 m_startedPing++;
             }
+
+            //Do I need it?
+            //for (int i = 0; i < 255; i++)
+            //{
+            //    string ipBaseThree = ipBaseSmaller + i.ToString() + ".";
+
+            //    for (int j = 1; j < 255; j++)
+            //    {
+            //        string ip = ipBaseThree + j.ToString();
+            //        Ping p = new Ping();
+            //        p.PingCompleted += new PingCompletedEventHandler(p_PingCompleted);
+            //        p.SendAsync(ip, 100, ip);
+            //        m_startedPing++;
+            //    }
+            //}
         }
 
         void p_PingCompleted(object sender, PingCompletedEventArgs e)
@@ -57,9 +73,7 @@ namespace ShareP.Controllers
             }
 
             if (m_startedPing - m_finishedPing == 0)
-            {
                 m_formSearchServers.SearchStopped();
-            }
         }
     }
 }
