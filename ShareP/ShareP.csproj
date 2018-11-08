@@ -107,6 +107,12 @@
     <Compile Include="Forms\FormChangeUsername.Designer.cs">
       <DependentUpon>FormChangeUsername.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FormCheater.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormCheater.Designer.cs">
+      <DependentUpon>FormCheater.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FormCreateGroup.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -182,6 +188,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormChangeUsername.resx">
       <DependentUpon>FormChangeUsername.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormCheater.resx">
+      <DependentUpon>FormCheater.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormCreateGroup.resx">
       <DependentUpon>FormCreateGroup.cs</DependentUpon>
@@ -265,6 +274,8 @@
     <Content Include="Resources\Pencil-16.png" />
     <Content Include="Resources\Previous-48 Blue.png" />
     <Content Include="Resources\Previous-48.png" />
+    <None Include="Resources\User-Profile-Red.png" />
+    <None Include="Resources\User-Profile-Green.png" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Microsoft.Office.Core">

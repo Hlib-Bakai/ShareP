@@ -17,10 +17,11 @@ namespace ShareP.Controllers
         static private Presentations ppts;
         static private Microsoft.Office.Interop.PowerPoint.Presentation ppt;
         static private SlideShowView ssv;
+        static private FormCheater formCheater;
 
         static PresentationController()
         {
-            
+            // Constructor. Delete?
         }
 
         static public void StartApp()
@@ -41,8 +42,61 @@ namespace ShareP.Controllers
             ExportImages(Helper.GetCurrentFolder());
         }
 
-        static public void StartSlideShow()
+        static public void MarkCheater(User user)
         {
+            if (formCheater != null && !formCheater.IsDisposed)
+            {
+                formCheater.MarkCheater(user.Username);
+            }
+        }
+
+        static public void LaunchCheater()
+        {
+            formCheater = new FormCheater();
+            formCheater.Show();
+        }
+
+        static public void CloseCheater()
+        {
+            if (formCheater != null && !formCheater.IsDisposed)
+            {
+                if (formCheater.InvokeRequired)
+                    formCheater.Invoke(new Action(() => formCheater.Close()));
+                else
+                    formCheater.Close();
+                formCheater = null;
+            }
+        }
+
+        static public void MarkNotCheater(User user)
+        {
+            if (formCheater != null && !formCheater.IsDisposed)
+            {
+                formCheater.MarkNotCheater(user.Username);
+            }
+        }
+
+        static public void UserDisconneced(User user)
+        {
+            if (formCheater != null && !formCheater.IsDisposed)
+            {
+                formCheater.MarkDisconnected(user.Username);
+            }
+        }
+
+        static public void RefreshUsers()
+        {
+            if (formCheater != null && !formCheater.IsDisposed)
+            {
+                formCheater.UpdateListOfUsers();
+            }
+        }
+
+        static public void StartSlideShow(bool cheater = false)
+        {
+            if (cheater)
+                LaunchCheater();
+
             Connection.CurrentPresentation.SlidesTotal = ppt.Slides.Count;
 
             ServerController.OnPresentationStart(Connection.CurrentPresentation);
@@ -86,6 +140,7 @@ namespace ShareP.Controllers
 
         private static void OnSlideShowEnd(Microsoft.Office.Interop.PowerPoint.Presentation presentation)
         {
+            CloseCheater();
             ServerController.OnPresentationEnd();
             Connection.CurrentPresentation = null;
             Connection.FormMenu.OnPresentationFinished();
@@ -94,6 +149,7 @@ namespace ShareP.Controllers
 
         public static void OnAppClosing() 
         {
+            CloseCheater();
             CloseApp();
         }
 

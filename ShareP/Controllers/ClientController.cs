@@ -151,6 +151,12 @@ namespace ShareP
             return client.RequestServerInfo();
         }
 
+        public void ReportFocusChanged(bool focus)
+        {
+            Log.LogInfo("Client controller: report focus " + focus);
+            client.ViewerChangeFocus(focus, Connection.CurrentUser);
+        }
+
 
         public void Disconnect()
         {

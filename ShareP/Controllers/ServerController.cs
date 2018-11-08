@@ -37,6 +37,9 @@ namespace ShareP.Controllers
 
         [OperationContract]
         Presentation RequestCurrentPresentation();
+        
+        [OperationContract(IsOneWay = true)]
+        void ViewerChangeFocus(bool focus, User user);
     }
 
     public interface ISharePCallback                                 // METHODS FOR SERVER TO SEND DATA TO CLIENTS. CLIENTS SHOULD HANDLE
@@ -253,6 +256,7 @@ namespace ShareP.Controllers
         {
             Connection.CurrentGroup.RemoveUser(user);
             OnUserDisconnect(user);
+            PresentationController.UserDisconneced(user);
 
             foreach (User u in users.Keys)
             {
@@ -344,6 +348,14 @@ namespace ShareP.Controllers
         public Presentation RequestCurrentPresentation()
         {
             return Connection.CurrentPresentation;
+        }
+
+        public void ViewerChangeFocus(bool focus, User user)
+        {
+            if (!focus)
+                PresentationController.MarkCheater(user);
+            else
+                PresentationController.MarkNotCheater(user);
         }
     }
 

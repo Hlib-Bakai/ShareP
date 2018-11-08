@@ -118,12 +118,16 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.messagesTab = new System.Windows.Forms.TabPage();
+            this.button7 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.notConnectedTab = new System.Windows.Forms.TabPage();
             this.button6 = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.checkBoxCheater = new System.Windows.Forms.CheckBox();
+            this.button8 = new System.Windows.Forms.Button();
             this.panelBottom.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEditUsername)).BeginInit();
             this.panel2.SuspendLayout();
@@ -960,6 +964,9 @@
             // 
             // panelAllowed
             // 
+            this.panelAllowed.Controls.Add(this.button8);
+            this.panelAllowed.Controls.Add(this.checkBoxCheater);
+            this.panelAllowed.Controls.Add(this.label27);
             this.panelAllowed.Controls.Add(this.labelLength);
             this.panelAllowed.Controls.Add(this.buttonOpenFile);
             this.panelAllowed.Controls.Add(this.label18);
@@ -968,9 +975,9 @@
             this.panelAllowed.Controls.Add(this.button5);
             this.panelAllowed.Controls.Add(this.textBoxFile);
             this.panelAllowed.Controls.Add(this.label2);
-            this.panelAllowed.Location = new System.Drawing.Point(9, 157);
+            this.panelAllowed.Location = new System.Drawing.Point(9, 147);
             this.panelAllowed.Name = "panelAllowed";
-            this.panelAllowed.Size = new System.Drawing.Size(395, 162);
+            this.panelAllowed.Size = new System.Drawing.Size(395, 172);
             this.panelAllowed.TabIndex = 20;
             // 
             // labelLength
@@ -1017,21 +1024,21 @@
             // 
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label17.Location = new System.Drawing.Point(65, 46);
+            this.label17.Location = new System.Drawing.Point(69, 46);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(147, 20);
+            this.label17.Size = new System.Drawing.Size(143, 20);
             this.label17.TabIndex = 20;
-            this.label17.Text = "Presentation name:";
+            this.label17.Text = "Presentation name";
             // 
             // button5
             // 
             this.button5.BackColor = System.Drawing.Color.White;
             this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(232)))));
-            this.button5.Location = new System.Drawing.Point(131, 100);
+            this.button5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.button5.Location = new System.Drawing.Point(210, 130);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(128, 50);
+            this.button5.Size = new System.Drawing.Size(97, 29);
             this.button5.TabIndex = 17;
             this.button5.Text = "Start presentation";
             this.button5.UseVisualStyleBackColor = false;
@@ -1100,6 +1107,7 @@
             // 
             // messagesTab
             // 
+            this.messagesTab.Controls.Add(this.button7);
             this.messagesTab.Controls.Add(this.label3);
             this.messagesTab.Location = new System.Drawing.Point(4, 22);
             this.messagesTab.Name = "messagesTab";
@@ -1107,6 +1115,16 @@
             this.messagesTab.TabIndex = 2;
             this.messagesTab.Text = "messagesTab";
             this.messagesTab.UseVisualStyleBackColor = true;
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(25, 251);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(92, 39);
+            this.button7.TabIndex = 2;
+            this.button7.Text = "Cheater Test";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click_2);
             // 
             // label3
             // 
@@ -1179,6 +1197,39 @@
             this.label8.Size = new System.Drawing.Size(117, 33);
             this.label8.TabIndex = 2;
             this.label8.Text = "You are";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label27.Location = new System.Drawing.Point(146, 95);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(66, 20);
+            this.label27.TabIndex = 39;
+            this.label27.Text = "Cheater";
+            // 
+            // checkBoxCheater
+            // 
+            this.checkBoxCheater.AutoSize = true;
+            this.checkBoxCheater.Location = new System.Drawing.Point(218, 100);
+            this.checkBoxCheater.Name = "checkBoxCheater";
+            this.checkBoxCheater.Size = new System.Drawing.Size(15, 14);
+            this.checkBoxCheater.TabIndex = 40;
+            this.checkBoxCheater.UseVisualStyleBackColor = true;
+            // 
+            // button8
+            // 
+            this.button8.BackColor = System.Drawing.Color.White;
+            this.button8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button8.ForeColor = System.Drawing.Color.Red;
+            this.button8.Location = new System.Drawing.Point(107, 130);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(97, 29);
+            this.button8.TabIndex = 41;
+            this.button8.Text = "Clean";
+            this.button8.UseVisualStyleBackColor = false;
+            this.button8.Click += new System.EventHandler(this.button8_Click_1);
             // 
             // FormMenu
             // 
@@ -1331,6 +1382,10 @@
         private System.Windows.Forms.Label labelSDownload;
         private System.Windows.Forms.Label labelSNavigation;
         private System.Windows.Forms.Button buttonChangeGroupS;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.CheckBox checkBoxCheater;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Button button8;
     }
 }
 

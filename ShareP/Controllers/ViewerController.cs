@@ -27,14 +27,7 @@ namespace ShareP
             // Use progress somewhere
             // https://stackoverflow.com/questions/6481304/how-to-use-a-backgroundworker
         }
-
-        static public void DowlonadSlides()
-        {
-
-        }
-
         
-
         static public void LoadViewer()
         {
             Notification.HideAll();

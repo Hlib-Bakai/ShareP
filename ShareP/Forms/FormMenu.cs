@@ -75,8 +75,8 @@ namespace ShareP
             };
 
             LoadConnectionTab();
-
-            PresentationController.StartSlideShow();
+            
+            PresentationController.StartSlideShow(checkBoxCheater.Checked);
         }
 
         public void OnPresentationStart()   // Client side
@@ -768,6 +768,20 @@ namespace ShareP
                 LoadConnectionTab();
             }
             Helper.HideOverlay(overlay);
+        }
+
+        private void button7_Click_2(object sender, EventArgs e)
+        {
+            FormCheater formCheater = new FormCheater();
+            formCheater.Show();
+            formCheater.MarkNotCheater("test5");
+        }
+
+        private void button8_Click_1(object sender, EventArgs e)
+        {
+            textBoxFile.Text = "";
+            textBoxPresentationName.Text = "";
+            checkBoxCheater.Checked = false;
         }
     }
 }

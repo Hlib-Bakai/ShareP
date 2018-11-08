@@ -274,6 +274,12 @@ public interface IShareP
     
     [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/RequestCurrentPresentation", ReplyAction="http://ShareP/IShareP/RequestCurrentPresentationResponse")]
     System.Threading.Tasks.Task<ShareP.Presentation> RequestCurrentPresentationAsync();
+    
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/ViewerChangeFocus")]
+    void ViewerChangeFocus(bool focus, ShareP.User user);
+    
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/ViewerChangeFocus")]
+    System.Threading.Tasks.Task ViewerChangeFocusAsync(bool focus, ShareP.User user);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -417,5 +423,15 @@ public partial class SharePClient : System.ServiceModel.DuplexClientBase<IShareP
     public System.Threading.Tasks.Task<ShareP.Presentation> RequestCurrentPresentationAsync()
     {
         return base.Channel.RequestCurrentPresentationAsync();
+    }
+    
+    public void ViewerChangeFocus(bool focus, ShareP.User user)
+    {
+        base.Channel.ViewerChangeFocus(focus, user);
+    }
+    
+    public System.Threading.Tasks.Task ViewerChangeFocusAsync(bool focus, ShareP.User user)
+    {
+        return base.Channel.ViewerChangeFocusAsync(focus, user);
     }
 }

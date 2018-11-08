@@ -15,14 +15,14 @@ namespace ShareP.Forms
     {
         public int curentViewerSlide = 0;
         public bool following = true;
-        
+
 
         public FormViewer()
         {
             InitializeComponent();
             loadingCircle1.NumberSpoke = 36;
         }
-        
+
         public void LoadSlide(int index, bool byButton = false)
         {
             if (!byButton && !following)
@@ -93,7 +93,7 @@ namespace ShareP.Forms
                 timerRetryLoad.Enabled = true;
             }
         }
-        
+
 
         private void NextSlide()
         {
@@ -167,6 +167,13 @@ namespace ShareP.Forms
             Helper.HideOverlay(overlay);
         }
 
+        private void ReportFocus(bool focus)
+        {
+            Log.LogInfo("Focus reported: " + focus);
+            if (Connection.clientConnection != null)
+                Connection.clientConnection.ReportFocusChanged(focus);
+        }
+
         private void buttonPrevious_Click(object sender, EventArgs e)
         {
             PreviousSlide();
@@ -213,6 +220,19 @@ namespace ShareP.Forms
             else
                 buttonFollow.ForeColor = Color.FromArgb(0, 162, 232);
             BlinkeGreen = !BlinkeGreen;
+        }
+        
+
+        protected override void OnLostFocus(EventArgs e)
+        {
+            base.OnLostFocus(e);
+            ReportFocus(false);
+        }
+
+        protected override void OnGotFocus(EventArgs e)
+        {
+            base.OnGotFocus(e);
+            ReportFocus(true);
         }
     }
 }
