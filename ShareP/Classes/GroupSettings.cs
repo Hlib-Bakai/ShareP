@@ -15,7 +15,6 @@ namespace ShareP
             NConnected = false;
             NDisconnected = false;
             NChat = false;
-            NCheater = false;
         }
 
         public bool Download
@@ -39,11 +38,6 @@ namespace ShareP
             set;
         }
         public bool NChat
-        {
-            get;
-            set;
-        }
-        public bool NCheater
         {
             get;
             set;

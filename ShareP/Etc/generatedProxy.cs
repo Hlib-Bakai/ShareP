@@ -280,6 +280,24 @@ public interface IShareP
     
     [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/ViewerChangeFocus")]
     System.Threading.Tasks.Task ViewerChangeFocusAsync(bool focus, ShareP.User user);
+    
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/ClPresentationStarted")]
+    void ClPresentationStarted(ShareP.Presentation presentation, ShareP.User user);
+    
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/ClPresentationStarted")]
+    System.Threading.Tasks.Task ClPresentationStartedAsync(ShareP.Presentation presentation, ShareP.User user);
+    
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/ClPresentationNextSlide")]
+    void ClPresentationNextSlide(int slide);
+    
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/ClPresentationNextSlide")]
+    System.Threading.Tasks.Task ClPresentationNextSlideAsync(int slide);
+    
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/ClPresentationEnd")]
+    void ClPresentationEnd();
+    
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/ClPresentationEnd")]
+    System.Threading.Tasks.Task ClPresentationEndAsync();
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -318,6 +336,9 @@ public interface ISharePCallback
     
     [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/GroupClose")]
     void GroupClose();
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/ClRequestSlide", ReplyAction="http://ShareP/IShareP/ClRequestSlideResponse")]
+    byte[] ClRequestSlide(int slide);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -433,5 +454,35 @@ public partial class SharePClient : System.ServiceModel.DuplexClientBase<IShareP
     public System.Threading.Tasks.Task ViewerChangeFocusAsync(bool focus, ShareP.User user)
     {
         return base.Channel.ViewerChangeFocusAsync(focus, user);
+    }
+    
+    public void ClPresentationStarted(ShareP.Presentation presentation, ShareP.User user)
+    {
+        base.Channel.ClPresentationStarted(presentation, user);
+    }
+    
+    public System.Threading.Tasks.Task ClPresentationStartedAsync(ShareP.Presentation presentation, ShareP.User user)
+    {
+        return base.Channel.ClPresentationStartedAsync(presentation, user);
+    }
+    
+    public void ClPresentationNextSlide(int slide)
+    {
+        base.Channel.ClPresentationNextSlide(slide);
+    }
+    
+    public System.Threading.Tasks.Task ClPresentationNextSlideAsync(int slide)
+    {
+        return base.Channel.ClPresentationNextSlideAsync(slide);
+    }
+    
+    public void ClPresentationEnd()
+    {
+        base.Channel.ClPresentationEnd();
+    }
+    
+    public System.Threading.Tasks.Task ClPresentationEndAsync()
+    {
+        return base.Channel.ClPresentationEndAsync();
     }
 }

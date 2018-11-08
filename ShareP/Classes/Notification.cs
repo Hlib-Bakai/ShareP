@@ -10,10 +10,12 @@ namespace ShareP
     static class Notification
     {
         public static NotifyIcon notifyIcon;
+        public static NotificationType type;
 
-        public static void Show(string title, string text, ToolTipIcon toolTipIcon = ToolTipIcon.Info)
+        public static void Show(string title, string text, NotificationType ntype, ToolTipIcon toolTipIcon = ToolTipIcon.Info)
         {
             notifyIcon.ShowBalloonTip(1000, title, text, toolTipIcon);
+            type = ntype;
         }
 
         public static void HideAll()

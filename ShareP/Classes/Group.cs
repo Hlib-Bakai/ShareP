@@ -58,10 +58,4 @@ namespace ShareP
         }
     }
 
-    public enum GroupNavigation
-    {
-        FollowOnly,
-        Backwards,
-        BothDirections
-    }
 }

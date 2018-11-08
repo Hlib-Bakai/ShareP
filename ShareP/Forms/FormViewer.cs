@@ -169,6 +169,8 @@ namespace ShareP.Forms
 
         private void ReportFocus(bool focus)
         {
+            if (Connection.CurrentRole != Role.Client)
+                return;
             Log.LogInfo("Focus reported: " + focus);
             if (Connection.clientConnection != null)
                 Connection.clientConnection.ReportFocusChanged(focus);

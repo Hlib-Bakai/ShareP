@@ -18,7 +18,8 @@ namespace ShareP
         {
             BackgroundWorker backgroundWorker = new BackgroundWorker();
 
-            backgroundWorker.DoWork += Connection.clientConnection.DownloadPresentationSlidesOnBackground;
+            if (Connection.CurrentRole == Role.Client)
+                backgroundWorker.DoWork += Connection.clientConnection.DownloadPresentationSlidesOnBackground;
             //backgroundWorker.ProgressChanged += TryLoadImage;
             //backgroundWorker.WorkerReportsProgress = true;
             Connection.clientConnection.downloadingWorker = backgroundWorker;
@@ -39,7 +40,12 @@ namespace ShareP
         static public void LoadSlide(int slide)
         {
             if (IsWorking)
-                formViewer.LoadSlide(slide);
+            {
+                if (formViewer.InvokeRequired)
+                    formViewer.Invoke(new Action<int>((s) => formViewer.LoadSlide(s)), slide);
+                else
+                    formViewer.LoadSlide(slide);
+            }
         }
 
         static public void TryLoadImage(object sender, System.ComponentModel.ProgressChangedEventArgs e) // Delete maybe
@@ -76,7 +82,10 @@ namespace ShareP
         
         static public void EndPresentation()
         {
-            formViewer.Close();
+            if (formViewer.InvokeRequired)
+                formViewer.Invoke(new Action(() => formViewer.Close()));
+            else
+                formViewer.Close();
             formViewer = null;
             
             if (Connection.CurrentGroup.settings.Download)
@@ -93,7 +102,10 @@ namespace ShareP
                 FormAlert formAlert2 = new FormAlert("Presentation finished", "Thank you for using ShareP!", true);
                 formAlert2.ShowDialog();
             }
-            Connection.FormMenu.OnViewerClosed();
+            if (Connection.FormMenu.InvokeRequired)
+                Connection.FormMenu.Invoke(new Action(() => Connection.FormMenu.OnViewerClosed()));
+            else
+                Connection.FormMenu.OnViewerClosed();
         }
 
         static public void OnAppClosing()

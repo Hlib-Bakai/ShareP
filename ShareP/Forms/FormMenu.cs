@@ -79,12 +79,15 @@ namespace ShareP
             PresentationController.StartSlideShow(checkBoxCheater.Checked);
         }
 
-        public void OnPresentationStart()   // Client side
+        public void OnPresentationStart()   // Viewer side
         {
             if (this.WindowState != FormWindowState.Normal && (bool)Properties.Settings.Default["nPresentation"] &&
                                                               !(bool)Properties.Settings.Default["autojoin"])
-                Notification.Show("Presentation", "Presentation " + Connection.CurrentPresentation.Name + " started");
-            LoadPresentationTab();
+                Notification.Show("Presentation", "Presentation " + Connection.CurrentPresentation.Name + " started", NotificationType.Presentation);
+            if (InvokeRequired)
+                Invoke(new Action(() => LoadPresentationTab()));
+            else
+                LoadPresentationTab();
             ViewerController.StartLoadingSlides();
             if ((bool)Properties.Settings.Default["autojoin"])
                 StartViewer();
@@ -164,7 +167,7 @@ namespace ShareP
 
         private void Disconnect(bool force = false)
         {
-            if (Connection.CurrentRole == Connection.Role.Host)
+            if (Connection.CurrentRole == Role.Host)
             {
                 int overlay = Helper.ShowOverlay(this);
                 FormAlert formAlert = new FormAlert("Confirmation", "Close the group?");
@@ -178,7 +181,7 @@ namespace ShareP
                 }
                 Helper.HideOverlay(overlay);
             }
-            else if (Connection.CurrentRole == Connection.Role.Client)
+            else if (Connection.CurrentRole == Role.Client)
             {
                 int overlay = Helper.ShowOverlay(this);
                 FormAlert formAlert = new FormAlert("Confirmation", "Disconnect from the group?");
@@ -212,16 +215,16 @@ namespace ShareP
             menuPicker.Height = buttonConnection.Height;
             menuPicker.Top = buttonConnection.Top;
 
-            if (Connection.CurrentRole != Connection.Role.Notconnected)
+            if (Connection.CurrentRole != Role.Notconnected)
             {
                 labelConStatus.Text = "Connected";
                 labelConStatus.ForeColor = Color.Green;
                 labelGroupName.Text = Connection.CurrentGroup.name;
                 labelGroupHost.Text = Connection.CurrentGroup.hostName;
                 buttonDisconnect.Show();
-                if (Connection.CurrentRole == Connection.Role.Client)
+                if (Connection.CurrentRole == Role.Client)
                     tabsConnection.SelectTab("tabConnected");
-                else if (Connection.CurrentRole == Connection.Role.Host)
+                else if (Connection.CurrentRole == Role.Host)
                 {
                     tabsConnection.SelectTab("tabConnectedHost");
                     FillHostUsersList();
@@ -285,7 +288,7 @@ namespace ShareP
             menuPicker.Height = buttonPresentation.Height;
             menuPicker.Top = buttonPresentation.Top;
 
-            if (Connection.CurrentRole == Connection.Role.Notconnected)
+            if (Connection.CurrentRole == Role.Notconnected)
             {
                 tabsMenu.SelectTab("notConnectedTab");
                 return;
@@ -295,7 +298,7 @@ namespace ShareP
             {
                 labelCurrentName.Text = Connection.CurrentPresentation.Name;
                 labelCurrentAuthor.Text = Connection.CurrentPresentation.Author;
-                if (Connection.CurrentRole == Connection.Role.Host)
+                if (Connection.CurrentPresentation.Author.CompareTo(Connection.CurrentUser.Username) == 0)
                 {
                     labelCurrentAuthor.ForeColor = Color.Red;
                     labelCurrentAuthor.Text += " [YOU]";
@@ -306,7 +309,7 @@ namespace ShareP
                 }
                 labelCurrentSlide.Text = Connection.CurrentPresentation.CurrentSlide.ToString() + "/" +
                                          Connection.CurrentPresentation.SlidesTotal.ToString();
-                if (Connection.CurrentRole != Connection.Role.Host)  // TODO Check if not already joined
+                if (Connection.CurrentPresentation.Author.CompareTo(Connection.CurrentUser.Username) != 0)  
                     buttonJoin.Visible = true;
                 else
                     buttonJoin.Visible = false;
@@ -320,7 +323,7 @@ namespace ShareP
                 buttonJoin.Visible = false;
             }
 
-            if (Connection.CurrentRole == Connection.Role.Client && !Connection.CurrentGroup.settings.Viewerspresent)
+            if (Connection.CurrentRole == Role.Client && !Connection.CurrentGroup.settings.Viewerspresent)
             {
                 panelAllowed.Hide();
 
@@ -337,6 +340,17 @@ namespace ShareP
                 else
                     panelAllowed.Hide();
             }
+
+            if (Connection.CurrentRole == Role.Host)
+            {
+                labelCheater.Visible = true;
+                checkBoxCheater.Visible = true;
+            }
+            else
+            {
+                labelCheater.Visible = false;
+                checkBoxCheater.Visible = false;
+            }
             tabsMenu.SelectTab("presentationTab");
         }
 
@@ -346,7 +360,7 @@ namespace ShareP
             menuPicker.Height = buttonMessages.Height;
             menuPicker.Top = buttonMessages.Top;
 
-            if (Connection.CurrentRole == Connection.Role.Notconnected)
+            if (Connection.CurrentRole == Role.Notconnected)
             {
                 tabsMenu.SelectTab("notConnectedTab");
                 return;
@@ -372,7 +386,7 @@ namespace ShareP
 
         private void CheckStatusConnection()
         {
-            if (Connection.CurrentRole == Connection.Role.Notconnected)
+            if (Connection.CurrentRole == Role.Notconnected)
             {
                 ChangeStatusConnection();
             }
@@ -551,7 +565,6 @@ namespace ShareP
 
         private void button4_Click(object sender, EventArgs e)
         {
-            //Connection.EstablishClientConnection("192.168.0.110");
             FormSearchServers formSearchServers = new FormSearchServers(m_searchController);
             int overlay = Helper.ShowOverlay(this);
             if (formSearchServers.ShowDialog() == DialogResult.OK)
@@ -611,10 +624,20 @@ namespace ShareP
             return true;
         }
 
+
         private async void button5_Click_1(object sender, EventArgs e)
         {
             if (!CheckLengthPresentationName())
                 return;
+            if (!PresentationController.CheckApp())
+            {
+                int ov = Helper.ShowOverlay(this);
+                FormAlert formAlert = new FormAlert("PowerPoint error", "Make sure You have installed PowerPoint 2007 or newer", true);
+                formAlert.ShowDialog();
+                Helper.HideOverlay(ov);
+                return;
+            }
+
             string file = textBoxFile.Text;
             string name = textBoxPresentationName.Text;
             int overlay = Helper.ShowOverlay();
@@ -674,7 +697,18 @@ namespace ShareP
         private void notifyIcon1_BalloonTipClicked(object sender, EventArgs e)
         {
             RestoreWindow();
-            LoadPresentationTab();
+            switch(Notification.type)
+            {
+                case NotificationType.Chat:
+                    LoadMessagesTab();
+                    break;
+                case NotificationType.Connection:
+                    LoadConnectionTab();
+                    break;
+                case NotificationType.Presentation:
+                    LoadPresentationTab();
+                    break;
+            }
         }
 
         private void button7_Click_1(object sender, EventArgs e) // Delete
@@ -699,12 +733,12 @@ namespace ShareP
 
         private void FormMenu_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (Connection.CurrentRole == Connection.Role.Host)
+            if (Connection.CurrentRole == Role.Host)
             {
                 ServerController.OnGroupClose();
                 PresentationController.OnAppClosing();
             }
-            else if (Connection.CurrentRole == Connection.Role.Client)
+            else if (Connection.CurrentRole == Role.Client)
             {
                 ViewerController.OnAppClosing();
                 Connection.Disconnect();
@@ -734,7 +768,7 @@ namespace ShareP
 
             int overlay = Helper.ShowOverlay(this);
 
-            if (Connection.CurrentRole != Connection.Role.Notconnected)
+            if (Connection.CurrentRole != Role.Notconnected)
             {
                 FormAlert formAlert = new FormAlert("Error", "You are not allowed to change username when connected.", true);
                 formAlert.ShowDialog();

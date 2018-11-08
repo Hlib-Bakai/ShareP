@@ -169,19 +169,6 @@ namespace ShareP
             }
         }
 
-        public enum Role
-        {
-            Host,
-            Client,
-            Notconnected
-        }
-
-        public enum ConnectionResult
-        {
-            Success,
-            WrongPassword,
-            Error
-        }
 
     }
 }

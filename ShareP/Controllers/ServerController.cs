@@ -40,6 +40,18 @@ namespace ShareP.Controllers
         
         [OperationContract(IsOneWay = true)]
         void ViewerChangeFocus(bool focus, User user);
+
+
+        // Client presentations
+  
+        [OperationContract(IsOneWay = true)]
+        void ClPresentationStarted(Presentation presentation, User user);
+
+        [OperationContract(IsOneWay = true)]
+        void ClPresentationNextSlide(int slide);
+
+        [OperationContract(IsOneWay = true)]
+        void ClPresentationEnd();
     }
 
     public interface ISharePCallback                                 // METHODS FOR SERVER TO SEND DATA TO CLIENTS. CLIENTS SHOULD HANDLE
@@ -76,6 +88,9 @@ namespace ShareP.Controllers
 
         [OperationContract(IsOneWay = true)]
         void GroupClose();
+
+        [OperationContract]
+        byte[] ClRequestSlide(int slide);
     }
 
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single,
@@ -118,6 +133,8 @@ namespace ShareP.Controllers
                 foreach (User key in users.Keys)
                 {
                     ISharePCallback callback = users[key];
+                    if (key.Username.CompareTo(presentation.Author) == 0)
+                        continue;
                     try
                     {
                         callback.PresentationStarted(presentation);
@@ -280,13 +297,13 @@ namespace ShareP.Controllers
         private void OnUserConnect(User user)
         {
             if (Connection.CurrentGroup.settings.NConnected)
-                Notification.Show("User connected", user.Username + " joined");
+                Notification.Show("User connected", user.Username + " joined", NotificationType.Connection);
         }
 
         private void OnUserDisconnect(User user)
         {
             if (Connection.CurrentGroup.settings.NDisconnected)
-                Notification.Show("User disconnected", user.Username + " left");
+                Notification.Show("User disconnected", user.Username + " left", NotificationType.Connection);
         }
 
         public void Say(Message msg)
@@ -356,6 +373,109 @@ namespace ShareP.Controllers
                 PresentationController.MarkCheater(user);
             else
                 PresentationController.MarkNotCheater(user);
+        }
+
+        public async void ClPresentationStarted(Presentation presentation, User user)
+        {
+            Connection.CurrentPresentation = presentation;
+            await Task.Factory.StartNew(() => LoadSlides());
+            OnPresentationStart(presentation);
+            Connection.FormMenu.OnPresentationStart();
+        }
+
+        public void LoadSlides()
+        {
+            lock (syncObj)
+            {
+                ISharePCallback presentationHost = null;
+                if (SearchUsersByName(Connection.CurrentPresentation.Author))
+                {
+                    foreach (User key in users.Keys)
+                    {
+                        if (key.Username.CompareTo(Connection.CurrentPresentation.Author) == 0)
+                            presentationHost = users[key];
+                    }
+                }
+                if (presentationHost == null)
+                {
+                    Log.LogInfo("Can't load presentation. Host not found");
+                    return;
+                }
+
+                DirectoryInfo din;
+                DirectoryInfo dout;
+                string path = Helper.GetCurrentFolder() + "tout/";
+                string innerPath = Helper.GetCurrentFolder() + "tin/";
+                if (!Directory.Exists(path))
+                {
+                    din = Directory.CreateDirectory(path);
+                }
+                else
+                {
+                    din = new DirectoryInfo(path);
+                    foreach (FileInfo file in din.GetFiles())
+                    {
+                        file.Delete();
+                    }
+                    foreach (DirectoryInfo dir in din.GetDirectories())
+                    {
+                        dir.Delete(true);
+                    }
+                }
+                din.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
+
+                if (!Directory.Exists(innerPath))
+                {
+                    dout = Directory.CreateDirectory(innerPath);
+                }
+                else
+                {
+                    dout = new DirectoryInfo(innerPath);
+                    foreach (FileInfo file in dout.GetFiles())
+                    {
+                        file.Delete();
+                    }
+                    foreach (DirectoryInfo dir in dout.GetDirectories())
+                    {
+                        dir.Delete(true);
+                    }
+                }
+                dout.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
+
+                try
+                {
+                    Log.LogInfo("[Server]Start loading slides (" + Connection.CurrentPresentation.SlidesTotal + ")");
+                    for (int i = 1; i <= Connection.CurrentPresentation.SlidesTotal; i++)
+                    {
+                        byte[] file = presentationHost.ClRequestSlide(i);
+                        FileStream fileStream = new FileStream(path + (i.ToString() + ".dat"), FileMode.Create, FileAccess.ReadWrite);
+                        fileStream.Write(file, 0, file.Length);
+                        FileStream fileStreamInner = new FileStream(innerPath + (i.ToString() + ".dat"), FileMode.Create, FileAccess.ReadWrite);
+                        fileStreamInner.Write(file, 0, file.Length);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.LogException(ex, "[Server]Error loading slide");
+                }
+            }
+        }
+
+        public void ClPresentationNextSlide(int slide)
+        {
+            OnPresentationNextSlide(slide);
+            Connection.CurrentPresentation.CurrentSlide = slide;
+            if (ViewerController.IsWorking)
+                ViewerController.LoadSlide(slide);
+        }
+
+        public void ClPresentationEnd()
+        {
+            OnPresentationEnd();
+            if (ViewerController.IsWorking)
+                ViewerController.EndPresentation();
+            Connection.CurrentPresentation = null;
+            Connection.FormMenu.OnPresentationFinished();
         }
     }
 

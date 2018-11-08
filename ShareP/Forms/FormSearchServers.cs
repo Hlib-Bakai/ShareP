@@ -97,21 +97,21 @@ namespace ShareP.Forms
 
                 switch (Connection.EstablishClientConnection(ip, password))
                 {
-                    case Connection.ConnectionResult.Error:
+                    case ConnectionResult.Error:
                         int overlay = Helper.ShowOverlay(this);
                         FormAlert formAlertError = new FormAlert("Error", "Some error occured during connection.", true);
                         formAlertError.ShowDialog();
                         Helper.HideOverlay(overlay);
                         StartSearch();
                         break;
-                    case Connection.ConnectionResult.WrongPassword:
+                    case ConnectionResult.WrongPassword:
                         int overlay2 = Helper.ShowOverlay(this);
                         FormAlert formAlertPassword = new FormAlert("Wrong password", "Password you entered is incorrect. Prease try again.", true);
                         formAlertPassword.ShowDialog();
                         Helper.HideOverlay(overlay2);
                         Connect();
                         break;
-                    case Connection.ConnectionResult.Success:
+                    case ConnectionResult.Success:
                         this.DialogResult = DialogResult.OK;
                         this.Close();
                         break;

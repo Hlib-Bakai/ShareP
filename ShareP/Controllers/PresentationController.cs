@@ -24,6 +24,24 @@ namespace ShareP.Controllers
             // Constructor. Delete?
         }
 
+        static public bool CheckApp()
+        {
+            try
+            {
+                app = new Application();
+                ppts = app.Presentations;
+            }
+            catch
+            {
+                app = null;
+                ppts = null;
+                return false;
+            }
+            app = null;
+            ppts = null;
+            return true;
+        }
+
         static public void StartApp()
         {
             app = new Application();
@@ -99,7 +117,10 @@ namespace ShareP.Controllers
 
             Connection.CurrentPresentation.SlidesTotal = ppt.Slides.Count;
 
-            ServerController.OnPresentationStart(Connection.CurrentPresentation);
+            if (Connection.CurrentRole == Role.Host)
+                ServerController.OnPresentationStart(Connection.CurrentPresentation);
+            else
+                Connection.clientConnection.ClPresentationStart(Connection.CurrentPresentation);
 
             app.Visible = MsoTriState.msoTrue; // Window showing
             SlideShowSettings sss = ppt.SlideShowSettings;
@@ -134,14 +155,20 @@ namespace ShareP.Controllers
         private static void OnNextSlide(SlideShowWindow Wn)
         {
             int currentSlide = Wn.View.CurrentShowPosition;
-            ServerController.OnPresentationNextSlide(currentSlide);
+            if (Connection.CurrentRole == Role.Host)
+                ServerController.OnPresentationNextSlide(currentSlide);
+            else
+                Connection.clientConnection.ClPresentationNextSlide(currentSlide);
             Connection.CurrentPresentation.CurrentSlide = currentSlide;
         }
 
         private static void OnSlideShowEnd(Microsoft.Office.Interop.PowerPoint.Presentation presentation)
         {
             CloseCheater();
-            ServerController.OnPresentationEnd();
+            if (Connection.CurrentRole == Role.Host)
+                ServerController.OnPresentationEnd();
+            else
+                Connection.clientConnection.ClPresentationEnd();
             Connection.CurrentPresentation = null;
             Connection.FormMenu.OnPresentationFinished();
             CloseApp();

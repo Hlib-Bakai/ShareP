@@ -104,7 +104,7 @@ namespace ShareP
         }
 
 
-        public Connection.ConnectionResult EstablishClientConnection(string ip, byte[] password = null)
+        public ConnectionResult EstablishClientConnection(string ip, byte[] password = null)
         {
             if (client == null)
             {
@@ -131,19 +131,19 @@ namespace ShareP
                     if (client.Connect(Connection.CurrentUser))
                     {
                         Connection.CurrentPresentation = client.RequestCurrentPresentation();
-                        return Connection.ConnectionResult.Success;
+                        return ConnectionResult.Success;
                     }
                     else
-                        return Connection.ConnectionResult.WrongPassword;
+                        return ConnectionResult.WrongPassword;
                 }
                 catch (Exception e)
                 {
                     client = null;
                     Log.LogException(e, "Error during connection.");
-                    return Connection.ConnectionResult.Error;
+                    return ConnectionResult.Error;
                 }
             }
-            return Connection.ConnectionResult.Error;
+            return ConnectionResult.Error;
         }
 
         public Dictionary<string, string> RequestServerInfo()
@@ -231,6 +231,21 @@ namespace ShareP
             // TODO ?
         }
 
+        public void ClPresentationStart(Presentation presentation)
+        {
+            client.ClPresentationStarted(presentation, Connection.CurrentUser);
+        }
+
+        public void ClPresentationNextSlide(int slide)
+        {
+            client.ClPresentationNextSlide(slide);
+        }
+
+        public void ClPresentationEnd()
+        {
+            client.ClPresentationEnd();
+        }
+
         public void GroupSettingsChanged(Dictionary<string, string> newSettings)
         {
             if (newSettings.ContainsKey("GroupName"))
@@ -249,6 +264,21 @@ namespace ShareP
                     Connection.CurrentGroup.navigation = GroupNavigation.BothDirections;
                 else if (newSettings["GroupNavigation"].CompareTo("Follow") == 0)
                     Connection.CurrentGroup.navigation = GroupNavigation.FollowOnly;
+            }
+        }
+
+        public byte[] ClRequestSlide(int slide)
+        {
+            try
+            {
+                string pathToSlide = Helper.GetCurrentFolder() + @"tout\" + slide.ToString() + ".dat";
+                byte[] buffer = File.ReadAllBytes(pathToSlide);
+                return buffer;
+            }
+            catch (Exception ex)
+            {
+                Log.LogException(ex, "Failed to send slide");
+                return null;
             }
         }
     }

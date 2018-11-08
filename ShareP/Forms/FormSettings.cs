@@ -53,7 +53,7 @@ namespace ShareP.Forms
         {
             int overlay = Helper.ShowOverlay(this);
             FormChangeUsername formChangeUsername = new FormChangeUsername();
-            if (Connection.CurrentRole != Connection.Role.Notconnected)
+            if (Connection.CurrentRole != Role.Notconnected)
             {
                 FormAlert formAlert = new FormAlert("Error", "You are not allowed to change username when connected.", true);
                 formAlert.ShowDialog();

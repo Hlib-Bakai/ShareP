@@ -56,12 +56,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.timerConnection = new System.Windows.Forms.Timer(this.components);
-            this.timerUsers = new System.Windows.Forms.Timer(this.components);
-            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabsMenu = new ShareP.TabControlWithoutHeader();
             this.connectionTab = new System.Windows.Forms.TabPage();
             this.buttonDisconnect = new System.Windows.Forms.Button();
@@ -105,6 +99,9 @@
             this.label19 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.panelAllowed = new System.Windows.Forms.Panel();
+            this.button8 = new System.Windows.Forms.Button();
+            this.checkBoxCheater = new System.Windows.Forms.CheckBox();
+            this.labelCheater = new System.Windows.Forms.Label();
             this.labelLength = new System.Windows.Forms.Label();
             this.buttonOpenFile = new System.Windows.Forms.Button();
             this.label18 = new System.Windows.Forms.Label();
@@ -125,9 +122,12 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.label27 = new System.Windows.Forms.Label();
-            this.checkBoxCheater = new System.Windows.Forms.CheckBox();
-            this.button8 = new System.Windows.Forms.Button();
+            this.timerConnection = new System.Windows.Forms.Timer(this.components);
+            this.timerUsers = new System.Windows.Forms.Timer(this.components);
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelBottom.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEditUsername)).BeginInit();
             this.panel2.SuspendLayout();
@@ -140,7 +140,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
             this.tabsMenu.SuspendLayout();
             this.connectionTab.SuspendLayout();
             this.tabsConnection.SuspendLayout();
@@ -152,6 +151,7 @@
             this.panelNotAllowed.SuspendLayout();
             this.messagesTab.SuspendLayout();
             this.notConnectedTab.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelBottom
@@ -447,46 +447,6 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(421, 341);
             this.panel3.TabIndex = 5;
-            // 
-            // timerConnection
-            // 
-            this.timerConnection.Enabled = true;
-            this.timerConnection.Tick += new System.EventHandler(this.timerConnection_Tick);
-            // 
-            // timerUsers
-            // 
-            this.timerUsers.Tick += new System.EventHandler(this.timerUsers_Tick);
-            // 
-            // notifyIcon1
-            // 
-            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
-            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-            this.notifyIcon1.Text = "ShareP";
-            this.notifyIcon1.Visible = true;
-            this.notifyIcon1.BalloonTipClicked += new System.EventHandler(this.notifyIcon1_BalloonTipClicked);
-            this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openToolStripMenuItem,
-            this.closeToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(104, 48);
-            // 
-            // openToolStripMenuItem
-            // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.openToolStripMenuItem.Text = "Open";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
-            // 
-            // closeToolStripMenuItem
-            // 
-            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.closeToolStripMenuItem.Text = "Close";
-            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
             // tabsMenu
             // 
@@ -966,7 +926,7 @@
             // 
             this.panelAllowed.Controls.Add(this.button8);
             this.panelAllowed.Controls.Add(this.checkBoxCheater);
-            this.panelAllowed.Controls.Add(this.label27);
+            this.panelAllowed.Controls.Add(this.labelCheater);
             this.panelAllowed.Controls.Add(this.labelLength);
             this.panelAllowed.Controls.Add(this.buttonOpenFile);
             this.panelAllowed.Controls.Add(this.label18);
@@ -979,6 +939,39 @@
             this.panelAllowed.Name = "panelAllowed";
             this.panelAllowed.Size = new System.Drawing.Size(395, 172);
             this.panelAllowed.TabIndex = 20;
+            // 
+            // button8
+            // 
+            this.button8.BackColor = System.Drawing.Color.White;
+            this.button8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button8.ForeColor = System.Drawing.Color.Red;
+            this.button8.Location = new System.Drawing.Point(107, 130);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(97, 29);
+            this.button8.TabIndex = 41;
+            this.button8.Text = "Clean";
+            this.button8.UseVisualStyleBackColor = false;
+            this.button8.Click += new System.EventHandler(this.button8_Click_1);
+            // 
+            // checkBoxCheater
+            // 
+            this.checkBoxCheater.AutoSize = true;
+            this.checkBoxCheater.Location = new System.Drawing.Point(218, 100);
+            this.checkBoxCheater.Name = "checkBoxCheater";
+            this.checkBoxCheater.Size = new System.Drawing.Size(15, 14);
+            this.checkBoxCheater.TabIndex = 40;
+            this.checkBoxCheater.UseVisualStyleBackColor = true;
+            // 
+            // labelCheater
+            // 
+            this.labelCheater.AutoSize = true;
+            this.labelCheater.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelCheater.Location = new System.Drawing.Point(146, 95);
+            this.labelCheater.Name = "labelCheater";
+            this.labelCheater.Size = new System.Drawing.Size(66, 20);
+            this.labelCheater.TabIndex = 39;
+            this.labelCheater.Text = "Cheater";
             // 
             // labelLength
             // 
@@ -1198,38 +1191,45 @@
             this.label8.TabIndex = 2;
             this.label8.Text = "You are";
             // 
-            // label27
+            // timerConnection
             // 
-            this.label27.AutoSize = true;
-            this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label27.Location = new System.Drawing.Point(146, 95);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(66, 20);
-            this.label27.TabIndex = 39;
-            this.label27.Text = "Cheater";
+            this.timerConnection.Enabled = true;
+            this.timerConnection.Tick += new System.EventHandler(this.timerConnection_Tick);
             // 
-            // checkBoxCheater
+            // timerUsers
             // 
-            this.checkBoxCheater.AutoSize = true;
-            this.checkBoxCheater.Location = new System.Drawing.Point(218, 100);
-            this.checkBoxCheater.Name = "checkBoxCheater";
-            this.checkBoxCheater.Size = new System.Drawing.Size(15, 14);
-            this.checkBoxCheater.TabIndex = 40;
-            this.checkBoxCheater.UseVisualStyleBackColor = true;
+            this.timerUsers.Tick += new System.EventHandler(this.timerUsers_Tick);
             // 
-            // button8
+            // notifyIcon1
             // 
-            this.button8.BackColor = System.Drawing.Color.White;
-            this.button8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button8.ForeColor = System.Drawing.Color.Red;
-            this.button8.Location = new System.Drawing.Point(107, 130);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(97, 29);
-            this.button8.TabIndex = 41;
-            this.button8.Text = "Clean";
-            this.button8.UseVisualStyleBackColor = false;
-            this.button8.Click += new System.EventHandler(this.button8_Click_1);
+            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "ShareP";
+            this.notifyIcon1.Visible = true;
+            this.notifyIcon1.BalloonTipClicked += new System.EventHandler(this.notifyIcon1_BalloonTipClicked);
+            this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openToolStripMenuItem,
+            this.closeToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(104, 48);
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // closeToolStripMenuItem
+            // 
+            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.closeToolStripMenuItem.Text = "Close";
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
             // FormMenu
             // 
@@ -1263,7 +1263,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
-            this.contextMenuStrip1.ResumeLayout(false);
             this.tabsMenu.ResumeLayout(false);
             this.connectionTab.ResumeLayout(false);
             this.connectionTab.PerformLayout();
@@ -1282,6 +1281,7 @@
             this.messagesTab.ResumeLayout(false);
             this.notConnectedTab.ResumeLayout(false);
             this.notConnectedTab.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1382,10 +1382,10 @@
         private System.Windows.Forms.Label labelSDownload;
         private System.Windows.Forms.Label labelSNavigation;
         private System.Windows.Forms.Button buttonChangeGroupS;
-        private System.Windows.Forms.Button button7;
         private System.Windows.Forms.CheckBox checkBoxCheater;
-        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Label labelCheater;
         private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button button7;
     }
 }
 
