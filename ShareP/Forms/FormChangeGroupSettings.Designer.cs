@@ -131,9 +131,9 @@
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label4.Location = new System.Drawing.Point(32, 88);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(129, 16);
+            this.label4.Size = new System.Drawing.Size(121, 16);
             this.label4.TabIndex = 41;
-            this.label4.Text = "Viewers can present";
+            this.label4.Text = "Clients can present";
             // 
             // label1
             // 

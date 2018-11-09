@@ -34,6 +34,7 @@ namespace ShareP
             Notification.HideAll();
             formViewer = new FormViewer();
             formViewer.Show();
+            formViewer.BringToFront();
             formViewer.LoadSlide(1);
         }
 
@@ -64,20 +65,24 @@ namespace ShareP
 
         static public void CleanTempFiles()
         {
-            DirectoryInfo di;
-            string path = Helper.GetCurrentFolder() + "tin";
-            if (Directory.Exists(path))
+            try
             {
-                di = new DirectoryInfo(path);
-                try
+                DirectoryInfo di;
+                string path = Helper.GetCurrentFolder() + "tin";
+                if (Directory.Exists(path))
                 {
-                    di.Delete(true);
-                }
-                catch (Exception ex)
-                {
-                    Log.LogException(ex, "Error deleting temp");
+                    di = new DirectoryInfo(path);
+                    try
+                    {
+                        di.Delete(true);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.LogException(ex, "Error deleting temp");
+                    }
                 }
             }
+            catch { }
         }
         
         static public void EndPresentation()

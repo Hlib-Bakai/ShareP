@@ -38,11 +38,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.panelLoading = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
+            this.loadingCircle1 = new ShareP.LoadingCircle();
             this.label3 = new System.Windows.Forms.Label();
             this.labelCount = new System.Windows.Forms.Label();
             this.timerRetryLoad = new System.Windows.Forms.Timer(this.components);
             this.timerBlinkButton = new System.Windows.Forms.Timer(this.components);
-            this.loadingCircle1 = new ShareP.LoadingCircle();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panelLoading.SuspendLayout();
             this.SuspendLayout();
@@ -152,6 +152,24 @@
             this.label1.TabIndex = 25;
             this.label1.Text = "Loading...";
             // 
+            // loadingCircle1
+            // 
+            this.loadingCircle1.Active = true;
+            this.loadingCircle1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.loadingCircle1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(232)))));
+            this.loadingCircle1.InnerCircleRadius = 5;
+            this.loadingCircle1.Location = new System.Drawing.Point(17, 39);
+            this.loadingCircle1.Name = "loadingCircle1";
+            this.loadingCircle1.NumberSpoke = 12;
+            this.loadingCircle1.OuterCircleRadius = 11;
+            this.loadingCircle1.RotationSpeed = 20;
+            this.loadingCircle1.Size = new System.Drawing.Size(84, 29);
+            this.loadingCircle1.SpokeThickness = 2;
+            this.loadingCircle1.StylePreset = ShareP.LoadingCircle.StylePresets.MacOSX;
+            this.loadingCircle1.TabIndex = 24;
+            this.loadingCircle1.TabStop = false;
+            this.loadingCircle1.Text = "loadingCircle1";
+            // 
             // label3
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -181,24 +199,6 @@
             this.timerBlinkButton.Interval = 1000;
             this.timerBlinkButton.Tick += new System.EventHandler(this.timerBlinkButton_Tick);
             // 
-            // loadingCircle1
-            // 
-            this.loadingCircle1.Active = true;
-            this.loadingCircle1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.loadingCircle1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(232)))));
-            this.loadingCircle1.InnerCircleRadius = 5;
-            this.loadingCircle1.Location = new System.Drawing.Point(17, 39);
-            this.loadingCircle1.Name = "loadingCircle1";
-            this.loadingCircle1.NumberSpoke = 12;
-            this.loadingCircle1.OuterCircleRadius = 11;
-            this.loadingCircle1.RotationSpeed = 20;
-            this.loadingCircle1.Size = new System.Drawing.Size(84, 29);
-            this.loadingCircle1.SpokeThickness = 2;
-            this.loadingCircle1.StylePreset = ShareP.LoadingCircle.StylePresets.MacOSX;
-            this.loadingCircle1.TabIndex = 24;
-            this.loadingCircle1.TabStop = false;
-            this.loadingCircle1.Text = "loadingCircle1";
-            // 
             // FormViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -219,7 +219,6 @@
             this.KeyPreview = true;
             this.Name = "FormViewer";
             this.ShowIcon = false;
-            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "FormViewer";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

@@ -1,4 +1,5 @@
 ﻿using ShareP.Controllers;
+using ShareP.Server;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -106,10 +107,17 @@ namespace ShareP.Forms
                         break;
                     case ConnectionResult.WrongPassword:
                         int overlay2 = Helper.ShowOverlay(this);
-                        FormAlert formAlertPassword = new FormAlert("Wrong password", "Password you entered is incorrect. Prease try again.", true);
-                        formAlertPassword.ShowDialog();
+                        FormAlert formAlertError2 = new FormAlert("Wrong password", "Password you entered is incorrect. Prease try again.", true);
+                        formAlertError2.ShowDialog();
                         Helper.HideOverlay(overlay2);
                         Connect();
+                        break;
+                    case ConnectionResult.UsernameExists:
+                        int overlay3 = Helper.ShowOverlay(this);
+                        FormAlert formAlertError3 = new FormAlert("Error", "Such username already exists in a group", true);
+                        formAlertError3.ShowDialog();
+                        Helper.HideOverlay(overlay3);
+                        StartSearch();
                         break;
                     case ConnectionResult.Success:
                         this.DialogResult = DialogResult.OK;

@@ -20,6 +20,7 @@ namespace ShareP
 
         public FormMenu()
         {
+            Application.ApplicationExit += new EventHandler(OnProcessExit);
             InitializeComponent();
             InitializeElements();
             ChangeStatusConnection();
@@ -90,7 +91,12 @@ namespace ShareP
                 LoadPresentationTab();
             ViewerController.StartLoadingSlides();
             if ((bool)Properties.Settings.Default["autojoin"])
-                StartViewer();
+            {
+                if (InvokeRequired)
+                    Invoke(new Action(() => StartViewer()));
+                else
+                    StartViewer();
+            }
         }
 
         public void OnPresentationFinished()  // Both sides
@@ -345,11 +351,13 @@ namespace ShareP
             {
                 labelCheater.Visible = true;
                 checkBoxCheater.Visible = true;
+                buttonHelpCheater.Visible = true;
             }
             else
             {
                 labelCheater.Visible = false;
                 checkBoxCheater.Visible = false;
+                buttonHelpCheater.Visible = false;
             }
             tabsMenu.SelectTab("presentationTab");
         }
@@ -733,6 +741,16 @@ namespace ShareP
 
         private void FormMenu_FormClosing(object sender, FormClosingEventArgs e)
         {
+            //OnAppClosing();
+        }
+
+        private void OnProcessExit(object sender, EventArgs e)
+        {
+            OnAppClosing();
+        }
+
+        private void OnAppClosing()
+        {
             if (Connection.CurrentRole == Role.Host)
             {
                 ServerController.OnGroupClose();
@@ -816,6 +834,14 @@ namespace ShareP
             textBoxFile.Text = "";
             textBoxPresentationName.Text = "";
             checkBoxCheater.Checked = false;
+        }
+
+        private void buttonHelpCheater_Click(object sender, EventArgs e)
+        {
+            int ov = Helper.ShowOverlay(this);
+            FormHelpCheater formHelpCheater = new FormHelpCheater();
+            formHelpCheater.ShowDialog();
+            Helper.HideOverlay(ov);
         }
     }
 }

@@ -102,6 +102,14 @@ namespace ShareP.Controllers
             }
         }
 
+        static public void UserConnected(User user)
+        {
+            if (formCheater != null && !formCheater.IsDisposed)
+            {
+                formCheater.UpdateListOfUsers();
+            }
+        }
+
         static public void RefreshUsers()
         {
             if (formCheater != null && !formCheater.IsDisposed)
@@ -193,12 +201,19 @@ namespace ShareP.Controllers
 
         public static void CleanTempFiles()
         {
-            DirectoryInfo di;
-            string path = Helper.GetCurrentFolder() + "tout";
-            if (Directory.Exists(path))
+            try
             {
-                di = new DirectoryInfo(path);
-                di.Delete(true);
+                DirectoryInfo di;
+                string path = Helper.GetCurrentFolder() + "tout";
+                if (Directory.Exists(path))
+                {
+                    di = new DirectoryInfo(path);
+                    di.Delete(true);
+                }
+            }
+            catch
+            {
+
             }
         }
        

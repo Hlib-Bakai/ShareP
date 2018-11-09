@@ -18,7 +18,7 @@ namespace ShareP.Controllers
     public interface IShareP                                        // METHODS FOR CLIENTS, SHOULD BE HANDLED IN SERVER
     {
         [OperationContract(IsInitiating = true)]
-        bool Connect(User user);
+        ConnectionResult Connect(User user);
 
         [OperationContract(IsOneWay = true)]
         void Say(Message msg);
@@ -118,11 +118,13 @@ namespace ShareP.Controllers
         {
             foreach (User u in users.Keys)
             {
-                if (u.Username == name)
+                if (u.Username.CompareTo(name) == 0)
                 {
                     return true;
                 }
             }
+            if (Connection.CurrentUser.Username.CompareTo(name) == 0)
+                return true;
             return false;
         }
 
@@ -236,14 +238,17 @@ namespace ShareP.Controllers
 
         /// IShareP
 
-        public bool Connect(User user)
+        public ConnectionResult Connect(User user)
         {
-            if (!users.ContainsValue(CurrentCallback) && !SearchUsersByName(user.Username))
+            if (!users.ContainsValue(CurrentCallback))
             {
                 lock (syncObj)
                 {
+                    if (SearchUsersByName(user.Username))
+                        return ConnectionResult.UsernameExists;
                     Connection.CurrentGroup.AddUser(user);
                     OnUserConnect(user);
+                    PresentationController.UserConnected(user);
 
                     foreach (User key in users.Keys)
                     {
@@ -264,16 +269,19 @@ namespace ShareP.Controllers
                 }
 
                 Log.LogInfo("User connected: " + user.Username);
-                return true;
+                return ConnectionResult.Success;
             }
             Log.LogInfo("Refused connection from: " + user.Username);
-            return false;
+            return ConnectionResult.Error;
         }
         public void Disconnect(User user)
         {
             Connection.CurrentGroup.RemoveUser(user);
             OnUserDisconnect(user);
             PresentationController.UserDisconneced(user);
+
+            if (Connection.CurrentPresentation != null && Connection.CurrentPresentation.Author.CompareTo(user.Username) == 0)
+                ClPresentationEnd();
 
             foreach (User u in users.Keys)
             {

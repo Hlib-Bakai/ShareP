@@ -99,6 +99,7 @@
             this.label19 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.panelAllowed = new System.Windows.Forms.Panel();
+            this.buttonHelpCheater = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.checkBoxCheater = new System.Windows.Forms.CheckBox();
             this.labelCheater = new System.Windows.Forms.Label();
@@ -651,9 +652,9 @@
             this.label25.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label25.Location = new System.Drawing.Point(4, 67);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(143, 20);
+            this.label25.Size = new System.Drawing.Size(149, 20);
             this.label25.TabIndex = 20;
-            this.label25.Text = "Users can present:";
+            this.label25.Text = "Clients can present:";
             // 
             // label24
             // 
@@ -924,6 +925,7 @@
             // 
             // panelAllowed
             // 
+            this.panelAllowed.Controls.Add(this.buttonHelpCheater);
             this.panelAllowed.Controls.Add(this.button8);
             this.panelAllowed.Controls.Add(this.checkBoxCheater);
             this.panelAllowed.Controls.Add(this.labelCheater);
@@ -939,6 +941,18 @@
             this.panelAllowed.Name = "panelAllowed";
             this.panelAllowed.Size = new System.Drawing.Size(395, 172);
             this.panelAllowed.TabIndex = 20;
+            // 
+            // buttonHelpCheater
+            // 
+            this.buttonHelpCheater.FlatAppearance.BorderSize = 0;
+            this.buttonHelpCheater.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonHelpCheater.Image = global::ShareP.Properties.Resources.Help_16;
+            this.buttonHelpCheater.Location = new System.Drawing.Point(239, 97);
+            this.buttonHelpCheater.Name = "buttonHelpCheater";
+            this.buttonHelpCheater.Size = new System.Drawing.Size(15, 19);
+            this.buttonHelpCheater.TabIndex = 42;
+            this.buttonHelpCheater.UseVisualStyleBackColor = true;
+            this.buttonHelpCheater.Click += new System.EventHandler(this.buttonHelpCheater_Click);
             // 
             // button8
             // 
@@ -1386,6 +1400,7 @@
         private System.Windows.Forms.Label labelCheater;
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button buttonHelpCheater;
     }
 }
 

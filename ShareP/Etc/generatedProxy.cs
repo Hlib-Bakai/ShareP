@@ -226,6 +226,29 @@ namespace ShareP
         }
     }
 }
+namespace ShareP.Server
+{
+    using System.Runtime.Serialization;
+    
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ConnectionResult", Namespace="http://schemas.datacontract.org/2004/07/ShareP.Server")]
+    public enum ConnectionResult : int
+    {
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Success = 0,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        WrongPassword = 1,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Error = 2,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        UsernameExists = 3,
+    }
+}
 
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -234,10 +257,10 @@ public interface IShareP
 {
     
     [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/Connect", ReplyAction="http://ShareP/IShareP/ConnectResponse")]
-    bool Connect(ShareP.User user);
+    ShareP.Server.ConnectionResult Connect(ShareP.User user);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/Connect", ReplyAction="http://ShareP/IShareP/ConnectResponse")]
-    System.Threading.Tasks.Task<bool> ConnectAsync(ShareP.User user);
+    System.Threading.Tasks.Task<ShareP.Server.ConnectionResult> ConnectAsync(ShareP.User user);
     
     [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/Say")]
     void Say(ShareP.Message msg);
@@ -376,12 +399,12 @@ public partial class SharePClient : System.ServiceModel.DuplexClientBase<IShareP
     {
     }
     
-    public bool Connect(ShareP.User user)
+    public ShareP.Server.ConnectionResult Connect(ShareP.User user)
     {
         return base.Channel.Connect(user);
     }
     
-    public System.Threading.Tasks.Task<bool> ConnectAsync(ShareP.User user)
+    public System.Threading.Tasks.Task<ShareP.Server.ConnectionResult> ConnectAsync(ShareP.User user)
     {
         return base.Channel.ConnectAsync(user);
     }

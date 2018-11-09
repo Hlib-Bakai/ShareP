@@ -45,7 +45,6 @@ namespace ShareP.Forms
             NewGroup.settings.Viewerspresent = checkBoxViewersPresent.Checked;
             NewGroup.settings.NConnected = checkBoxNConnected.Checked;
             NewGroup.settings.NDisconnected = checkBoxNDisconnected.Checked;
-            NewGroup.settings.NChat = checkBoxNChat.Checked;
 
             this.DialogResult = DialogResult.OK;
             this.Close();

@@ -26,6 +26,8 @@ namespace ShareP
             {
                 LoadGroupParameters(ip);
                 CurrentRole = Role.Client;
+                if (CurrentPresentation != null)
+                    ViewerController.StartLoadingSlides();
             }
             return result;
         }

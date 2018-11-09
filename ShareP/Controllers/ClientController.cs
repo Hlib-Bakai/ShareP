@@ -128,13 +128,12 @@ namespace ShareP
                     client.InnerDuplexChannel.Closed +=
                       new EventHandler(InnerDuplexChannel_Closed);
 
-                    if (client.Connect(Connection.CurrentUser))
+                    ConnectionResult connectionResult = client.Connect(Connection.CurrentUser);
+                    if (connectionResult == ConnectionResult.Success)
                     {
                         Connection.CurrentPresentation = client.RequestCurrentPresentation();
-                        return ConnectionResult.Success;
                     }
-                    else
-                        return ConnectionResult.WrongPassword;
+                    return connectionResult;
                 }
                 catch (Exception e)
                 {
@@ -233,17 +232,20 @@ namespace ShareP
 
         public void ClPresentationStart(Presentation presentation)
         {
-            client.ClPresentationStarted(presentation, Connection.CurrentUser);
+            if (client.State != CommunicationState.Faulted)
+                client.ClPresentationStarted(presentation, Connection.CurrentUser);
         }
 
         public void ClPresentationNextSlide(int slide)
         {
-            client.ClPresentationNextSlide(slide);
+            if (client.State != CommunicationState.Faulted)
+                client.ClPresentationNextSlide(slide);
         }
 
         public void ClPresentationEnd()
         {
-            client.ClPresentationEnd();
+            if (client.State != CommunicationState.Faulted)
+                client.ClPresentationEnd();
         }
 
         public void GroupSettingsChanged(Dictionary<string, string> newSettings)

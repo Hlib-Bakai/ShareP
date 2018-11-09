@@ -22,11 +22,10 @@ namespace ShareP
         Client,
         Notconnected
     }
-
-    public enum ConnectionResult
-    {
-        Success,
-        WrongPassword,
-        Error
-    }
 }
+
+namespace ShareP.Server
+{
+    
+}
+
