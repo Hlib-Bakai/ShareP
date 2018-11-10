@@ -74,6 +74,7 @@
     <Compile Include="Classes\Message.cs" />
     <Compile Include="Classes\Notification.cs" />
     <Compile Include="Classes\Presentation.cs" />
+    <Compile Include="Controllers\ChatController.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\PresentationController.cs" />

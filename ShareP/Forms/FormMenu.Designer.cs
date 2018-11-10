@@ -56,6 +56,12 @@
             this.button1 = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.timerConnection = new System.Windows.Forms.Timer(this.components);
+            this.timerUsers = new System.Windows.Forms.Timer(this.components);
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabsMenu = new ShareP.TabControlWithoutHeader();
             this.connectionTab = new System.Windows.Forms.TabPage();
             this.buttonDisconnect = new System.Windows.Forms.Button();
@@ -116,19 +122,20 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.messagesTab = new System.Windows.Forms.TabPage();
-            this.button7 = new System.Windows.Forms.Button();
+            this.listBoxChatUsers = new System.Windows.Forms.ListBox();
+            this.buttonSendMessage = new System.Windows.Forms.Button();
+            this.textBoxInputMessage = new System.Windows.Forms.TextBox();
+            this.panel14 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
+            this.richTextBoxMessages = new System.Windows.Forms.RichTextBox();
             this.notConnectedTab = new System.Windows.Forms.TabPage();
             this.button6 = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.timerConnection = new System.Windows.Forms.Timer(this.components);
-            this.timerUsers = new System.Windows.Forms.Timer(this.components);
-            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.panelChatDisabled = new System.Windows.Forms.Panel();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
             this.panelBottom.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEditUsername)).BeginInit();
             this.panel2.SuspendLayout();
@@ -141,6 +148,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.tabsMenu.SuspendLayout();
             this.connectionTab.SuspendLayout();
             this.tabsConnection.SuspendLayout();
@@ -152,7 +160,7 @@
             this.panelNotAllowed.SuspendLayout();
             this.messagesTab.SuspendLayout();
             this.notConnectedTab.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
+            this.panelChatDisabled.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelBottom
@@ -448,6 +456,46 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(421, 341);
             this.panel3.TabIndex = 5;
+            // 
+            // timerConnection
+            // 
+            this.timerConnection.Enabled = true;
+            this.timerConnection.Tick += new System.EventHandler(this.timerConnection_Tick);
+            // 
+            // timerUsers
+            // 
+            this.timerUsers.Tick += new System.EventHandler(this.timerUsers_Tick);
+            // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "ShareP";
+            this.notifyIcon1.Visible = true;
+            this.notifyIcon1.BalloonTipClicked += new System.EventHandler(this.notifyIcon1_BalloonTipClicked);
+            this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openToolStripMenuItem,
+            this.closeToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(104, 48);
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // closeToolStripMenuItem
+            // 
+            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.closeToolStripMenuItem.Text = "Close";
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
             // tabsMenu
             // 
@@ -1114,8 +1162,13 @@
             // 
             // messagesTab
             // 
-            this.messagesTab.Controls.Add(this.button7);
+            this.messagesTab.Controls.Add(this.listBoxChatUsers);
+            this.messagesTab.Controls.Add(this.buttonSendMessage);
+            this.messagesTab.Controls.Add(this.textBoxInputMessage);
+            this.messagesTab.Controls.Add(this.panel14);
             this.messagesTab.Controls.Add(this.label3);
+            this.messagesTab.Controls.Add(this.richTextBoxMessages);
+            this.messagesTab.Controls.Add(this.panelChatDisabled);
             this.messagesTab.Location = new System.Drawing.Point(4, 22);
             this.messagesTab.Name = "messagesTab";
             this.messagesTab.Size = new System.Drawing.Size(413, 315);
@@ -1123,25 +1176,70 @@
             this.messagesTab.Text = "messagesTab";
             this.messagesTab.UseVisualStyleBackColor = true;
             // 
-            // button7
+            // listBoxChatUsers
             // 
-            this.button7.Location = new System.Drawing.Point(25, 251);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(92, 39);
-            this.button7.TabIndex = 2;
-            this.button7.Text = "Cheater Test";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click_2);
+            this.listBoxChatUsers.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.listBoxChatUsers.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.listBoxChatUsers.FormattingEnabled = true;
+            this.listBoxChatUsers.Location = new System.Drawing.Point(290, 32);
+            this.listBoxChatUsers.Name = "listBoxChatUsers";
+            this.listBoxChatUsers.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.listBoxChatUsers.Size = new System.Drawing.Size(120, 234);
+            this.listBoxChatUsers.TabIndex = 27;
+            // 
+            // buttonSendMessage
+            // 
+            this.buttonSendMessage.BackColor = System.Drawing.Color.White;
+            this.buttonSendMessage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonSendMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonSendMessage.Location = new System.Drawing.Point(328, 274);
+            this.buttonSendMessage.Name = "buttonSendMessage";
+            this.buttonSendMessage.Size = new System.Drawing.Size(85, 41);
+            this.buttonSendMessage.TabIndex = 26;
+            this.buttonSendMessage.Text = "Send";
+            this.buttonSendMessage.UseVisualStyleBackColor = false;
+            this.buttonSendMessage.Click += new System.EventHandler(this.buttonSendMessage_Click);
+            // 
+            // textBoxInputMessage
+            // 
+            this.textBoxInputMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBoxInputMessage.Location = new System.Drawing.Point(4, 274);
+            this.textBoxInputMessage.Multiline = true;
+            this.textBoxInputMessage.Name = "textBoxInputMessage";
+            this.textBoxInputMessage.Size = new System.Drawing.Size(271, 41);
+            this.textBoxInputMessage.TabIndex = 0;
+            this.textBoxInputMessage.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxInputMessage_KeyDown);
+            // 
+            // panel14
+            // 
+            this.panel14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(232)))));
+            this.panel14.Location = new System.Drawing.Point(281, 18);
+            this.panel14.Name = "panel14";
+            this.panel14.Size = new System.Drawing.Size(3, 249);
+            this.panel14.TabIndex = 21;
             // 
             // label3
             // 
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.Location = new System.Drawing.Point(44, 76);
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label3.Location = new System.Drawing.Point(324, 9);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(329, 146);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "Messages are not available in this version of application. Sorry :(";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label3.Size = new System.Drawing.Size(56, 20);
+            this.label3.TabIndex = 20;
+            this.label3.Text = "Users";
+            // 
+            // richTextBoxMessages
+            // 
+            this.richTextBoxMessages.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.richTextBoxMessages.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.richTextBoxMessages.Location = new System.Drawing.Point(4, 18);
+            this.richTextBoxMessages.Name = "richTextBoxMessages";
+            this.richTextBoxMessages.ReadOnly = true;
+            this.richTextBoxMessages.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.richTextBoxMessages.Size = new System.Drawing.Size(271, 250);
+            this.richTextBoxMessages.TabIndex = 0;
+            this.richTextBoxMessages.TabStop = false;
+            this.richTextBoxMessages.Text = "";
             // 
             // notConnectedTab
             // 
@@ -1205,45 +1303,36 @@
             this.label8.TabIndex = 2;
             this.label8.Text = "You are";
             // 
-            // timerConnection
+            // panelChatDisabled
             // 
-            this.timerConnection.Enabled = true;
-            this.timerConnection.Tick += new System.EventHandler(this.timerConnection_Tick);
+            this.panelChatDisabled.Controls.Add(this.label28);
+            this.panelChatDisabled.Controls.Add(this.label27);
+            this.panelChatDisabled.Location = new System.Drawing.Point(4, 9);
+            this.panelChatDisabled.Name = "panelChatDisabled";
+            this.panelChatDisabled.Size = new System.Drawing.Size(394, 255);
+            this.panelChatDisabled.TabIndex = 28;
+            this.panelChatDisabled.Visible = false;
             // 
-            // timerUsers
+            // label27
             // 
-            this.timerUsers.Tick += new System.EventHandler(this.timerUsers_Tick);
+            this.label27.AutoSize = true;
+            this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label27.Location = new System.Drawing.Point(147, 64);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(114, 33);
+            this.label27.TabIndex = 3;
+            this.label27.Text = "Chat is ";
             // 
-            // notifyIcon1
+            // label28
             // 
-            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
-            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-            this.notifyIcon1.Text = "ShareP";
-            this.notifyIcon1.Visible = true;
-            this.notifyIcon1.BalloonTipClicked += new System.EventHandler(this.notifyIcon1_BalloonTipClicked);
-            this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openToolStripMenuItem,
-            this.closeToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(104, 48);
-            // 
-            // openToolStripMenuItem
-            // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.openToolStripMenuItem.Text = "Open";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
-            // 
-            // closeToolStripMenuItem
-            // 
-            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.closeToolStripMenuItem.Text = "Close";
-            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            this.label28.AutoSize = true;
+            this.label28.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label28.ForeColor = System.Drawing.Color.Red;
+            this.label28.Location = new System.Drawing.Point(142, 97);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(124, 33);
+            this.label28.TabIndex = 4;
+            this.label28.Text = "disabled";
             // 
             // FormMenu
             // 
@@ -1277,6 +1366,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.tabsMenu.ResumeLayout(false);
             this.connectionTab.ResumeLayout(false);
             this.connectionTab.PerformLayout();
@@ -1293,9 +1383,11 @@
             this.panelNotAllowed.ResumeLayout(false);
             this.panelNotAllowed.PerformLayout();
             this.messagesTab.ResumeLayout(false);
+            this.messagesTab.PerformLayout();
             this.notConnectedTab.ResumeLayout(false);
             this.notConnectedTab.PerformLayout();
-            this.contextMenuStrip1.ResumeLayout(false);
+            this.panelChatDisabled.ResumeLayout(false);
+            this.panelChatDisabled.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1320,7 +1412,6 @@
         private System.Windows.Forms.TabPage presentationTab;
         private System.Windows.Forms.TabPage messagesTab;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.PictureBox statusConnectionGreen;
         private System.Windows.Forms.Panel panel4;
@@ -1399,8 +1490,16 @@
         private System.Windows.Forms.CheckBox checkBoxCheater;
         private System.Windows.Forms.Label labelCheater;
         private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button buttonHelpCheater;
+        private System.Windows.Forms.Panel panel14;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.RichTextBox richTextBoxMessages;
+        private System.Windows.Forms.Button buttonSendMessage;
+        private System.Windows.Forms.TextBox textBoxInputMessage;
+        private System.Windows.Forms.ListBox listBoxChatUsers;
+        private System.Windows.Forms.Panel panelChatDisabled;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Label label27;
     }
 }
 

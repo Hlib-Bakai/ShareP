@@ -33,7 +33,11 @@ namespace ShareP
             user.Id = nextId;
             nextId++;
             userList.Add(user);
-            Connection.FormMenu.FillHostUsersList();
+            if (Connection.FormMenu != null)
+            {
+                Connection.FormMenu.FillHostUsersList();
+                Connection.FormMenu.FillChatUsersList();
+            }
         }
 
         public void RemoveUser(User user)
@@ -49,7 +53,11 @@ namespace ShareP
             }
             if (toDelete != null)
                 userList.Remove(toDelete);
-            Connection.FormMenu.FillHostUsersList();
+            if (Connection.FormMenu != null)
+            {
+                Connection.FormMenu.FillHostUsersList();
+                Connection.FormMenu.FillChatUsersList();
+            }
         }
 
         public int GetUsersCount()

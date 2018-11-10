@@ -12,6 +12,7 @@ namespace ShareP
         {
             Download = false;
             Viewerspresent = false;
+            Chat = false;
             NConnected = false;
             NDisconnected = false;
         }
@@ -22,6 +23,11 @@ namespace ShareP
             set;
         }
         public bool Viewerspresent
+        {
+            get;
+            set;
+        }
+        public bool Chat
         {
             get;
             set;

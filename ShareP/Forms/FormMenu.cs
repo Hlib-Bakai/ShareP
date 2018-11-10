@@ -49,11 +49,25 @@ namespace ShareP
             labelIP.Text = m_user.IP;
 
             listBox1.DrawItem += new DrawItemEventHandler(listBox_DrawItem);
+            listBoxChatUsers.DrawItem += new DrawItemEventHandler(listBox_DrawItem);
+
+            richTextBoxMessages.BackColor = Color.White;
+            richTextBoxMessages.GotFocus += TextBoxGotFocus;
+
+            ChatController.SetTextBox(richTextBoxMessages, textBoxInputMessage);
 
             CleanTempFiles();
 
             //Controllers
             m_searchController = new SearchController();
+        }
+
+        [DllImport("user32.dll")]
+        static extern bool HideCaret(IntPtr hWnd);
+
+        private void TextBoxGotFocus(object sender, EventArgs args)
+        {
+            HideCaret(richTextBoxMessages.Handle);
         }
 
         public async void StartPresentation(string name)  // Server side
@@ -155,6 +169,32 @@ namespace ShareP
                 listBox1.Refresh();
             }
         }
+
+        public void FillChatUsersList()
+        {
+            if (Connection.CurrentGroup == null)
+                return;
+
+            if (listBoxChatUsers.InvokeRequired)  //Accessing element from another thread
+            {
+                listBoxChatUsers.Invoke(new Action(() => listBoxChatUsers.Items.Clear()));
+                foreach (User user in Connection.CurrentGroup.userList)
+                {
+                    listBoxChatUsers.Invoke(new Action<string>((i) => listBoxChatUsers.Items.Add(i)), user.Username);
+                }
+                listBoxChatUsers.Invoke(new Action(() => listBoxChatUsers.Refresh()));
+            }
+            else
+            {
+                listBoxChatUsers.Items.Clear();
+                foreach (User user in Connection.CurrentGroup.userList)
+                {
+                    listBoxChatUsers.Items.Add(user.Username);
+                }
+                listBoxChatUsers.Refresh();
+            }
+        }
+        
 
         private void buttonConnection_Click(object sender, EventArgs e)
         {
@@ -374,6 +414,21 @@ namespace ShareP
                 return;
             }
 
+            if (Connection.CurrentGroup != null && Connection.CurrentGroup.settings.Chat)
+            {
+                panelChatDisabled.Hide();
+                textBoxInputMessage.Show();
+                buttonSendMessage.Show();
+            }
+            else
+            {
+                panelChatDisabled.Show();
+                panelChatDisabled.BringToFront();
+                textBoxInputMessage.Hide();
+                buttonSendMessage.Hide();
+            }
+
+            FillChatUsersList();
             tabsMenu.SelectTab("messagesTab");
         }
 
@@ -436,8 +491,17 @@ namespace ShareP
             {
                 newGroup.hostIp = Helper.GetMyIP();
             }
-            Connection.CreateGroup(newGroup);
-            Connection.CurrentGroup.AddUser(m_user);
+            if (Connection.CreateGroup(newGroup))
+            {
+                Connection.CurrentGroup.AddUser(m_user);
+            }
+            else
+            {
+                int overlay = Helper.ShowOverlay(this);
+                FormAlert formAlert = new FormAlert("Error", "Server could not be started. Make sure to run application as an administator", true);
+                formAlert.ShowDialog();
+                Helper.HideOverlay(overlay);
+            }
             LoadConnectionTab();
             CheckStatusConnection();
         }
@@ -842,6 +906,27 @@ namespace ShareP
             FormHelpCheater formHelpCheater = new FormHelpCheater();
             formHelpCheater.ShowDialog();
             Helper.HideOverlay(ov);
+        }
+
+        private void buttonSendMessage_Click(object sender, EventArgs e) 
+        {
+            //ChatController.RecieveMessage(new Message() { Sender = "Hlib", Text = "Some very very very very very very very very very very long text!", Time = new DateTime(132323232) });
+            if (textBoxInputMessage.Text.Length > 0)
+            {
+                ChatController.SendMessage();
+            }
+        }
+
+        private void textBoxInputMessage_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (textBoxInputMessage.Text.Length > 0)
+                {
+                    ChatController.SendMessage();
+                }
+                e.SuppressKeyPress = true;
+            }
         }
     }
 }

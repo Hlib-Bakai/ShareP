@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ShareP.Controllers
 {
-    class PresentationController
+    public class PresentationController
     {
         static private Application app;
         static private Presentations ppts;
@@ -160,20 +160,24 @@ namespace ShareP.Controllers
             }
         }
 
-        private static void OnNextSlide(SlideShowWindow Wn)
+        public static void OnNextSlide(SlideShowWindow Wn)
         {
             int currentSlide = Wn.View.CurrentShowPosition;
-            if (Connection.CurrentRole == Role.Host)
+            if (Connection.CurrentRole == Role.Notconnected)
+                return;
+            else if (Connection.CurrentRole == Role.Host)
                 ServerController.OnPresentationNextSlide(currentSlide);
             else
                 Connection.clientConnection.ClPresentationNextSlide(currentSlide);
             Connection.CurrentPresentation.CurrentSlide = currentSlide;
         }
 
-        private static void OnSlideShowEnd(Microsoft.Office.Interop.PowerPoint.Presentation presentation)
+        public static void OnSlideShowEnd(Microsoft.Office.Interop.PowerPoint.Presentation presentation)
         {
             CloseCheater();
-            if (Connection.CurrentRole == Role.Host)
+            if (Connection.CurrentRole == Role.Notconnected)
+                return;
+            else if (Connection.CurrentRole == Role.Host)
                 ServerController.OnPresentationEnd();
             else
                 Connection.clientConnection.ClPresentationEnd();

@@ -42,6 +42,7 @@ namespace ShareP
             group.hostName = groupInfo["HostName"];
             group.settings.Download = (groupInfo["Download"].CompareTo("True") == 0) ? true : false;
             group.settings.Viewerspresent = (groupInfo["ViewersPresent"].CompareTo("True") == 0) ? true : false;
+            group.settings.Chat = (groupInfo["Chat"].CompareTo("True") == 0) ? true : false;
             if (groupInfo["GroupNavigation"].CompareTo("Backwards") == 0)
                 group.navigation = GroupNavigation.Backwards;
             else if (groupInfo["GroupNavigation"].CompareTo("Both") == 0)
@@ -56,11 +57,13 @@ namespace ShareP
             return clientConnection.GetServiceOnIP(ip);
         }
 
-        public static void CreateGroup(Group group)
+        public static bool CreateGroup(Group group)
         {
-            ServerController.StartServer();
+            if (!ServerController.StartServer())
+                return false;
             CurrentGroup = group;
             CurrentRole = Role.Host;
+            return true;
         }
 
         public static void Disconnect()
@@ -84,6 +87,14 @@ namespace ShareP
             Helper.HideOverlay(overlay);
         }
 
+        public static void SendMessage(Message msg)
+        {
+            if (CurrentRole == Role.Host)
+                ServerController.SendMessage(msg);
+            else if (CurrentRole == Role.Client)
+                clientConnection.SendMessage(msg);
+        }
+
         private static void DisconnectClient()
         {
             //Send a server command about disconnect
@@ -99,6 +110,7 @@ namespace ShareP
             CurrentGroup = null;
             role = Role.Notconnected;
         }
+        
 
         public static void OnUserJoin(User user)
         {

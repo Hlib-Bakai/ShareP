@@ -51,6 +51,8 @@
             this.button3 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.labelLength = new System.Windows.Forms.Label();
+            this.checkBoxChat = new System.Windows.Forms.CheckBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -194,7 +196,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label7.Location = new System.Drawing.Point(206, 133);
+            this.label7.Location = new System.Drawing.Point(206, 145);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(94, 16);
             this.label7.TabIndex = 26;
@@ -203,7 +205,7 @@
             // checkBoxNConnected
             // 
             this.checkBoxNConnected.AutoSize = true;
-            this.checkBoxNConnected.Location = new System.Drawing.Point(314, 157);
+            this.checkBoxNConnected.Location = new System.Drawing.Point(314, 169);
             this.checkBoxNConnected.Name = "checkBoxNConnected";
             this.checkBoxNConnected.Size = new System.Drawing.Size(15, 14);
             this.checkBoxNConnected.TabIndex = 28;
@@ -213,7 +215,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label8.Location = new System.Drawing.Point(187, 155);
+            this.label8.Location = new System.Drawing.Point(187, 167);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(103, 16);
             this.label8.TabIndex = 27;
@@ -222,7 +224,7 @@
             // checkBoxNDisconnected
             // 
             this.checkBoxNDisconnected.AutoSize = true;
-            this.checkBoxNDisconnected.Location = new System.Drawing.Point(314, 174);
+            this.checkBoxNDisconnected.Location = new System.Drawing.Point(314, 186);
             this.checkBoxNDisconnected.Name = "checkBoxNDisconnected";
             this.checkBoxNDisconnected.Size = new System.Drawing.Size(15, 14);
             this.checkBoxNDisconnected.TabIndex = 30;
@@ -232,7 +234,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label9.Location = new System.Drawing.Point(187, 172);
+            this.label9.Location = new System.Drawing.Point(187, 184);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(121, 16);
             this.label9.TabIndex = 29;
@@ -281,12 +283,35 @@
             this.labelLength.Text = "Please, provide name from 2 to 10 characters";
             this.labelLength.Visible = false;
             // 
+            // checkBoxChat
+            // 
+            this.checkBoxChat.AutoSize = true;
+            this.checkBoxChat.Checked = true;
+            this.checkBoxChat.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxChat.Location = new System.Drawing.Point(314, 114);
+            this.checkBoxChat.Name = "checkBoxChat";
+            this.checkBoxChat.Size = new System.Drawing.Size(15, 14);
+            this.checkBoxChat.TabIndex = 39;
+            this.checkBoxChat.UseVisualStyleBackColor = true;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label10.Location = new System.Drawing.Point(220, 112);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(88, 16);
+            this.label10.TabIndex = 38;
+            this.label10.Text = "Chat enabled";
+            // 
             // FormCreateGroup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(356, 278);
+            this.Controls.Add(this.checkBoxChat);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.labelLength);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.button2);
@@ -347,5 +372,7 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label labelLength;
+        private System.Windows.Forms.CheckBox checkBoxChat;
+        private System.Windows.Forms.Label label10;
     }
 }

@@ -177,7 +177,12 @@ namespace ShareP
 
         public void Receive(Message msg)
         {
-            // We got message in chat
+            ChatController.RecieveMessage(msg);
+        }
+
+        public void SendMessage(Message msg)
+        {
+            client.Say(msg);
         }
 
         public void RefreshUsers(User[] users)
@@ -232,19 +237,19 @@ namespace ShareP
 
         public void ClPresentationStart(Presentation presentation)
         {
-            if (client.State != CommunicationState.Faulted)
+            if (client != null && client.State == CommunicationState.Opened)
                 client.ClPresentationStarted(presentation, Connection.CurrentUser);
         }
 
         public void ClPresentationNextSlide(int slide)
         {
-            if (client.State != CommunicationState.Faulted)
+            if (client != null && client.State == CommunicationState.Opened)
                 client.ClPresentationNextSlide(slide);
         }
 
         public void ClPresentationEnd()
         {
-            if (client.State != CommunicationState.Faulted)
+            if (client != null && client.State == CommunicationState.Opened)
                 client.ClPresentationEnd();
         }
 

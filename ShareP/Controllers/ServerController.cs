@@ -316,6 +316,7 @@ namespace ShareP.Controllers
 
         public void Say(Message msg)
         {
+            ChatController.RecieveMessage(msg);
             lock (syncObj)
             {
                 foreach (ISharePCallback callback in users.Values)
@@ -345,6 +346,7 @@ namespace ShareP.Controllers
             result.Add("Password", Connection.CurrentGroup.passwordProtected.ToString());
             result.Add("Download", Connection.CurrentGroup.settings.Download.ToString());
             result.Add("ViewersPresent", Connection.CurrentGroup.settings.Viewerspresent.ToString());
+            result.Add("Chat", Connection.CurrentGroup.settings.Chat.ToString());
             if (Connection.CurrentGroup.navigation == GroupNavigation.Backwards)
                 result.Add("GroupNavigation", "Backwards");
             else if (Connection.CurrentGroup.navigation == GroupNavigation.BothDirections)
@@ -488,7 +490,7 @@ namespace ShareP.Controllers
     }
 
 
-    static class ServerController
+    public static class ServerController
     {
         public static Group MyGroup
         {
@@ -498,8 +500,10 @@ namespace ShareP.Controllers
 
         static ServiceHost SelfHost;
 
-        public static void StartServer()
+        public static bool StartServer()
         {
+            bool result = false;
+
             string ipBase = Helper.GetMyIP();
 
             Uri tcpAdrs = new Uri("net.tcp://" + ipBase + ":8000/ShareP/");
@@ -554,15 +558,19 @@ namespace ShareP.Controllers
             catch (Exception e)
             {
                 //
+                result = false;
                 Log.LogException(e);
             }
             finally
             {
                 if (SelfHost.State == CommunicationState.Opened)
                 {
+                    result = true;
                     Log.LogInfo("Server opened on " + ipBase);
                 }
             }
+
+            return result;
 
         }
 
@@ -589,6 +597,11 @@ namespace ShareP.Controllers
         public static void OnGroupSettingsChanged()
         {
             ((SharePService)SelfHost.SingletonInstance).OnGroupSettingsChanged();
+        }
+
+        public static void SendMessage(Message msg)
+        {
+            ((SharePService)SelfHost.SingletonInstance).Say(msg);
         }
 
 
