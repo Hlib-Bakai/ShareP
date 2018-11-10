@@ -134,7 +134,7 @@ namespace ShareP.Controllers
             SlideShowSettings sss = ppt.SlideShowSettings;
             sss.Run();
 
-            //while (app.SlideShowWindows.Count <= 0) ;
+            while (app.SlideShowWindows.Count <= 0) ;
 
             SlideShowWindow ssw = ppt.SlideShowWindow;
             ssv = ssw.View;

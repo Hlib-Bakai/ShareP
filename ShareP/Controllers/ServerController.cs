@@ -37,13 +37,16 @@ namespace ShareP.Controllers
 
         [OperationContract]
         Presentation RequestCurrentPresentation();
-        
+
         [OperationContract(IsOneWay = true)]
         void ViewerChangeFocus(bool focus, User user);
 
+        [OperationContract]
+        List<User> RequestUsersList();
+
 
         // Client presentations
-  
+
         [OperationContract(IsOneWay = true)]
         void ClPresentationStarted(Presentation presentation, User user);
 
@@ -57,7 +60,7 @@ namespace ShareP.Controllers
     public interface ISharePCallback                                 // METHODS FOR SERVER TO SEND DATA TO CLIENTS. CLIENTS SHOULD HANDLE
     {
         [OperationContract(IsOneWay = true)]
-        void RefreshUsers(List<User> users);  // Delete
+        void RefreshUsers(List<User> users); 
 
         [OperationContract(IsOneWay = true)]
         void Receive(Message msg);
@@ -100,8 +103,7 @@ namespace ShareP.Controllers
     {
         Dictionary<User, ISharePCallback> users =
          new Dictionary<User, ISharePCallback>();
-
-        List<User> userList = new List<User>();
+        
 
         public ISharePCallback CurrentCallback
         {
@@ -128,6 +130,25 @@ namespace ShareP.Controllers
             return false;
         }
 
+        public void OnGroupClose()
+        {
+            lock (syncObj)
+            {
+                foreach (User key in users.Keys)
+                {
+                    ISharePCallback callback = users[key];
+                    try
+                    {
+                        callback.GroupClose();
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.LogException(ex, "OnGroupClose Service");
+                    }
+                }
+            }
+        }
+
         public void OnPresentationStart(Presentation presentation)
         {
             lock (syncObj)
@@ -149,25 +170,6 @@ namespace ShareP.Controllers
             }
         }
 
-        public void OnGroupClose()
-        {
-            lock (syncObj)
-            {
-                foreach (User key in users.Keys)
-                {
-                    ISharePCallback callback = users[key];
-                    try
-                    {
-                        callback.GroupClose();
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.LogException(ex, "OnGroupClose Service");
-                    }
-                }
-            }
-        }
-
         public void OnPresentationNextSlide(int slide)
         {
             lock (syncObj)
@@ -175,6 +177,8 @@ namespace ShareP.Controllers
                 foreach (User key in users.Keys)
                 {
                     ISharePCallback callback = users[key];
+                    if (key.Username.CompareTo(Connection.CurrentPresentation.Author) == 0)
+                        continue;
                     try
                     {
                         callback.PresentationNextSlide(slide);
@@ -194,6 +198,8 @@ namespace ShareP.Controllers
                 foreach (User key in users.Keys)
                 {
                     ISharePCallback callback = users[key];
+                    if (key.Username.CompareTo(Connection.CurrentPresentation.Author) == 0)
+                        continue;
                     try
                     {
                         callback.PresentationEnd();
@@ -255,7 +261,7 @@ namespace ShareP.Controllers
                         ISharePCallback callback = users[key];
                         try
                         {
-                            //callback.RefreshUsers(userList);
+                            callback.RefreshUsers(Connection.CurrentGroup.userList);
                             callback.UserJoin(user);
                         }
                         catch
@@ -264,8 +270,6 @@ namespace ShareP.Controllers
                         }
                     }
                     users.Add(user, CurrentCallback);
-                    userList.Add(user);
-
                 }
 
                 Log.LogInfo("User connected: " + user.Username);
@@ -290,10 +294,9 @@ namespace ShareP.Controllers
                     lock (syncObj)
                     {
                         this.users.Remove(u);
-                        this.userList.Remove(u);
                         foreach (ISharePCallback callback in users.Values)
                         {
-                            callback.RefreshUsers(this.userList);
+                            callback.RefreshUsers(Connection.CurrentGroup.userList);
                             callback.UserLeave(user);
                         }
                     }
@@ -342,7 +345,7 @@ namespace ShareP.Controllers
             var result = new Dictionary<string, string>();
             result.Add("GroupName", Connection.CurrentGroup.name);
             result.Add("HostName", Connection.CurrentGroup.hostName);
-            result.Add("NumberOfUsers", Connection.CurrentGroup.GetUsersCount().ToString()); 
+            result.Add("NumberOfUsers", Connection.CurrentGroup.GetUsersCount().ToString());
             result.Add("Password", Connection.CurrentGroup.passwordProtected.ToString());
             result.Add("Download", Connection.CurrentGroup.settings.Download.ToString());
             result.Add("ViewersPresent", Connection.CurrentGroup.settings.Viewerspresent.ToString());
@@ -486,6 +489,14 @@ namespace ShareP.Controllers
                 ViewerController.EndPresentation();
             Connection.CurrentPresentation = null;
             Connection.FormMenu.OnPresentationFinished();
+        }
+
+        public List<User> RequestUsersList()
+        {
+            if (Connection.CurrentGroup != null)
+                return Connection.CurrentGroup.userList;
+            else
+                return null;
         }
     }
 

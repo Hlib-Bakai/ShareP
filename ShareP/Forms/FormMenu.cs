@@ -140,6 +140,9 @@ namespace ShareP
                     ChangeUsername("User #" + (new Random(Guid.NewGuid().GetHashCode())).Next(1, 10000).ToString());
             }
 
+            if (Connection.CurrentUser.Username.Length > 10)
+                ChangeUsername(Connection.CurrentUser.Username.Substring(0, 10));
+
             Connection.CurrentUser.IP = Helper.GetMyIP();
         }
 
@@ -428,6 +431,9 @@ namespace ShareP
                 buttonSendMessage.Hide();
             }
 
+            var newUsersList = Connection.clientConnection.RequestUsersList();
+            if (newUsersList != null)
+                Connection.CurrentGroup.userList = newUsersList;
             FillChatUsersList();
             tabsMenu.SelectTab("messagesTab");
         }

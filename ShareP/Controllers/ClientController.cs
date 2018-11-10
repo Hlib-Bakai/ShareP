@@ -15,7 +15,6 @@ namespace ShareP
         SharePClient client = null;
         string rcvFilesPath = "";
         private delegate void FaultedInvoker();
-        List<User> onlineUsers = new List<User>();
         public BackgroundWorker downloadingWorker = null;
 
         public ClientController()
@@ -67,6 +66,11 @@ namespace ShareP
                 for (int i = 1; i <= Connection.CurrentPresentation.SlidesTotal; i++)
                 {
                     byte[] file = client.RequestSlide(i);
+                    if (file == null)
+                    {
+                        i--;
+                        continue;
+                    }
                     FileStream fileStream = new FileStream(rcvFilesPath + (i.ToString() + ".dat"), FileMode.Create, FileAccess.ReadWrite);
                     fileStream.Write(file, 0, file.Length);
                     //downloadingWorker.ReportProgress((i / Connection.CurrentPresentation.SlidesTotal) * 100);
@@ -187,9 +191,11 @@ namespace ShareP
 
         public void RefreshUsers(User[] users)
         {
-            onlineUsers = new List<User>(users);
-
-            // Refresh list of users
+            Connection.CurrentGroup.userList = new List<User>(users);
+            if (Connection.FormMenu.InvokeRequired)
+                Connection.FormMenu.Invoke(new Action(() => Connection.FormMenu.FillChatUsersList()));
+            else
+                Connection.FormMenu.FillChatUsersList();
         }
 
         public void UserJoin(User user)
@@ -203,9 +209,10 @@ namespace ShareP
         }
 
 
-        public void PresentationNextSlide(int slide)
+        public void PresentationNextSlide(int slide)  // CURRENT PRESENTATION IS NULL
         {
-            Connection.CurrentPresentation.CurrentSlide = slide;
+            if (Connection.CurrentPresentation != null)
+                Connection.CurrentPresentation.CurrentSlide = slide;
 
             if (ViewerController.IsWorking)
                 ViewerController.LoadSlide(slide);
@@ -287,6 +294,14 @@ namespace ShareP
                 Log.LogException(ex, "Failed to send slide");
                 return null;
             }
+        }
+
+        public List<User> RequestUsersList()
+        {
+            if (client != null)
+                return new List<User>(client.RequestUsersList());
+            else
+                return null;
         }
     }
 }

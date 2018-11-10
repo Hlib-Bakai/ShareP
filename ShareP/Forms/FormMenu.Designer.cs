@@ -128,14 +128,16 @@
             this.panel14 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.richTextBoxMessages = new System.Windows.Forms.RichTextBox();
+            this.panelChatDisabled = new System.Windows.Forms.Panel();
+            this.label28 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
             this.notConnectedTab = new System.Windows.Forms.TabPage();
             this.button6 = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.panelChatDisabled = new System.Windows.Forms.Panel();
-            this.label27 = new System.Windows.Forms.Label();
-            this.label28 = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
             this.panelBottom.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEditUsername)).BeginInit();
             this.panel2.SuspendLayout();
@@ -152,6 +154,7 @@
             this.tabsMenu.SuspendLayout();
             this.connectionTab.SuspendLayout();
             this.tabsConnection.SuspendLayout();
+            this.tabConnected.SuspendLayout();
             this.tabNotConnected.SuspendLayout();
             this.tabConnectedHost.SuspendLayout();
             this.presentationTab.SuspendLayout();
@@ -159,8 +162,8 @@
             this.panelAllowed.SuspendLayout();
             this.panelNotAllowed.SuspendLayout();
             this.messagesTab.SuspendLayout();
-            this.notConnectedTab.SuspendLayout();
             this.panelChatDisabled.SuspendLayout();
+            this.notConnectedTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelBottom
@@ -561,6 +564,8 @@
             // 
             // tabConnected
             // 
+            this.tabConnected.Controls.Add(this.label30);
+            this.tabConnected.Controls.Add(this.label29);
             this.tabConnected.Location = new System.Drawing.Point(4, 22);
             this.tabConnected.Name = "tabConnected";
             this.tabConnected.Padding = new System.Windows.Forms.Padding(3);
@@ -1241,6 +1246,37 @@
             this.richTextBoxMessages.TabStop = false;
             this.richTextBoxMessages.Text = "";
             // 
+            // panelChatDisabled
+            // 
+            this.panelChatDisabled.Controls.Add(this.label28);
+            this.panelChatDisabled.Controls.Add(this.label27);
+            this.panelChatDisabled.Location = new System.Drawing.Point(4, 9);
+            this.panelChatDisabled.Name = "panelChatDisabled";
+            this.panelChatDisabled.Size = new System.Drawing.Size(394, 255);
+            this.panelChatDisabled.TabIndex = 28;
+            this.panelChatDisabled.Visible = false;
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label28.ForeColor = System.Drawing.Color.Red;
+            this.label28.Location = new System.Drawing.Point(142, 97);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(124, 33);
+            this.label28.TabIndex = 4;
+            this.label28.Text = "disabled";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label27.Location = new System.Drawing.Point(147, 64);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(114, 33);
+            this.label27.TabIndex = 3;
+            this.label27.Text = "Chat is ";
+            // 
             // notConnectedTab
             // 
             this.notConnectedTab.Controls.Add(this.button6);
@@ -1303,36 +1339,26 @@
             this.label8.TabIndex = 2;
             this.label8.Text = "You are";
             // 
-            // panelChatDisabled
+            // label29
             // 
-            this.panelChatDisabled.Controls.Add(this.label28);
-            this.panelChatDisabled.Controls.Add(this.label27);
-            this.panelChatDisabled.Location = new System.Drawing.Point(4, 9);
-            this.panelChatDisabled.Name = "panelChatDisabled";
-            this.panelChatDisabled.Size = new System.Drawing.Size(394, 255);
-            this.panelChatDisabled.TabIndex = 28;
-            this.panelChatDisabled.Visible = false;
+            this.label29.AutoSize = true;
+            this.label29.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label29.Location = new System.Drawing.Point(153, 23);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(82, 20);
+            this.label29.TabIndex = 17;
+            this.label29.Text = "Welcome";
             // 
-            // label27
+            // label30
             // 
-            this.label27.AutoSize = true;
-            this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label27.Location = new System.Drawing.Point(147, 64);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(114, 33);
-            this.label27.TabIndex = 3;
-            this.label27.Text = "Chat is ";
-            // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label28.ForeColor = System.Drawing.Color.Red;
-            this.label28.Location = new System.Drawing.Point(142, 97);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(124, 33);
-            this.label28.TabIndex = 4;
-            this.label28.Text = "disabled";
+            this.label30.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label30.Location = new System.Drawing.Point(8, 63);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(372, 76);
+            this.label30.TabIndex = 19;
+            this.label30.Text = "Now you can proceed to \"Presentation\" page to join current presentation or start " +
+    "a new one. \r\nOr you may chat with other users in \"Messages\" page. ";
+            this.label30.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // FormMenu
             // 
@@ -1371,6 +1397,8 @@
             this.connectionTab.ResumeLayout(false);
             this.connectionTab.PerformLayout();
             this.tabsConnection.ResumeLayout(false);
+            this.tabConnected.ResumeLayout(false);
+            this.tabConnected.PerformLayout();
             this.tabNotConnected.ResumeLayout(false);
             this.tabNotConnected.PerformLayout();
             this.tabConnectedHost.ResumeLayout(false);
@@ -1384,10 +1412,10 @@
             this.panelNotAllowed.PerformLayout();
             this.messagesTab.ResumeLayout(false);
             this.messagesTab.PerformLayout();
-            this.notConnectedTab.ResumeLayout(false);
-            this.notConnectedTab.PerformLayout();
             this.panelChatDisabled.ResumeLayout(false);
             this.panelChatDisabled.PerformLayout();
+            this.notConnectedTab.ResumeLayout(false);
+            this.notConnectedTab.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1500,6 +1528,8 @@
         private System.Windows.Forms.Panel panelChatDisabled;
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.Label label29;
     }
 }
 

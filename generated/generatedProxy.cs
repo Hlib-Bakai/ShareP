@@ -304,6 +304,12 @@ public interface IShareP
     [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/ViewerChangeFocus")]
     System.Threading.Tasks.Task ViewerChangeFocusAsync(bool focus, ShareP.User user);
     
+    [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/RequestUsersList", ReplyAction="http://ShareP/IShareP/RequestUsersListResponse")]
+    ShareP.User[] RequestUsersList();
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/RequestUsersList", ReplyAction="http://ShareP/IShareP/RequestUsersListResponse")]
+    System.Threading.Tasks.Task<ShareP.User[]> RequestUsersListAsync();
+    
     [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/ClPresentationStarted")]
     void ClPresentationStarted(ShareP.Presentation presentation, ShareP.User user);
     
@@ -477,6 +483,16 @@ public partial class SharePClient : System.ServiceModel.DuplexClientBase<IShareP
     public System.Threading.Tasks.Task ViewerChangeFocusAsync(bool focus, ShareP.User user)
     {
         return base.Channel.ViewerChangeFocusAsync(focus, user);
+    }
+    
+    public ShareP.User[] RequestUsersList()
+    {
+        return base.Channel.RequestUsersList();
+    }
+    
+    public System.Threading.Tasks.Task<ShareP.User[]> RequestUsersListAsync()
+    {
+        return base.Channel.RequestUsersListAsync();
     }
     
     public void ClPresentationStarted(ShareP.Presentation presentation, ShareP.User user)
