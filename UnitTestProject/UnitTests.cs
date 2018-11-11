@@ -111,5 +111,25 @@ namespace UnitTestProject
         {
             Assert.IsTrue(ServerController.StartServer());
         }
+
+        [TestMethod]
+        public void TestStopServer()
+        {
+            ServerController.StartServer();
+            ServerController.StopServer();
+        }
+
+        [TestMethod]
+        public void TestSendMessage()
+        {
+            ChatController.SendMessage();
+        }
+
+        [TestMethod]
+        public void TestRecieveMessage()
+        {
+            ChatController.RecieveMessage(new Message() { Sender = "Hlib" , Text = "test",
+                                                            Time = DateTime.Now });
+        }
     }
 }

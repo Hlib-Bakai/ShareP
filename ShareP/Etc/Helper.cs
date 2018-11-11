@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace ShareP
 {
-    static class Helper
+    public static class Helper
     {
         static Dictionary<int, Overlay> overlayList;
         static int nLast;
