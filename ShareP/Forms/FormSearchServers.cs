@@ -26,6 +26,7 @@ namespace ShareP.Forms
 
         private void StartSearch()
         {
+            button2.Enabled = false;
             listView1.Items.Clear();
             timer1.Enabled = true;
             m_clientController.FindServersAsync(this);
@@ -36,20 +37,22 @@ namespace ShareP.Forms
 
             timer1.Enabled = false;
             if (textBox1.InvokeRequired)  //Accessing element from another thread
-            {
                 textBox1.Invoke(new Action<string>((s) => textBox1.Text = s), "Search finished. Found: " + listView1.Items.Count);
-            }
             else
-            {
                 textBox1.Text = "Search finished. Found: " + listView1.Items.Count;
-            }
+
+            if (button2.InvokeRequired)
+                button2.Invoke(new Action(() => button2.Enabled = true));
+            else
+                button2.Enabled = true;
+
         }
 
         public void AddGroup(Group group, string nUsers)
         {
             try
             {
-                string[] newElement = { group.name, nUsers, group.hostName, group.hostIp};
+                string[] newElement = { group.name, nUsers, group.hostName, group.hostIp };
                 var newListViewItem = new ListViewItem(newElement);
                 newListViewItem.ImageIndex = (group.passwordProtected) ? 0 : -1;
 
@@ -150,7 +153,7 @@ namespace ShareP.Forms
                 textBox1.Tag = 1;
             }
 
-           textBox1.Text = "Searching";
+            textBox1.Text = "Searching";
 
             for (int i = 0; i < (int)textBox1.Tag; i++)
                 textBox1.AppendText(".");

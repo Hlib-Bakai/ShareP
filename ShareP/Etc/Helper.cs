@@ -13,15 +13,50 @@ namespace ShareP
     {
         static Dictionary<int, Overlay> overlayList;
         static int nLast;
-
+        
         static Helper()
         {
             overlayList = new Dictionary<int, Overlay>();
             nLast = 0;
+            IP = GetMyIP();
+        }
+
+        public static string IP { get; set; }
+
+        public static List<string> GetLocalIPs()
+        {
+            IPHostEntry host;
+            var localIPs = new List<string>();
+            host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (IPAddress ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    localIPs.Add(ip.ToString());
+                }
+            }
+            return localIPs;
+        }
+
+        private static bool IfIPStillAvailable(string ipToCheck)
+        {
+            IPHostEntry host;
+            var localIPs = new List<string>();
+            host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (IPAddress ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    localIPs.Add(ip.ToString());
+                }
+            }
+            return localIPs.Contains(ipToCheck);
         }
 
         public static string GetMyIP()
         {
+            if (IP != null && IfIPStillAvailable(IP))
+                return IP;
             IPHostEntry host;
             string localIP = "";
             host = Dns.GetHostEntry(Dns.GetHostName());
@@ -94,8 +129,11 @@ namespace ShareP
             nLast++;
             overlayList.Add(nLast, overlay);
             overlay.BringToFront();
-            
-            overlay.Show(parent);
+
+            if (parent.InvokeRequired)
+                parent.Invoke(new Action<Form>((p) => overlay.Show(p)), parent);
+            else
+                overlay.Show(parent);
 
             return nLast;
         }
@@ -106,10 +144,16 @@ namespace ShareP
             {
                 try
                 {
-                    overlayList[id].Owner.Focus();
+                    if (overlayList[id].Owner.InvokeRequired)
+                        overlayList[id].Owner.Invoke(new Action<int>((i) => overlayList[i].Owner.Focus()), id);
+                    else
+                        overlayList[id].Owner.Focus();
                 }
                 catch { }
-                overlayList[id].Hide();
+                if (overlayList[id].InvokeRequired)
+                    overlayList[id].Invoke(new Action<int>((i) => overlayList[i].Hide()), id);
+                else
+                    overlayList[id].Hide();
             }
         }
     }

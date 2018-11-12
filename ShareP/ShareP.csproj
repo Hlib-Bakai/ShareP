@@ -103,6 +103,12 @@
     <Compile Include="Forms\FormChangeGroupSettings.Designer.cs">
       <DependentUpon>FormChangeGroupSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FormChangeIp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormChangeIp.Designer.cs">
+      <DependentUpon>FormChangeIp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FormChangeUsername.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -193,6 +199,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormChangeGroupSettings.resx">
       <DependentUpon>FormChangeGroupSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormChangeIp.resx">
+      <DependentUpon>FormChangeIp.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormChangeUsername.resx">
       <DependentUpon>FormChangeUsername.cs</DependentUpon>

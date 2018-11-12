@@ -103,6 +103,8 @@ namespace ShareP.Controllers
     {
         Dictionary<User, ISharePCallback> users =
          new Dictionary<User, ISharePCallback>();
+
+        List<User> usersToRemove = new List<User>();
         
 
         public ISharePCallback CurrentCallback
@@ -165,8 +167,10 @@ namespace ShareP.Controllers
                     catch (Exception ex)
                     {
                         Log.LogException(ex, "OnPresentationStart Service");
+                        usersToRemove.Add(key);
                     }
                 }
+                RemoveUsers();
             }
         }
 
@@ -186,8 +190,10 @@ namespace ShareP.Controllers
                     catch (Exception ex)
                     {
                         Log.LogException(ex, "OnPresentationNextSlide Service");
+                        usersToRemove.Add(key);
                     }
                 }
+                RemoveUsers();
             }
         }
 
@@ -207,8 +213,10 @@ namespace ShareP.Controllers
                     catch (Exception ex)
                     {
                         Log.LogException(ex, "OnPresentationEnd Service");
+                        usersToRemove.Add(key);
                     }
                 }
+                RemoveUsers();
             }
         }
 
@@ -236,8 +244,10 @@ namespace ShareP.Controllers
                     catch (Exception ex)
                     {
                         Log.LogException(ex, "OnGroupSettingsChanged Service");
+                        usersToRemove.Add(key);
                     }
                 }
+                RemoveUsers();
             }
         }
 
@@ -266,10 +276,18 @@ namespace ShareP.Controllers
                         }
                         catch
                         {
-                            users.Remove(key);
+                            usersToRemove.Add(key);
                         }
                     }
+                    RemoveUsers();
                     users.Add(user, CurrentCallback);
+                    ICommunicationObject commObj = CurrentCallback as ICommunicationObject;
+                    if (commObj != null)
+                    {
+                        commObj.Closed += new EventHandler(CallBackFaulted);
+                        commObj.Faulted += new EventHandler(CallBackFaulted);
+
+                    }
                 }
 
                 Log.LogInfo("User connected: " + user.Username);
@@ -278,6 +296,27 @@ namespace ShareP.Controllers
             Log.LogInfo("Refused connection from: " + user.Username);
             return ConnectionResult.Error;
         }
+
+        void CallBackFaulted(object sender, EventArgs e)
+        {
+            Log.LogInfo("Callback faulted");
+            ISharePCallback callback = sender as ISharePCallback;
+            if (callback != null)
+            {
+                if (users.ContainsValue(callback))
+                {
+
+                    ICommunicationObject commObj = callback as ICommunicationObject;
+                    if (commObj != null)
+                    {
+                        //remove the reference to the event handle to help memory cleanup
+                        commObj.Closed -= new EventHandler(CallBackFaulted);
+                    }
+                    Disconnect(users.FirstOrDefault(x => x.Value == callback).Key);
+                }
+            }
+        }
+
         public void Disconnect(User user)
         {
             Connection.CurrentGroup.RemoveUser(user);
@@ -294,11 +333,18 @@ namespace ShareP.Controllers
                     lock (syncObj)
                     {
                         this.users.Remove(u);
-                        foreach (ISharePCallback callback in users.Values)
+                        foreach (User key in users.Keys)
                         {
-                            callback.RefreshUsers(Connection.CurrentGroup.userList);
-                            callback.UserLeave(user);
+                            ISharePCallback callback = users[key];
+                            try {
+                                callback.RefreshUsers(Connection.CurrentGroup.userList);
+                                callback.UserLeave(user);
+                            } catch
+                            {
+                                usersToRemove.Add(key);
+                            }
                         }
+                        RemoveUsers();
                     }
                     return;
                 }
@@ -320,12 +366,24 @@ namespace ShareP.Controllers
         public void Say(Message msg)
         {
             ChatController.RecieveMessage(msg);
+            Log.LogInfo("Message sent: " + msg.Time.ToLongTimeString());
             lock (syncObj)
             {
-                foreach (ISharePCallback callback in users.Values)
+                foreach (User key in users.Keys)
                 {
-                    callback.Receive(msg);
+                    ISharePCallback callback = users[key];
+                    try
+                    {
+                        callback.Receive(msg);
+                        Log.LogInfo("Finished: " + DateTime.Now.ToLongTimeString());
+                    }
+                    catch
+                    {
+                        usersToRemove.Add(key);
+                        Log.LogInfo("Users kicked: " + DateTime.Now.ToLongTimeString());
+                    }
                 }
+                RemoveUsers();
             }
         }
 
@@ -333,10 +391,19 @@ namespace ShareP.Controllers
         {
             lock (syncObj)
             {
-                foreach (ISharePCallback callback in users.Values)
+                foreach (User key in users.Keys)
                 {
-                    callback.IsWritingCallback(user);
+                    ISharePCallback callback = users[key];
+                    try
+                    {
+                        callback.IsWritingCallback(user);
+                    }
+                    catch
+                    {
+                        usersToRemove.Add(key);
+                    }
                 }
+                RemoveUsers();
             }
         }
 
@@ -498,6 +565,17 @@ namespace ShareP.Controllers
             else
                 return null;
         }
+
+        private void RemoveUsers()
+        {
+            for (int i = 0; i < usersToRemove.Count; i++)
+            {
+                var key = usersToRemove[i];
+                users.Remove(key);
+                Disconnect(key);
+            }
+            usersToRemove.Clear();
+        }
     }
 
 
@@ -547,9 +625,9 @@ namespace ShareP.Controllers
                 SelfHost.Description.Behaviors.Add(throttle);
             }
 
-            tcpBinding.ReceiveTimeout = new TimeSpan(24, 0, 0); // Keep sessions alive for 24 hours
+            tcpBinding.ReceiveTimeout = new TimeSpan(24, 0, 5); 
             tcpBinding.ReliableSession.Enabled = true;
-            tcpBinding.ReliableSession.InactivityTimeout = new TimeSpan(24, 0, 0);
+            tcpBinding.ReliableSession.InactivityTimeout = new TimeSpan(0, 0, 1); // Keep sessions alive for 1 second
 
             SelfHost.AddServiceEndpoint(typeof(IShareP), tcpBinding, "tcp");
 
@@ -560,15 +638,12 @@ namespace ShareP.Controllers
                 MetadataExchangeBindings.CreateMexTcpBinding(),
                 "net.tcp://" + ipBase +
                 ":8002/ShareP/mex");
-
-
             try
             {
                 SelfHost.Open();
             }
             catch (Exception e)
             {
-                //
                 result = false;
                 Log.LogException(e);
             }

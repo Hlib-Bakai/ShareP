@@ -21,32 +21,14 @@ namespace ShareP
         {
             rcvFilesPath = Helper.GetCurrentFolder() + "tin/";
         }
-
-        void HandleConnection()
-        {
-            // Do something if connection lost or created
-        }
-
-
-        void InnerDuplexChannel_Closed(object sender, EventArgs e)
-        {
-            Log.LogInfo("Channel closed");
-            HandleConnection();
-        }
-
-        void InnerDuplexChannel_Opened(object sender, EventArgs e)
-        {
-            Log.LogInfo("Channel opened");
-            HandleConnection();
-        }
-
+        
         void InnerDuplexChannel_Faulted(object sender, EventArgs e)
         {
             Log.LogInfo("Channel faulted");
-            HandleConnection();
+            Connection.GroupClosed(true);
         }
 
-        public void DownloadPresentationSlidesOnBackground(object sender, System.ComponentModel.DoWorkEventArgs e)
+        public void DownloadPresentationSlidesOnBackground(object sender, DoWorkEventArgs e)
         {
             DirectoryInfo di;
             string path = rcvFilesPath;
@@ -127,10 +109,6 @@ namespace ShareP
 
                     client.InnerDuplexChannel.Faulted +=
                       new EventHandler(InnerDuplexChannel_Faulted);
-                    client.InnerDuplexChannel.Opened +=
-                      new EventHandler(InnerDuplexChannel_Opened);
-                    client.InnerDuplexChannel.Closed +=
-                      new EventHandler(InnerDuplexChannel_Closed);
 
                     ConnectionResult connectionResult = client.Connect(Connection.CurrentUser);
                     if (connectionResult == ConnectionResult.Success)
@@ -165,6 +143,12 @@ namespace ShareP
         {
             if (client == null)
                 return;
+
+            if (client.State == CommunicationState.Faulted)
+            {
+                client = null;
+                return;
+            }
 
             client.DisconnectAsync(Connection.CurrentUser);
             client = null;
@@ -209,7 +193,7 @@ namespace ShareP
         }
 
 
-        public void PresentationNextSlide(int slide)  // CURRENT PRESENTATION IS NULL
+        public void PresentationNextSlide(int slide) 
         {
             if (Connection.CurrentPresentation != null)
                 Connection.CurrentPresentation.CurrentSlide = slide;

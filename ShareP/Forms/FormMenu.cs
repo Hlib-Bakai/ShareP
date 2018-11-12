@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ShareP.Controllers;
 using ShareP.Forms;
+using System.Reflection;
 
 namespace ShareP
 {
@@ -50,6 +51,7 @@ namespace ShareP
 
             listBox1.DrawItem += new DrawItemEventHandler(listBox_DrawItem);
             listBoxChatUsers.DrawItem += new DrawItemEventHandler(listBox_DrawItem);
+            
 
             richTextBoxMessages.BackColor = Color.White;
             richTextBoxMessages.GotFocus += TextBoxGotFocus;
@@ -90,7 +92,7 @@ namespace ShareP
             };
 
             LoadConnectionTab();
-            
+
             PresentationController.StartSlideShow(checkBoxCheater.Checked);
         }
 
@@ -160,7 +162,7 @@ namespace ShareP
                 {
                     listBox1.Invoke(new Action<string>((i) => listBox1.Items.Add(i)), user.Username);
                 }
-                listBox1.Invoke(new Action(() => listBox1.Refresh()));
+                listBox1.Invoke(new Action(() => listBox1.Show()));
             }
             else
             {
@@ -169,7 +171,7 @@ namespace ShareP
                 {
                     listBox1.Items.Add(user.Username);
                 }
-                listBox1.Refresh();
+                listBox1.Show();
             }
         }
 
@@ -197,7 +199,7 @@ namespace ShareP
                 listBoxChatUsers.Refresh();
             }
         }
-        
+
 
         private void buttonConnection_Click(object sender, EventArgs e)
         {
@@ -358,7 +360,7 @@ namespace ShareP
                 }
                 labelCurrentSlide.Text = Connection.CurrentPresentation.CurrentSlide.ToString() + "/" +
                                          Connection.CurrentPresentation.SlidesTotal.ToString();
-                if (Connection.CurrentPresentation.Author.CompareTo(Connection.CurrentUser.Username) != 0)  
+                if (Connection.CurrentPresentation.Author.CompareTo(Connection.CurrentUser.Username) != 0)
                     buttonJoin.Visible = true;
                 else
                     buttonJoin.Visible = false;
@@ -535,11 +537,6 @@ namespace ShareP
             Application.Exit();
         }
 
-        private void FormMain_Load(object sender, EventArgs e)
-        {
-
-        }
-
         void listBox_DrawItem(object sender, DrawItemEventArgs e)
         {
             ListBox list = (ListBox)sender;
@@ -651,8 +648,8 @@ namespace ShareP
             }
             Helper.HideOverlay(overlay);
         }
-        
-        
+
+
 
         private void button3_Click(object sender, EventArgs e)
         {
@@ -727,7 +724,7 @@ namespace ShareP
                 {
                     FormLoading formLoading = new FormLoading("Loading presentation. Please wait...");
                     formLoading.Show();
-                    
+
 
                     await Task.Run(() => PresentationController.LoadPPT(file));
 
@@ -775,7 +772,7 @@ namespace ShareP
         private void notifyIcon1_BalloonTipClicked(object sender, EventArgs e)
         {
             RestoreWindow();
-            switch(Notification.type)
+            switch (Notification.type)
             {
                 case NotificationType.Chat:
                     LoadMessagesTab();
@@ -914,9 +911,8 @@ namespace ShareP
             Helper.HideOverlay(ov);
         }
 
-        private void buttonSendMessage_Click(object sender, EventArgs e) 
+        private void buttonSendMessage_Click(object sender, EventArgs e)
         {
-            //ChatController.RecieveMessage(new Message() { Sender = "Hlib", Text = "Some very very very very very very very very very very long text!", Time = new DateTime(132323232) });
             if (textBoxInputMessage.Text.Length > 0)
             {
                 ChatController.SendMessage();
@@ -933,6 +929,31 @@ namespace ShareP
                 }
                 e.SuppressKeyPress = true;
             }
+        }
+
+        private void labelIP_Click(object sender, EventArgs e)
+        {
+            int overlay = Helper.ShowOverlay(this);
+            FormChangeIp formChangeIp = new FormChangeIp();
+            if (Connection.CurrentRole != Role.Notconnected)
+            {
+                FormAlert formAlert = new FormAlert("Error", "You are not allowed to change network when connected.", true);
+                formAlert.ShowDialog();
+            }
+            else
+                if (formChangeIp.ShowDialog() == DialogResult.OK)
+                CheckStatusConnection();
+            Helper.HideOverlay(overlay);
+        }
+
+        private void labelIP_MouseHover(object sender, EventArgs e)
+        {
+            pictureBoxEditIp.Show();
+        }
+
+        private void labelIP_MouseLeave(object sender, EventArgs e)
+        {
+            pictureBoxEditIp.Hide();
         }
     }
 }

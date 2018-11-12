@@ -23,9 +23,9 @@ namespace ShareP.Forms
         {
             InitializeComponent();
             m_user = Connection.CurrentUser;
-
-            textBox1.BackColor = System.Drawing.SystemColors.Window;
-            textBox1.Text = m_user.Username;
+            
+            textBox2.Text = m_user.Username;
+            textBox2.Select(textBox2.Text.Length, 0);
         }
 
         private void button1_Click(object sender, EventArgs e)

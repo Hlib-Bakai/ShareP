@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMenu));
             this.panelBottom = new System.Windows.Forms.Panel();
+            this.pictureBoxEditIp = new System.Windows.Forms.PictureBox();
             this.labelUsername = new System.Windows.Forms.Label();
             this.labelIP = new System.Windows.Forms.Label();
             this.pictureBoxEditUsername = new System.Windows.Forms.PictureBox();
@@ -67,6 +68,8 @@
             this.buttonDisconnect = new System.Windows.Forms.Button();
             this.tabsConnection = new ShareP.TabControlWithoutHeader();
             this.tabConnected = new System.Windows.Forms.TabPage();
+            this.label30 = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
             this.tabNotConnected = new System.Windows.Forms.TabPage();
             this.button4 = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
@@ -136,9 +139,8 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.label29 = new System.Windows.Forms.Label();
-            this.label30 = new System.Windows.Forms.Label();
             this.panelBottom.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEditIp)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEditUsername)).BeginInit();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
@@ -169,6 +171,7 @@
             // panelBottom
             // 
             this.panelBottom.BackColor = System.Drawing.Color.White;
+            this.panelBottom.Controls.Add(this.pictureBoxEditIp);
             this.panelBottom.Controls.Add(this.labelUsername);
             this.panelBottom.Controls.Add(this.labelIP);
             this.panelBottom.Controls.Add(this.pictureBoxEditUsername);
@@ -185,6 +188,16 @@
             this.panelBottom.Name = "panelBottom";
             this.panelBottom.Size = new System.Drawing.Size(172, 425);
             this.panelBottom.TabIndex = 3;
+            // 
+            // pictureBoxEditIp
+            // 
+            this.pictureBoxEditIp.Image = global::ShareP.Properties.Resources.Pencil_16;
+            this.pictureBoxEditIp.Location = new System.Drawing.Point(151, 99);
+            this.pictureBoxEditIp.Name = "pictureBoxEditIp";
+            this.pictureBoxEditIp.Size = new System.Drawing.Size(16, 16);
+            this.pictureBoxEditIp.TabIndex = 13;
+            this.pictureBoxEditIp.TabStop = false;
+            this.pictureBoxEditIp.Visible = false;
             // 
             // labelUsername
             // 
@@ -208,6 +221,9 @@
             this.labelIP.TabIndex = 11;
             this.labelIP.Text = "#ip#";
             this.labelIP.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.labelIP.Click += new System.EventHandler(this.labelIP_Click);
+            this.labelIP.MouseLeave += new System.EventHandler(this.labelIP_MouseLeave);
+            this.labelIP.MouseHover += new System.EventHandler(this.labelIP_MouseHover);
             // 
             // pictureBoxEditUsername
             // 
@@ -574,6 +590,27 @@
             this.tabConnected.Text = "tabConnected";
             this.tabConnected.UseVisualStyleBackColor = true;
             // 
+            // label30
+            // 
+            this.label30.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label30.Location = new System.Drawing.Point(8, 63);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(372, 76);
+            this.label30.TabIndex = 19;
+            this.label30.Text = "Now you can proceed to \"Presentation\" page to join current presentation or start " +
+    "a new one. \r\nOr you may chat with other users in \"Messages\" page. ";
+            this.label30.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label29.Location = new System.Drawing.Point(153, 23);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(82, 20);
+            this.label29.TabIndex = 17;
+            this.label29.Text = "Welcome";
+            // 
             // tabNotConnected
             // 
             this.tabNotConnected.Controls.Add(this.button4);
@@ -736,7 +773,6 @@
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(259, 38);
             this.listBox1.Name = "listBox1";
-            this.listBox1.SelectionMode = System.Windows.Forms.SelectionMode.None;
             this.listBox1.Size = new System.Drawing.Size(120, 104);
             this.listBox1.TabIndex = 19;
             // 
@@ -1188,7 +1224,6 @@
             this.listBoxChatUsers.FormattingEnabled = true;
             this.listBoxChatUsers.Location = new System.Drawing.Point(290, 32);
             this.listBoxChatUsers.Name = "listBoxChatUsers";
-            this.listBoxChatUsers.SelectionMode = System.Windows.Forms.SelectionMode.None;
             this.listBoxChatUsers.Size = new System.Drawing.Size(120, 234);
             this.listBoxChatUsers.TabIndex = 27;
             // 
@@ -1339,27 +1374,6 @@
             this.label8.TabIndex = 2;
             this.label8.Text = "You are";
             // 
-            // label29
-            // 
-            this.label29.AutoSize = true;
-            this.label29.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label29.Location = new System.Drawing.Point(153, 23);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(82, 20);
-            this.label29.TabIndex = 17;
-            this.label29.Text = "Welcome";
-            // 
-            // label30
-            // 
-            this.label30.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label30.Location = new System.Drawing.Point(8, 63);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(372, 76);
-            this.label30.TabIndex = 19;
-            this.label30.Text = "Now you can proceed to \"Presentation\" page to join current presentation or start " +
-    "a new one. \r\nOr you may chat with other users in \"Messages\" page. ";
-            this.label30.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // FormMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1376,11 +1390,11 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ShareP";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMenu_FormClosing);
-            this.Load += new System.EventHandler(this.FormMain_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormMain_MouseDown);
             this.Move += new System.EventHandler(this.FormMenu_Move);
             this.panelBottom.ResumeLayout(false);
             this.panelBottom.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEditIp)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEditUsername)).EndInit();
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
@@ -1530,6 +1544,7 @@
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.PictureBox pictureBoxEditIp;
     }
 }
 

@@ -74,14 +74,18 @@ namespace ShareP
                 DisconnectServer();
         }
 
-        public static void GroupClosed()
+        public static void GroupClosed(bool faulted = false)
         {
             ViewerController.OnAppClosing();
             clientConnection.Disconnect();
             CurrentGroup = null;
             role = Role.Notconnected;
             formMenu.RestoreWindow();
-            FormAlert formAlert = new FormAlert("Group was closed", "Host closed the group", true);
+            FormAlert formAlert;
+            if (faulted)
+                formAlert = new FormAlert("Connection faulted", "Probably host lost network connection", true);
+            else
+                formAlert = new FormAlert("Group was closed", "Host closed the group", true);
             int overlay = Helper.ShowOverlay();
             formAlert.ShowDialog();
             Helper.HideOverlay(overlay);
