@@ -156,7 +156,7 @@ namespace ShareP.Forms
                     FormAlert formAlert1 = new FormAlert("Slides available", "Would you like to download slides?");
                     if (formAlert1.ShowDialog() == DialogResult.OK)
                     {
-                        FormProgress formProgress = new FormProgress();
+                        FormDownloadSlide formProgress = new FormDownloadSlide();
                         formProgress.ShowDialog();
                     }
                 }

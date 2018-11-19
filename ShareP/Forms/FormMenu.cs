@@ -468,11 +468,11 @@ namespace ShareP
                 if (newIp.CompareTo(labelIP.Text) != 0)
                 {
                     timerConnection.Enabled = false;
+                    Disconnect(true);
                     int overlay = Helper.ShowOverlay();
                     FormAlert formAlert = new FormAlert("IP Changed", "Probably network was changed. You will be disconnected.", true);
                     formAlert.ShowDialog();
                     Helper.HideOverlay(overlay);
-                    Disconnect(true);
                     labelIP.Text = Helper.GetMyIP();
                     timerConnection.Enabled = true;
                 }
@@ -872,7 +872,7 @@ namespace ShareP
 
         private void button9_Click(object sender, EventArgs e)
         {
-            FormProgress formProgress = new FormProgress();
+            FormDownloadSlide formProgress = new FormDownloadSlide();
             formProgress.ShowDialog();
         }
 

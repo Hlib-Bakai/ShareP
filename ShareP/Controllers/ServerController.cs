@@ -581,12 +581,6 @@ namespace ShareP.Controllers
 
     public static class ServerController
     {
-        public static Group MyGroup
-        {
-            get;
-            set;
-        }
-
         static ServiceHost SelfHost;
 
         public static bool StartServer()
@@ -625,7 +619,7 @@ namespace ShareP.Controllers
                 SelfHost.Description.Behaviors.Add(throttle);
             }
 
-            tcpBinding.ReceiveTimeout = new TimeSpan(24, 0, 5); 
+            tcpBinding.ReceiveTimeout = new TimeSpan(24, 0, 0); 
             tcpBinding.ReliableSession.Enabled = true;
             tcpBinding.ReliableSession.InactivityTimeout = new TimeSpan(0, 0, 1); // Keep sessions alive for 1 second
 

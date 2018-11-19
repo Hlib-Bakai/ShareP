@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ShareP.Controllers
 {
-    public class PresentationController
+    public static class PresentationController
     {
         static private Application app;
         static private Presentations ppts;

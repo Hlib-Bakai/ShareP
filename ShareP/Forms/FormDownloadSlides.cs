@@ -12,12 +12,12 @@ using System.Windows.Forms;
 
 namespace ShareP.Forms
 {
-    public partial class FormProgress : Form
+    public partial class FormDownloadSlide : Form
     {
         BackgroundWorker backgroundWorker;
         string dest = "";
 
-        public FormProgress()
+        public FormDownloadSlide()
         {
             InitializeComponent();
         }

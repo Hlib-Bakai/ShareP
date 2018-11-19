@@ -28,8 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.loadingCircle1 = new ShareP.LoadingCircle();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // label1
@@ -61,6 +63,12 @@
             this.loadingCircle1.Text = "loadingCircle1";
             this.loadingCircle1.Click += new System.EventHandler(this.loadingCircle1_Click);
             // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // FormLoading
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -75,6 +83,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormLoading";
+            this.Shown += new System.EventHandler(this.FormLoading_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -83,5 +92,6 @@
         #endregion
         private LoadingCircle loadingCircle1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Timer timer1;
     }
 }

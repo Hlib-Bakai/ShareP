@@ -1,6 +1,6 @@
 ﻿namespace ShareP.Forms
 {
-    partial class FormProgress
+    partial class FormDownloadSlide
     {
         /// <summary>
         /// Required designer variable.

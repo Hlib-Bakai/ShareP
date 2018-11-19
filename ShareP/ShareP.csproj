@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>ShareP</RootNamespace>
     <AssemblyName>ShareP</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -37,6 +37,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -46,6 +47,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>logo_sm_transparent_icon.ico</ApplicationIcon>
@@ -127,6 +129,12 @@
     <Compile Include="Forms\FormCreateGroup.Designer.cs">
       <DependentUpon>FormCreateGroup.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FormDirectConnect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormDirectConnect.Designer.cs">
+      <DependentUpon>FormDirectConnect.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FormHelpCheater.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -151,11 +159,11 @@
     <Compile Include="Forms\FormPassword.Designer.cs">
       <DependentUpon>FormPassword.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FormProgress.cs">
+    <Compile Include="Forms\FormDownloadSlides.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FormProgress.Designer.cs">
-      <DependentUpon>FormProgress.cs</DependentUpon>
+    <Compile Include="Forms\FormDownloadSlides.Designer.cs">
+      <DependentUpon>FormDownloadSlides.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FormSearchServers.cs">
       <SubType>Form</SubType>
@@ -212,6 +220,9 @@
     <EmbeddedResource Include="Forms\FormCreateGroup.resx">
       <DependentUpon>FormCreateGroup.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormDirectConnect.resx">
+      <DependentUpon>FormDirectConnect.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormHelpCheater.resx">
       <DependentUpon>FormHelpCheater.cs</DependentUpon>
     </EmbeddedResource>
@@ -224,8 +235,8 @@
     <EmbeddedResource Include="Forms\FormPassword.resx">
       <DependentUpon>FormPassword.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormProgress.resx">
-      <DependentUpon>FormProgress.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\FormDownloadSlides.resx">
+      <DependentUpon>FormDownloadSlides.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormSearchServers.resx">
       <DependentUpon>FormSearchServers.cs</DependentUpon>
@@ -264,7 +275,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Logo_transparent.png" />

@@ -43,7 +43,7 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.button1 = new System.Windows.Forms.Button();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.buttonDirect = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // panel7
@@ -123,6 +123,7 @@
             // button3
             // 
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.button3.Location = new System.Drawing.Point(359, 270);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 39);
@@ -157,14 +158,17 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // textBox2
+            // buttonDirect
             // 
-            this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox2.Location = new System.Drawing.Point(94, 296);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(259, 13);
-            this.textBox2.TabIndex = 13;
-            this.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.buttonDirect.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonDirect.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonDirect.Location = new System.Drawing.Point(155, 286);
+            this.buttonDirect.Name = "buttonDirect";
+            this.buttonDirect.Size = new System.Drawing.Size(137, 23);
+            this.buttonDirect.TabIndex = 14;
+            this.buttonDirect.Text = "Direct connection";
+            this.buttonDirect.UseVisualStyleBackColor = true;
+            this.buttonDirect.Click += new System.EventHandler(this.buttonDirect_ClickAsync);
             // 
             // FormSearchServers
             // 
@@ -172,7 +176,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(446, 321);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.buttonDirect);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
@@ -206,6 +210,6 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.ColumnHeader columnUsers;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Button buttonDirect;
     }
 }

@@ -49,20 +49,6 @@ namespace ShareP
             }
         }
 
-        static public void TryLoadImage(object sender, System.ComponentModel.ProgressChangedEventArgs e) // Delete maybe
-        {
-            Log.LogInfo("Bot reported progress");
-            if (IsWorking)
-            {
-                //if (formViewer.needsDownload)
-                //    formViewer.SetCurrentSlideImage();
-            }
-            else
-            {
-                Log.LogInfo("IsWorking returned false");
-            }
-        }
-
         static public void CleanTempFiles()
         {
             try
@@ -98,7 +84,7 @@ namespace ShareP
                 FormAlert formAlert1 = new FormAlert("Presentation finished", "Would you like to download slides?");
                 if (formAlert1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    FormProgress formProgress = new FormProgress();
+                    FormDownloadSlide formProgress = new FormDownloadSlide();
                     formProgress.ShowDialog();
                 }
             }
