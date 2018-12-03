@@ -108,7 +108,7 @@ namespace ShareP.Controllers
          new Dictionary<User, ISharePCallback>();
 
         List<User> usersToRemove = new List<User>();
-        
+        List<User> usersToReconnect = new List<User>();
 
         public ISharePCallback CurrentCallback
         {
@@ -262,13 +262,13 @@ namespace ShareP.Controllers
             {
                 if (users.ContainsValue(callback))
                 {
-
                     ICommunicationObject commObj = callback as ICommunicationObject;
                     if (commObj != null)
                     {
                         //remove the reference to the event handle to help memory cleanup
                         commObj.Closed -= new EventHandler(CallBackFaulted);
                     }
+                    usersToReconnect.Add(users.FirstOrDefault(x => x.Value == callback).Key);
                     Disconnect(users.FirstOrDefault(x => x.Value == callback).Key);
                 }
             }
@@ -370,6 +370,15 @@ namespace ShareP.Controllers
             {
                 lock (syncObj)
                 {
+                    bool exists = false;
+                    foreach(var item in usersToReconnect)
+                    {
+                        if (item.Username.CompareTo(user.Username) == 0 &&
+                            item.IP == user.IP)
+                            exists = true;
+                    }
+                    if (!exists)
+                        return ConnectionResult.Error;
                     Connection.CurrentGroup.AddUser(user);
                     PresentationController.UserConnected(user);
 

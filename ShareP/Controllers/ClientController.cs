@@ -8,6 +8,7 @@ using ShareP.Server;
 using System.IO;
 using System.ComponentModel;
 using System.Threading;
+using ShareP.Forms;
 
 namespace ShareP
 {
@@ -18,13 +19,15 @@ namespace ShareP
         private delegate void FaultedInvoker();
         public BackgroundWorker downloadingWorker = null;
         private bool faulted = false;
+        private CancellationTokenSource cancellationToken;
+        private FormReconnecting formReconnecting;
 
         public ClientController()
         {
             rcvFilesPath = Helper.GetCurrentFolder() + "tin/";
         }
-        
-        void InnerDuplexChannel_Faulted(object sender, EventArgs e)
+
+        async void InnerDuplexChannel_FaultedAsync(object sender, EventArgs e)
         {
             if (faulted)
                 return;
@@ -32,8 +35,7 @@ namespace ShareP
             faulted = true;
             try
             {
-                if (!ReconnectOnFaultAsync().Result)
-                    Connection.GroupClosed(true);
+                await ReconnectOnFaultAsync();
             }
             catch (Exception ex)
             {
@@ -42,8 +44,35 @@ namespace ShareP
             }
         }
 
+        public bool Faulted
+        {
+            get
+            {
+                return faulted;
+            }
+        }
+
+        private bool CheckBeforeRequest()
+        {
+            if (client == null)
+            {
+                Log.LogInfo("Check before request: client is null");
+                return false;
+            }
+            if (faulted)
+            {
+                Log.LogInfo("Check before request: client faulted");
+                return false;
+            }
+            Log.LogInfo("Check before request: OK");
+            return true;
+        }
+
         public void DownloadPresentationSlidesOnBackground(object sender, DoWorkEventArgs e)
         {
+            if (!CheckBeforeRequest())
+                return;
+
             DirectoryInfo di;
             string path = rcvFilesPath;
             if (!Directory.Exists(path))
@@ -122,12 +151,13 @@ namespace ShareP
                     Log.LogInfo("Connection opened");
 
                     client.InnerDuplexChannel.Faulted +=
-                      new EventHandler(InnerDuplexChannel_Faulted);
+                      new EventHandler(InnerDuplexChannel_FaultedAsync);
 
                     ConnectionResult connectionResult = client.Connect(Connection.CurrentUser, password);
                     if (connectionResult == ConnectionResult.Success)
                     {
                         Log.LogInfo("Successfuly connected to " + ip);
+                        faulted = false;
                         Connection.CurrentPresentation = client.RequestCurrentPresentation();
                     }
                     else
@@ -149,25 +179,68 @@ namespace ShareP
         public async Task<bool> ReconnectOnFaultAsync()
         {
             Log.LogInfo("Trying to reconnect");
-            var cancellationToken = new CancellationTokenSource();
-            var task = Task.Factory.StartNew(RecconectTask, cancellationToken.Token);
+            cancellationToken = new CancellationTokenSource();
+            var task = Task.Factory.StartNew(ReconnectTask, cancellationToken.Token).ContinueWith(OnReconnectFinish);
             Log.LogInfo("Starting reconecting task");
-            if (await Task.WhenAny(task, Task.Delay(2000)) == task)
+            if (await Task.WhenAny(task, Task.Delay(3000)) != task)
             {
-                faulted = false;
-                return true;
+                Log.LogInfo("Timeout of fast reconnecting");
+                ShowReconnectWindow();
+                //cancellationToken.Cancel();
             }
-            else
-            {
-                Log.LogInfo("Timeout of reconnecting");
-                cancellationToken.Cancel();
-            }
-            faulted = false;
             return false;
         }
 
+        private void OnReconnectFinish(Task<bool> obj)
+        {
+            if (!faulted)
+                return;
+            Log.LogInfo("Reconnect finish");
+            faulted = false;
+            if (formReconnecting != null)
+            {
+                Log.LogInfo("Closing reconnect window");
+                formReconnecting.Invoke(new Action(() => formReconnecting.Close()));
+            }
+            if (obj.Result == false)
+            {
+                Log.LogInfo("Reconnect returned false");
+                Connection.GroupClosed(true);
+            }
+            else
+            {
+                Log.LogInfo("Reconnect successful");
+            }
+        }
 
-        public bool RecconectTask()
+        private void ShowReconnectWindow()
+        {
+            if (!faulted || formReconnecting != null)
+                return;
+            Log.LogInfo("Showing reconnect window");
+            Connection.FormMenu.RestoreWindow();
+            int overlay = Helper.ShowOverlay();
+            formReconnecting = new FormReconnecting();
+            if (Connection.FormMenu.InvokeRequired)
+                Connection.FormMenu.Invoke(new Action<FormMenu>((f) => formReconnecting.ShowDialog(f)), Connection.FormMenu);
+            else
+                formReconnecting.ShowDialog(Connection.FormMenu);
+            Log.LogInfo("Reconnect window closed");
+            Helper.HideOverlay(overlay);
+            formReconnecting = null;
+        }
+
+        public void CancelReconnecting()
+        {
+            if (faulted)
+            {
+                faulted = false;
+                cancellationToken.Cancel();
+                Connection.GroupClosed(true);
+            }
+        }
+
+        public bool ReconnectTask()
         {
             try
             {
@@ -185,7 +258,7 @@ namespace ShareP
                 Log.LogInfo("Connection reopened");
 
                 client.InnerDuplexChannel.Faulted +=
-                  new EventHandler(InnerDuplexChannel_Faulted);
+                  new EventHandler(InnerDuplexChannel_FaultedAsync);
 
                 ConnectionResult connectionResult = client.Reconnect(Connection.CurrentUser);
                 if (connectionResult == ConnectionResult.Success)
@@ -207,11 +280,15 @@ namespace ShareP
 
         public Dictionary<string, string> RequestServerInfo()
         {
+            if (!CheckBeforeRequest())
+                return null;
             return client.RequestServerInfo();
         }
 
         public void ReportFocusChanged(bool focus)
         {
+            if (!CheckBeforeRequest())
+                return;
             Log.LogInfo("Client controller: report focus " + focus);
             client.ViewerChangeFocus(focus, Connection.CurrentUser);
         }
@@ -219,10 +296,7 @@ namespace ShareP
 
         public void Disconnect()
         {
-            if (client == null)
-                return;
-
-            if (client.State == CommunicationState.Faulted)
+            if (!CheckBeforeRequest())
             {
                 client = null;
                 return;
@@ -253,6 +327,8 @@ namespace ShareP
 
         public void SendMessage(Message msg)
         {
+            if (!CheckBeforeRequest())
+                return;
             client.Say(msg);
         }
 
@@ -276,7 +352,7 @@ namespace ShareP
         }
 
 
-        public void PresentationNextSlide(int slide) 
+        public void PresentationNextSlide(int slide)
         {
             if (Connection.CurrentPresentation != null)
                 Connection.CurrentPresentation.CurrentSlide = slide;
@@ -311,20 +387,23 @@ namespace ShareP
 
         public void ClPresentationStart(Presentation presentation)
         {
-            if (client != null && client.State == CommunicationState.Opened)
-                client.ClPresentationStarted(presentation, Connection.CurrentUser);
+            if (!CheckBeforeRequest())
+                return;
+            client.ClPresentationStarted(presentation, Connection.CurrentUser);
         }
 
         public void ClPresentationNextSlide(int slide)
         {
-            if (client != null && client.State == CommunicationState.Opened)
-                client.ClPresentationNextSlide(slide);
+            if (!CheckBeforeRequest())
+                return;
+            client.ClPresentationNextSlide(slide);
         }
 
         public void ClPresentationEnd()
         {
-            if (client != null && client.State == CommunicationState.Opened)
-                client.ClPresentationEnd();
+            if (!CheckBeforeRequest())
+                return;
+            client.ClPresentationEnd();
         }
 
         public void GroupSettingsChanged(Dictionary<string, string> newSettings)
@@ -365,10 +444,11 @@ namespace ShareP
 
         public List<User> RequestUsersList()
         {
-            if (client != null)
-                return new List<User>(client.RequestUsersList());
-            else
+            if (!CheckBeforeRequest())
+            {
                 return null;
+            }
+            return new List<User>(client.RequestUsersList());
         }
     }
 }

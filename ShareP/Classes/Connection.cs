@@ -1,6 +1,7 @@
 ﻿using ShareP.Controllers;
 using ShareP.Forms;
 using ShareP.Server;
+using System;
 using System.Collections.Generic;
 
 namespace ShareP
@@ -77,19 +78,26 @@ namespace ShareP
         public static void GroupClosed(bool faulted = false)
         {
             Log.LogInfo("Disconnect from group. Faulted: " + faulted);
-            ViewerController.OnAppClosing();
-            clientConnection.Disconnect();
-            CurrentGroup = null;
-            role = Role.Notconnected;
-            formMenu.RestoreWindow();
-            FormAlert formAlert;
-            if (faulted)
-                formAlert = new FormAlert("Connection faulted", "Probably host lost network connection", true);
-            else
-                formAlert = new FormAlert("Group was closed", "Host closed the group", true);
-            int overlay = Helper.ShowOverlay();
-            formAlert.ShowDialog();
-            Helper.HideOverlay(overlay);
+            try
+            {
+                ViewerController.OnAppClosing();
+                clientConnection.Disconnect();
+                CurrentGroup = null;
+                role = Role.Notconnected;
+                formMenu.RestoreWindow();
+                FormAlert formAlert;
+                if (faulted)
+                    formAlert = new FormAlert("Connection faulted", "Probably host lost network connection", true);
+                else
+                    formAlert = new FormAlert("Group was closed", "Host closed the group", true);
+                int overlay = Helper.ShowOverlay();
+                formAlert.ShowDialog();
+                Helper.HideOverlay(overlay);
+            }
+            catch(Exception e)
+            {
+                Log.LogException(e, "Error during GroupClosed");
+            }
         }
 
         public static void SendMessage(Message msg)

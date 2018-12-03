@@ -461,6 +461,10 @@ namespace ShareP
             {
                 ChangeStatusConnection();
             }
+            else if (Connection.clientConnection.Faulted)
+            {
+                ChangeStatusConnection();
+            }
             else
             {
                 ChangeStatusConnection(true);
