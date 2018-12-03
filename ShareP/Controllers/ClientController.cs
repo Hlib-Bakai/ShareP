@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ShareP.Server;
 using System.IO;
 using System.ComponentModel;
+using System.Threading;
 
 namespace ShareP
 {
@@ -16,6 +17,7 @@ namespace ShareP
         string rcvFilesPath = "";
         private delegate void FaultedInvoker();
         public BackgroundWorker downloadingWorker = null;
+        private bool faulted = false;
 
         public ClientController()
         {
@@ -24,8 +26,20 @@ namespace ShareP
         
         void InnerDuplexChannel_Faulted(object sender, EventArgs e)
         {
+            if (faulted)
+                return;
             Log.LogInfo("Channel faulted");
-            Connection.GroupClosed(true);
+            faulted = true;
+            try
+            {
+                if (!ReconnectOnFaultAsync().Result)
+                    Connection.GroupClosed(true);
+            }
+            catch (Exception ex)
+            {
+                Log.LogException(ex, "Exception during faulted");
+                Connection.GroupClosed(true);
+            }
         }
 
         public void DownloadPresentationSlidesOnBackground(object sender, DoWorkEventArgs e)
@@ -110,10 +124,15 @@ namespace ShareP
                     client.InnerDuplexChannel.Faulted +=
                       new EventHandler(InnerDuplexChannel_Faulted);
 
-                    ConnectionResult connectionResult = client.Connect(Connection.CurrentUser);
+                    ConnectionResult connectionResult = client.Connect(Connection.CurrentUser, password);
                     if (connectionResult == ConnectionResult.Success)
                     {
+                        Log.LogInfo("Successfuly connected to " + ip);
                         Connection.CurrentPresentation = client.RequestCurrentPresentation();
+                    }
+                    else
+                    {
+                        client = null;
                     }
                     return connectionResult;
                 }
@@ -126,6 +145,65 @@ namespace ShareP
             }
             return ConnectionResult.Error;
         }
+
+        public async Task<bool> ReconnectOnFaultAsync()
+        {
+            Log.LogInfo("Trying to reconnect");
+            var cancellationToken = new CancellationTokenSource();
+            var task = Task.Factory.StartNew(RecconectTask, cancellationToken.Token);
+            Log.LogInfo("Starting reconecting task");
+            if (await Task.WhenAny(task, Task.Delay(2000)) == task)
+            {
+                faulted = false;
+                return true;
+            }
+            else
+            {
+                Log.LogInfo("Timeout of reconnecting");
+                cancellationToken.Cancel();
+            }
+            faulted = false;
+            return false;
+        }
+
+
+        public bool RecconectTask()
+        {
+            try
+            {
+                var ip = Connection.CurrentGroup.hostIp;
+
+                InstanceContext instanceContext = new InstanceContext(this);
+                client = new SharePClient(instanceContext);
+                string servicePath = client.Endpoint.ListenUri.AbsolutePath;
+
+
+                client.Endpoint.Address = new EndpointAddress("net.tcp://" + ip + ":8000" + servicePath);
+
+                client.Open();
+
+                Log.LogInfo("Connection reopened");
+
+                client.InnerDuplexChannel.Faulted +=
+                  new EventHandler(InnerDuplexChannel_Faulted);
+
+                ConnectionResult connectionResult = client.Reconnect(Connection.CurrentUser);
+                if (connectionResult == ConnectionResult.Success)
+                {
+                    Log.LogInfo("Successfuly reconnected to " + ip);
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception e)
+            {
+                client = null;
+                Log.LogException(e, "Error during reconnection.");
+                return false;
+            }
+        }
+
+
 
         public Dictionary<string, string> RequestServerInfo()
         {
@@ -150,7 +228,12 @@ namespace ShareP
                 return;
             }
 
-            client.DisconnectAsync(Connection.CurrentUser);
+            try
+            {
+                client.DisconnectAsync(Connection.CurrentUser);
+            }
+            catch { }
+
             client = null;
         }
 

@@ -18,7 +18,10 @@ namespace ShareP.Controllers
     public interface IShareP                                        // METHODS FOR CLIENTS, SHOULD BE HANDLED IN SERVER
     {
         [OperationContract(IsInitiating = true)]
-        ConnectionResult Connect(User user);
+        ConnectionResult Connect(User user, byte[] password);
+
+        [OperationContract]
+        ConnectionResult Reconnect(User user);
 
         [OperationContract(IsOneWay = true)]
         void Say(Message msg);
@@ -250,53 +253,7 @@ namespace ShareP.Controllers
                 RemoveUsers();
             }
         }
-
-
-        /// IShareP
-
-        public ConnectionResult Connect(User user)
-        {
-            if (!users.ContainsValue(CurrentCallback))
-            {
-                lock (syncObj)
-                {
-                    if (SearchUsersByName(user.Username))
-                        return ConnectionResult.UsernameExists;
-                    Connection.CurrentGroup.AddUser(user);
-                    OnUserConnect(user);
-                    PresentationController.UserConnected(user);
-
-                    foreach (User key in users.Keys)
-                    {
-                        ISharePCallback callback = users[key];
-                        try
-                        {
-                            callback.RefreshUsers(Connection.CurrentGroup.userList);
-                            callback.UserJoin(user);
-                        }
-                        catch
-                        {
-                            usersToRemove.Add(key);
-                        }
-                    }
-                    RemoveUsers();
-                    users.Add(user, CurrentCallback);
-                    ICommunicationObject commObj = CurrentCallback as ICommunicationObject;
-                    if (commObj != null)
-                    {
-                        commObj.Closed += new EventHandler(CallBackFaulted);
-                        commObj.Faulted += new EventHandler(CallBackFaulted);
-
-                    }
-                }
-
-                Log.LogInfo("User connected: " + user.Username);
-                return ConnectionResult.Success;
-            }
-            Log.LogInfo("Refused connection from: " + user.Username);
-            return ConnectionResult.Error;
-        }
-
+        
         void CallBackFaulted(object sender, EventArgs e)
         {
             Log.LogInfo("Callback faulted");
@@ -315,6 +272,62 @@ namespace ShareP.Controllers
                     Disconnect(users.FirstOrDefault(x => x.Value == callback).Key);
                 }
             }
+        }
+
+
+        /// IShareP
+
+        public ConnectionResult Connect(User user, byte[] password)
+        {
+            if (!users.ContainsValue(CurrentCallback))
+            {
+                lock (syncObj)
+                {
+                    if (SearchUsersByName(user.Username))
+                    {
+                        Log.LogInfo("Username already exists: " + user.Username);
+                        return ConnectionResult.UsernameExists;
+                    }
+
+                    if (Connection.CurrentGroup.passwordProtected && !Helper.CompareByteArrays(password, Connection.CurrentGroup.password))
+                    {
+                        Log.LogInfo("Wrong password. User: " + user.Username);
+                        return ConnectionResult.WrongPassword;
+                    }
+
+                    Connection.CurrentGroup.AddUser(user);
+                    OnUserConnect(user);
+                    PresentationController.UserConnected(user);
+
+                    foreach (User key in users.Keys)
+                    {
+                        ISharePCallback callback = users[key];
+                        try
+                        {
+                            callback.RefreshUsers(Connection.CurrentGroup.userList);
+                            callback.UserJoin(user);
+                        }
+                        catch
+                        {
+                            usersToRemove.Add(key);
+                            Log.LogInfo("Callback faulted during Connect: " + key.Username);
+                        }
+                    }
+                    RemoveUsers();
+                    users.Add(user, CurrentCallback);
+                    ICommunicationObject commObj = CurrentCallback as ICommunicationObject;
+                    if (commObj != null)
+                    {
+                        commObj.Closed += new EventHandler(CallBackFaulted);
+                        commObj.Faulted += new EventHandler(CallBackFaulted);
+                    }
+                }
+
+                Log.LogInfo("User connected: " + user.Username);
+                return ConnectionResult.Success;
+            }
+            Log.LogInfo("Refused connection of: " + user.Username);
+            return ConnectionResult.Error;
         }
 
         public void Disconnect(User user)
@@ -349,6 +362,45 @@ namespace ShareP.Controllers
                     return;
                 }
             }
+        }
+
+        public ConnectionResult Reconnect(User user)
+        {
+            if (!users.ContainsValue(CurrentCallback))
+            {
+                lock (syncObj)
+                {
+                    Connection.CurrentGroup.AddUser(user);
+                    PresentationController.UserConnected(user);
+
+                    foreach (User key in users.Keys)
+                    {
+                        ISharePCallback callback = users[key];
+                        try
+                        {
+                            callback.RefreshUsers(Connection.CurrentGroup.userList);
+                        }
+                        catch
+                        {
+                            usersToRemove.Add(key);
+                            Log.LogInfo("Callback faulted during Reconnect: " + key.Username);
+                        }
+                    }
+                    RemoveUsers();
+                    users.Add(user, CurrentCallback);
+                    ICommunicationObject commObj = CurrentCallback as ICommunicationObject;
+                    if (commObj != null)
+                    {
+                        commObj.Closed += new EventHandler(CallBackFaulted);
+                        commObj.Faulted += new EventHandler(CallBackFaulted);
+                    }
+                }
+
+                Log.LogInfo("User reconnected: " + user.Username);
+                return ConnectionResult.Success;
+            }
+            Log.LogInfo("Refused reconnection from: " + user.Username);
+            return ConnectionResult.Error;
         }
 
         private void OnUserConnect(User user)
@@ -609,7 +661,7 @@ namespace ShareP.Controllers
 
             tcpBinding.MaxConnections = 100; // Maybe change?
 
-            ServiceThrottlingBehavior throttle; //Производительность
+            ServiceThrottlingBehavior throttle; // Performance 
             throttle = SelfHost.Description.Behaviors.Find<ServiceThrottlingBehavior>();
             if (throttle == null)
             {
@@ -621,7 +673,7 @@ namespace ShareP.Controllers
 
             tcpBinding.ReceiveTimeout = new TimeSpan(24, 0, 0); 
             tcpBinding.ReliableSession.Enabled = true;
-            tcpBinding.ReliableSession.InactivityTimeout = new TimeSpan(0, 0, 1); // Keep sessions alive for 1 second
+            tcpBinding.ReliableSession.InactivityTimeout = new TimeSpan(0, 0, 5); // Disconnect after 5 seconds of inactivity 
 
             SelfHost.AddServiceEndpoint(typeof(IShareP), tcpBinding, "tcp");
 

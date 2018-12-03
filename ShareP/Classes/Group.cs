@@ -24,8 +24,8 @@ namespace ShareP
         public Group()
         {
             userList = new List<User>();
-            nextId = 0;
             settings = new GroupSettings();
+            nextId = 0;
         }
 
         public void AddUser(User user)

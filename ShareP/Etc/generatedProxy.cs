@@ -257,10 +257,16 @@ public interface IShareP
 {
     
     [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/Connect", ReplyAction="http://ShareP/IShareP/ConnectResponse")]
-    ShareP.Server.ConnectionResult Connect(ShareP.User user);
+    ShareP.Server.ConnectionResult Connect(ShareP.User user, byte[] password);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/Connect", ReplyAction="http://ShareP/IShareP/ConnectResponse")]
-    System.Threading.Tasks.Task<ShareP.Server.ConnectionResult> ConnectAsync(ShareP.User user);
+    System.Threading.Tasks.Task<ShareP.Server.ConnectionResult> ConnectAsync(ShareP.User user, byte[] password);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/Reconnect", ReplyAction="http://ShareP/IShareP/ReconnectResponse")]
+    ShareP.Server.ConnectionResult Reconnect(ShareP.User user);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/Reconnect", ReplyAction="http://ShareP/IShareP/ReconnectResponse")]
+    System.Threading.Tasks.Task<ShareP.Server.ConnectionResult> ReconnectAsync(ShareP.User user);
     
     [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/Say")]
     void Say(ShareP.Message msg);
@@ -405,14 +411,24 @@ public partial class SharePClient : System.ServiceModel.DuplexClientBase<IShareP
     {
     }
     
-    public ShareP.Server.ConnectionResult Connect(ShareP.User user)
+    public ShareP.Server.ConnectionResult Connect(ShareP.User user, byte[] password)
     {
-        return base.Channel.Connect(user);
+        return base.Channel.Connect(user, password);
     }
     
-    public System.Threading.Tasks.Task<ShareP.Server.ConnectionResult> ConnectAsync(ShareP.User user)
+    public System.Threading.Tasks.Task<ShareP.Server.ConnectionResult> ConnectAsync(ShareP.User user, byte[] password)
     {
-        return base.Channel.ConnectAsync(user);
+        return base.Channel.ConnectAsync(user, password);
+    }
+    
+    public ShareP.Server.ConnectionResult Reconnect(ShareP.User user)
+    {
+        return base.Channel.Reconnect(user);
+    }
+    
+    public System.Threading.Tasks.Task<ShareP.Server.ConnectionResult> ReconnectAsync(ShareP.User user)
+    {
+        return base.Channel.ReconnectAsync(user);
     }
     
     public void Say(ShareP.Message msg)

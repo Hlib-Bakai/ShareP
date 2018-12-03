@@ -207,10 +207,7 @@ namespace ShareP.Forms
             Connect();
         }
 
-
-
-        #endregion
-
+        
         private async void buttonDirect_ClickAsync(object sender, EventArgs e)
         {
             int ov1 = Helper.ShowOverlay(this);
@@ -221,16 +218,17 @@ namespace ShareP.Forms
                 int ov2 = Helper.ShowOverlay(this);
                 FormLoading formLoading = new FormLoading("Connecting to " + ipToConnect, 20);
                 formLoading.Show();
+                // Try to connect
                 var result = await Task.Run(() => Connection.GetServiceOnIP(ipToConnect));
                 formLoading.Close();
                 Helper.HideOverlay(ov2);
-                if (result != null)
+                if (result != null) //Connected
                 {
                     bool pass = (result["Password"].CompareTo("True") == 0) ? true : false;
                     string groupName = result["GroupName"];
                     Connect(ipToConnect, groupName, pass);
                 }
-                else
+                else 
                 {
                     int ov3 = Helper.ShowOverlay(this);
                     FormAlert formAlert = new FormAlert("Error", "Can't establish connection to the server. Check provided IP", true);
@@ -240,5 +238,8 @@ namespace ShareP.Forms
             }
             Helper.HideOverlay(ov1);
         }
+        
+
+        #endregion
     }
 }

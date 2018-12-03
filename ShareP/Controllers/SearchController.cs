@@ -17,12 +17,16 @@ namespace ShareP.Controllers
         FormSearchServers m_formSearchServers;
         private int m_startedPing;
         private int m_finishedPing;
+        private int m_replies;
         private CancellationToken ct;
         private CancellationTokenSource ts;
 
         private bool searchFinished = false;
 
         private object _lock = new object();
+
+        private Ping[] pings;
+
 
         public void FindServersAsync(FormSearchServers form)
         {
@@ -48,6 +52,8 @@ namespace ShareP.Controllers
 
             searchFinished = false;
 
+            pings = new Ping[65024];
+
             ts = new CancellationTokenSource();
             ct = ts.Token;
 
@@ -57,9 +63,12 @@ namespace ShareP.Controllers
             string ipBaseSmaller = ipParts[0] + "." + ipParts[1] + ".";
             m_startedPing = 0;
             m_finishedPing = 0;
+            m_replies = 0;
 
             Log.LogInfo("Ping started");
 
+            // Ping "small" subnetwork
+            // 192.168.0.x
             for (int i = 1; i < 255; i++)
             {
                 string ip = ipBase + i.ToString();
@@ -70,11 +79,10 @@ namespace ShareP.Controllers
                 m_startedPing++;
             }
 
-
-            //Do I need it?
-
             Log.LogInfo("Deep scan started");
 
+            // Ping "big" subnetwork
+            // 192.168.x.x
             for (int i = 0; i < 255; i++)
             {
                 string ipBaseThree = ipBaseSmaller + i.ToString() + ".";
@@ -107,9 +115,16 @@ namespace ShareP.Controllers
             {
                 m_finishedPing++;
             }
+
+            (sender as IDisposable).Dispose();
+
             string ip = (string)e.UserState;
             if (e.Reply != null && e.Reply.Status == IPStatus.Success)
             {
+                lock (_lock)
+                {
+                    m_replies++;
+                }
                 var result = Connection.GetServiceOnIP(ip);
                 if (result != null)
                 {
@@ -120,7 +135,7 @@ namespace ShareP.Controllers
 
             if (m_finishedPing == 254)
                 m_formSearchServers.FastSearchFinished();
-            
+
 
             if (/*m_startedPing - m_finishedPing == 0 && !ct.IsCancellationRequested*/m_finishedPing == 65024)
             {
@@ -131,7 +146,8 @@ namespace ShareP.Controllers
                         if (!searchFinished)
                         {
                             searchFinished = true;
-                            Log.LogInfo("Search finished. Scanned: " + m_finishedPing.ToString());
+                            Log.LogInfo("Search finished. Scanned: " + m_finishedPing);
+                            Log.LogInfo("Hosts answered: " + m_replies);
                             m_formSearchServers.SearchStopped();
                         }
                     }

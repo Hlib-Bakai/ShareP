@@ -20,13 +20,9 @@ namespace ShareP
 
             if (Connection.CurrentRole == Role.Client)
                 backgroundWorker.DoWork += Connection.clientConnection.DownloadPresentationSlidesOnBackground;
-            //backgroundWorker.ProgressChanged += TryLoadImage;
-            //backgroundWorker.WorkerReportsProgress = true;
+
             Connection.clientConnection.downloadingWorker = backgroundWorker;
             backgroundWorker.RunWorkerAsync();
-
-            // Use progress somewhere
-            // https://stackoverflow.com/questions/6481304/how-to-use-a-backgroundworker
         }
         
         static public void LoadViewer()

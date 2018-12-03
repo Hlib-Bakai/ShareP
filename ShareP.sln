@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareP", "ShareP\ShareP.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject", "UnitTestProject\UnitTestProject.csproj", "{3CB9AC13-E551-485F-A017-F09FD8FF1901}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SharePSetup", "SharePSetup\SharePSetup.vdproj", "{1A4A5985-61CE-4F2A-AFD7-491BD01677DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,8 @@ Global
 		{3CB9AC13-E551-485F-A017-F09FD8FF1901}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CB9AC13-E551-485F-A017-F09FD8FF1901}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3CB9AC13-E551-485F-A017-F09FD8FF1901}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A4A5985-61CE-4F2A-AFD7-491BD01677DC}.Debug|Any CPU.ActiveCfg = Debug
+		{1A4A5985-61CE-4F2A-AFD7-491BD01677DC}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

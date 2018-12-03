@@ -32,6 +32,7 @@ namespace ShareP
             get;
             set;
         }
+        //Notifications
         public bool NConnected
         {
             get;

@@ -92,6 +92,9 @@ namespace ShareP
 
         public static bool CompareByteArrays(byte[] array1, byte[] array2)
         {
+            if (array1 == null || array2 == null)
+                return false;
+
             if (array1.Length != array2.Length)
             {
                 return false;

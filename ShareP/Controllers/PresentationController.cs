@@ -156,7 +156,7 @@ namespace ShareP.Controllers
 
             for (int i = 1; i <= ppt.Slides.Count; i++)
             {
-                ppt.Slides[i].Export(di.FullName + @"\" + i + ".dat", "jpg");             
+                ppt.Slides[i].Export(di.FullName + @"\" + i + ".dat", "PNG", 2732, 2048);             
             }
         }
 

@@ -48,7 +48,7 @@
             this.checkBoxNDisconnected = new System.Windows.Forms.CheckBox();
             this.label9 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.buttonCreate = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.labelLength = new System.Windows.Forms.Label();
             this.checkBoxChat = new System.Windows.Forms.CheckBox();
@@ -69,9 +69,9 @@
             // panel7
             // 
             this.panel7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(232)))));
-            this.panel7.Location = new System.Drawing.Point(16, 45);
+            this.panel7.Location = new System.Drawing.Point(15, 45);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(328, 10);
+            this.panel7.Size = new System.Drawing.Size(329, 10);
             this.panel7.TabIndex = 10;
             // 
             // button1
@@ -253,17 +253,17 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // button3
+            // buttonCreate
             // 
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.button3.Location = new System.Drawing.Point(101, 241);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 28);
-            this.button3.TabIndex = 35;
-            this.button3.Text = "Create";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.buttonCreate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonCreate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.buttonCreate.Location = new System.Drawing.Point(101, 241);
+            this.buttonCreate.Name = "buttonCreate";
+            this.buttonCreate.Size = new System.Drawing.Size(75, 28);
+            this.buttonCreate.TabIndex = 35;
+            this.buttonCreate.Text = "Create";
+            this.buttonCreate.UseVisualStyleBackColor = true;
+            this.buttonCreate.Click += new System.EventHandler(this.buttonCreate_Click);
             // 
             // panel1
             // 
@@ -316,7 +316,7 @@
             this.Controls.Add(this.labelLength);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.button3);
+            this.Controls.Add(this.buttonCreate);
             this.Controls.Add(this.checkBoxNDisconnected);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.checkBoxNConnected);
@@ -370,7 +370,7 @@
         private System.Windows.Forms.CheckBox checkBoxNDisconnected;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button buttonCreate;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label labelLength;
         private System.Windows.Forms.CheckBox checkBoxChat;

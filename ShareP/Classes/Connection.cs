@@ -76,6 +76,7 @@ namespace ShareP
 
         public static void GroupClosed(bool faulted = false)
         {
+            Log.LogInfo("Disconnect from group. Faulted: " + faulted);
             ViewerController.OnAppClosing();
             clientConnection.Disconnect();
             CurrentGroup = null;

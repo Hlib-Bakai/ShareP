@@ -51,7 +51,7 @@ namespace ShareP
 
             listBox1.DrawItem += new DrawItemEventHandler(listBox_DrawItem);
             listBoxChatUsers.DrawItem += new DrawItemEventHandler(listBox_DrawItem);
-            
+
 
             richTextBoxMessages.BackColor = Color.White;
             richTextBoxMessages.GotFocus += TextBoxGotFocus;
@@ -467,6 +467,7 @@ namespace ShareP
                 string newIp = Helper.GetMyIP();
                 if (newIp.CompareTo(labelIP.Text) != 0)
                 {
+                    Log.LogInfo("IP Changed from " + labelIP.Text + " to " + newIp);
                     timerConnection.Enabled = false;
                     Disconnect(true);
                     int overlay = Helper.ShowOverlay();
@@ -587,6 +588,7 @@ namespace ShareP
 
         #endregion
 
+
         private void button2_Click(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Minimized;
@@ -653,8 +655,8 @@ namespace ShareP
 
         private void button3_Click(object sender, EventArgs e)
         {
-            FormCreateGroup formCreateGroup = new FormCreateGroup();
             int overlay = Helper.ShowOverlay(this);
+            FormCreateGroup formCreateGroup = new FormCreateGroup();
             if (formCreateGroup.ShowDialog(this) == DialogResult.OK)
             {
                 Helper.HideOverlay(overlay);

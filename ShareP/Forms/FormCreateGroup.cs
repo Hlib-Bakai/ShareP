@@ -66,6 +66,12 @@ namespace ShareP.Forms
         {
             e.Handled = true; //prevent typing
         }
+        
+        private void buttonCreate_Click(object sender, EventArgs e)
+        {
+            if (CheckLength())
+                CreateGroup();
+        }
 
         private bool CheckLength()
         {
@@ -76,12 +82,6 @@ namespace ShareP.Forms
                 return false;
             }
             return true;
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            if (CheckLength())
-                CreateGroup();
         }
 
         private void button2_Click(object sender, EventArgs e)
