@@ -196,7 +196,6 @@ namespace ShareP
             if (!faulted)
                 return;
             Log.LogInfo("Reconnect finish");
-            faulted = false;
             if (formReconnecting != null)
             {
                 Log.LogInfo("Closing reconnect window");
@@ -205,11 +204,13 @@ namespace ShareP
             if (obj.Result == false)
             {
                 Log.LogInfo("Reconnect returned false");
+                faulted = true;
                 Connection.GroupClosed(true);
             }
             else
             {
                 Log.LogInfo("Reconnect successful");
+                faulted = false;
             }
         }
 
@@ -232,9 +233,8 @@ namespace ShareP
 
         public void CancelReconnecting()
         {
-            if (faulted)
+            if (faulted && !cancellationToken.IsCancellationRequested)
             {
-                faulted = false;
                 cancellationToken.Cancel();
                 Connection.GroupClosed(true);
             }

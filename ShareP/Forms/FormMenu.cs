@@ -39,6 +39,7 @@ namespace ShareP
         private void InitializeElements()
         {
             Notification.notifyIcon = notifyIcon1;
+            Notification.AddClosingEvent();
 
             m_user = new User();
             Connection.CurrentUser = m_user;
@@ -46,6 +47,7 @@ namespace ShareP
             labelUsername.Text = m_user.Username;
 
             Connection.FormMenu = this;
+            Connection.ReservePresentation = false;
 
             labelIP.Text = m_user.IP;
 

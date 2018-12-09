@@ -64,6 +64,12 @@ namespace ShareP
             inputTextBox.Clear();
         }
 
+        public static void CleanChat()
+        {
+            if (richTextBox != null)
+                richTextBox.Clear();
+        }
+
         public static void SetTextBox(RichTextBox rtb, TextBox input)
         {
             richTextBox = rtb;

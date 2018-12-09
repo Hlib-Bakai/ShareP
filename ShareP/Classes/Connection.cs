@@ -14,7 +14,7 @@ namespace ShareP
         static private User currentUser = null;
         static private Presentation currentPresentation = null;
         static private FormMenu formMenu = null;
-        
+
         private delegate void FaultedInvoker();
         static List<User> onlineUsers = new List<User>();
         static public ClientController clientConnection = new ClientController();
@@ -73,10 +73,16 @@ namespace ShareP
                 DisconnectClient();
             else if (role == Role.Host)
                 DisconnectServer();
+            ChatController.CleanChat();
         }
 
         public static void GroupClosed(bool faulted = false)
         {
+            if (CurrentGroup == null)
+            {
+                Log.LogInfo("Trying to close group when it's null");
+                return;
+            }
             Log.LogInfo("Disconnect from group. Faulted: " + faulted);
             try
             {
@@ -93,8 +99,9 @@ namespace ShareP
                 int overlay = Helper.ShowOverlay();
                 formAlert.ShowDialog();
                 Helper.HideOverlay(overlay);
+                ChatController.CleanChat();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.LogException(e, "Error during GroupClosed");
             }
@@ -123,7 +130,7 @@ namespace ShareP
             CurrentGroup = null;
             role = Role.Notconnected;
         }
-        
+
 
         public static void OnUserJoin(User user)
         {
@@ -196,6 +203,9 @@ namespace ShareP
             }
         }
 
-
+        public static bool ReservePresentation
+        {
+            get; set;
+        }
     }
 }

@@ -311,6 +311,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="logo_sm_transparent_icon.ico" />
+    <None Include="Resources\Settings-01-32.png" />
     <None Include="Resources\Help-16.png" />
     <None Include="Resources\Help-cheater-1.png" />
     <None Include="Resources\Help-cheater-2.png" />
