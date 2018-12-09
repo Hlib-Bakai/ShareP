@@ -385,6 +385,13 @@ namespace ShareP
             // TODO ?
         }
 
+        public bool ClRequestPresentationStart()
+        {
+            if (!CheckBeforeRequest())
+                return false;
+            return client.RequestPresentationStart();
+        }
+        
         public void ClPresentationStart(Presentation presentation)
         {
             if (!CheckBeforeRequest())
@@ -450,5 +457,6 @@ namespace ShareP
             }
             return new List<User>(client.RequestUsersList());
         }
+
     }
 }

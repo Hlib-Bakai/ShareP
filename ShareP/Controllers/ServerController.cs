@@ -49,6 +49,8 @@ namespace ShareP.Controllers
 
 
         // Client presentations
+        [OperationContract]
+        bool RequestPresentationStart();
 
         [OperationContract(IsOneWay = true)]
         void ClPresentationStarted(Presentation presentation, User user);
@@ -522,6 +524,8 @@ namespace ShareP.Controllers
             await Task.Factory.StartNew(() => LoadSlides());
             OnPresentationStart(presentation);
             Connection.FormMenu.OnPresentationStart();
+            Connection.FormMenu.StopPresentationReservedTimer();
+            Connection.ReservePresentation = false;
         }
 
         public void LoadSlides()
@@ -636,6 +640,21 @@ namespace ShareP.Controllers
                 Disconnect(key);
             }
             usersToRemove.Clear();
+        }
+
+        public bool RequestPresentationStart()
+        {
+            lock (syncObj)
+            {
+                bool answer = !Connection.ReservePresentation;
+                Log.LogInfo("User requested presentation start. Answer: " + answer);
+                if (answer)
+                {
+                    Connection.ReservePresentation = true;
+                    Connection.FormMenu.StartPresentationReservedTimer();
+                }
+                return answer;
+            }
         }
     }
 

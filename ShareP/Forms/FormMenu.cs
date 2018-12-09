@@ -537,6 +537,22 @@ namespace ShareP
             }
         }
 
+        public void StartPresentationReservedTimer()
+        {
+            if (this.InvokeRequired)
+                this.Invoke(new Action(() => timerPresentation.Start()));
+            else
+                timerPresentation.Start();
+        }
+
+        public void StopPresentationReservedTimer()
+        {
+            if (this.InvokeRequired)
+                this.Invoke(new Action(() => timerPresentation.Stop()));
+            else
+                timerPresentation.Stop();
+        }
+
         #region System
 
         private void button1_Click(object sender, EventArgs e)
@@ -721,6 +737,16 @@ namespace ShareP
                 return;
             }
 
+            if ((Connection.CurrentRole == Role.Client && !Connection.clientConnection.ClRequestPresentationStart()) ||
+                (Connection.CurrentRole == Role.Host && Connection.ReservePresentation))
+            {
+                int ov = Helper.ShowOverlay(this);
+                FormAlert formAlert = new FormAlert("Error", "Someone in the group has already started presentation", true);
+                formAlert.ShowDialog();
+                Helper.HideOverlay(ov);
+                return;
+            }
+
             string file = textBoxFile.Text;
             string name = textBoxPresentationName.Text;
             int overlay = Helper.ShowOverlay();
@@ -730,6 +756,9 @@ namespace ShareP
             {
                 try
                 {
+                    if (Connection.CurrentRole == Role.Host)
+                        Connection.ReservePresentation = true;
+
                     FormLoading formLoading = new FormLoading("Loading presentation. Please wait...");
                     formLoading.Show();
 
@@ -743,6 +772,8 @@ namespace ShareP
                 {
                     Log.LogException(ex, "Can't load presentation");
                     (new FormAlert("Error", "Problem occured while opening the file", true)).ShowDialog();
+                    if (Connection.CurrentRole == Role.Host)
+                        Connection.ReservePresentation = false;
                 }
             }
             Helper.HideOverlay(overlay);
@@ -962,6 +993,11 @@ namespace ShareP
         private void labelIP_MouseLeave(object sender, EventArgs e)
         {
             pictureBoxEditIp.Hide();
+        }
+
+        private void timerPresentation_Tick(object sender, EventArgs e)
+        {
+            Connection.ReservePresentation = false;
         }
     }
 }

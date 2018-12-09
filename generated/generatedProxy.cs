@@ -316,6 +316,12 @@ public interface IShareP
     [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/RequestUsersList", ReplyAction="http://ShareP/IShareP/RequestUsersListResponse")]
     System.Threading.Tasks.Task<ShareP.User[]> RequestUsersListAsync();
     
+    [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/RequestPresentationStart", ReplyAction="http://ShareP/IShareP/RequestPresentationStartResponse")]
+    bool RequestPresentationStart();
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/RequestPresentationStart", ReplyAction="http://ShareP/IShareP/RequestPresentationStartResponse")]
+    System.Threading.Tasks.Task<bool> RequestPresentationStartAsync();
+    
     [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/ClPresentationStarted")]
     void ClPresentationStarted(ShareP.Presentation presentation, ShareP.User user);
     
@@ -509,6 +515,16 @@ public partial class SharePClient : System.ServiceModel.DuplexClientBase<IShareP
     public System.Threading.Tasks.Task<ShareP.User[]> RequestUsersListAsync()
     {
         return base.Channel.RequestUsersListAsync();
+    }
+    
+    public bool RequestPresentationStart()
+    {
+        return base.Channel.RequestPresentationStart();
+    }
+    
+    public System.Threading.Tasks.Task<bool> RequestPresentationStartAsync()
+    {
+        return base.Channel.RequestPresentationStartAsync();
     }
     
     public void ClPresentationStarted(ShareP.Presentation presentation, ShareP.User user)

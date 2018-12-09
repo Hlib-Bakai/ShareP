@@ -68,6 +68,7 @@ namespace ShareP.Forms
 
         public void SetCurrentSlideImage()
         {
+            pictureBox1.Image?.Dispose();
             pictureBox1.Image = null;
             string fileName = Helper.GetCurrentFolder() + @"tin\" + (curentViewerSlide.ToString()) + ".dat";
             bool fileExists = File.Exists(fileName);
