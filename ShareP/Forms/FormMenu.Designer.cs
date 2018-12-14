@@ -51,7 +51,6 @@
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.panel15 = new System.Windows.Forms.Panel();
             this.panelTop = new System.Windows.Forms.Panel();
-            this.button7 = new System.Windows.Forms.Button();
             this.panel19 = new System.Windows.Forms.Panel();
             this.panel17 = new System.Windows.Forms.Panel();
             this.panel7 = new System.Windows.Forms.Panel();
@@ -59,6 +58,7 @@
             this.statusConnectionRed = new System.Windows.Forms.PictureBox();
             this.statusConnectionGreen = new System.Windows.Forms.PictureBox();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.button7 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -422,20 +422,6 @@
             this.panelTop.TabIndex = 4;
             this.panelTop.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelTop_MouseDown);
             // 
-            // button7
-            // 
-            this.button7.AutoSize = true;
-            this.button7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button7.FlatAppearance.BorderSize = 0;
-            this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button7.Image = global::ShareP.Properties.Resources.Settings_01_32;
-            this.button7.Location = new System.Drawing.Point(0, 0);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(38, 35);
-            this.button7.TabIndex = 7;
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.pictureBox1_Click);
-            // 
             // panel19
             // 
             this.panel19.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(232)))));
@@ -498,6 +484,20 @@
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(38, 35);
             this.panel4.TabIndex = 8;
+            // 
+            // button7
+            // 
+            this.button7.AutoSize = true;
+            this.button7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button7.FlatAppearance.BorderSize = 0;
+            this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button7.Image = global::ShareP.Properties.Resources.Settings_01_32;
+            this.button7.Location = new System.Drawing.Point(0, 0);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(38, 35);
+            this.button7.TabIndex = 7;
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // panel1
             // 
@@ -1136,7 +1136,7 @@
             this.labelLength.Name = "labelLength";
             this.labelLength.Size = new System.Drawing.Size(221, 13);
             this.labelLength.TabIndex = 38;
-            this.labelLength.Text = "Please, provide name from 2 to 10 characters";
+            this.labelLength.Text = "Please, provide name from 2 to 20 characters";
             this.labelLength.Visible = false;
             // 
             // buttonOpenFile
@@ -1264,7 +1264,7 @@
             this.messagesTab.Controls.Add(this.panelChatDisabled);
             this.messagesTab.Location = new System.Drawing.Point(4, 22);
             this.messagesTab.Name = "messagesTab";
-            this.messagesTab.Size = new System.Drawing.Size(391, 302);
+            this.messagesTab.Size = new System.Drawing.Size(413, 315);
             this.messagesTab.TabIndex = 2;
             this.messagesTab.Text = "messagesTab";
             this.messagesTab.UseVisualStyleBackColor = true;
@@ -1372,7 +1372,7 @@
             this.notConnectedTab.Controls.Add(this.label8);
             this.notConnectedTab.Location = new System.Drawing.Point(4, 22);
             this.notConnectedTab.Name = "notConnectedTab";
-            this.notConnectedTab.Size = new System.Drawing.Size(391, 302);
+            this.notConnectedTab.Size = new System.Drawing.Size(413, 315);
             this.notConnectedTab.TabIndex = 3;
             this.notConnectedTab.Text = "notConnectedTab";
             this.notConnectedTab.UseVisualStyleBackColor = true;

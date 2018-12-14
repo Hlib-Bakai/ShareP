@@ -104,6 +104,10 @@ namespace ShareP
                                                               !(bool)Properties.Settings.Default["autojoin"])
                 Notification.Show("Presentation", "Presentation " + Connection.CurrentPresentation.Name + " started", NotificationType.Presentation);
             if (InvokeRequired)
+                Invoke(new Action(() => buttonJoin.Enabled = true));
+            else
+                buttonJoin.Enabled = true;
+            if (InvokeRequired)
                 Invoke(new Action(() => LoadPresentationTab()));
             else
                 LoadPresentationTab();
@@ -229,8 +233,10 @@ namespace ShareP
                     Helper.HideOverlay(overlay);
                     ServerController.OnGroupClose();
                     PresentationController.OnAppClosing();
+                    ViewerController.OnAppClosing();
                     Connection.Disconnect();
                     LoadConnectionTab();
+                    buttonJoin.Enabled = true;
                 }
                 Helper.HideOverlay(overlay);
             }
@@ -242,8 +248,10 @@ namespace ShareP
                 {
                     Helper.HideOverlay(overlay);
                     ViewerController.OnAppClosing();
+                    PresentationController.OnAppClosing();
                     Connection.Disconnect();
                     LoadConnectionTab();
+                    buttonJoin.Enabled = true;
                 }
                 Helper.HideOverlay(overlay);
             }
@@ -475,6 +483,7 @@ namespace ShareP
                 {
                     Log.LogInfo("IP Changed from " + labelIP.Text + " to " + newIp);
                     timerConnection.Enabled = false;
+                    RestoreWindow();
                     Disconnect(true);
                     int overlay = Helper.ShowOverlay();
                     FormAlert formAlert = new FormAlert("IP Changed", "Probably network was changed. You will be disconnected.", true);
@@ -715,7 +724,7 @@ namespace ShareP
         {
             labelLength.Hide();
             int length = textBoxPresentationName.Text.Length;
-            if (length < 2 || length > 10)
+            if (length < 2 || length > 20)
             {
                 labelLength.Show();
                 return false;
@@ -754,14 +763,13 @@ namespace ShareP
                 (new FormAlert("No file", "Please, choose presentation file.", true)).ShowDialog();
             else
             {
+                var formLoading = new FormLoading("Loading presentation. Please wait...");
                 try
                 {
                     if (Connection.CurrentRole == Role.Host)
                         Connection.ReservePresentation = true;
 
-                    FormLoading formLoading = new FormLoading("Loading presentation. Please wait...");
                     formLoading.Show();
-
 
                     await Task.Run(() => PresentationController.LoadPPT(file));
 
@@ -770,6 +778,8 @@ namespace ShareP
                 }
                 catch (Exception ex)
                 {
+                    if (formLoading != null)
+                        formLoading.Close();
                     Log.LogException(ex, "Can't load presentation");
                     (new FormAlert("Error", "Problem occured while opening the file", true)).ShowDialog();
                     if (Connection.CurrentRole == Role.Host)
