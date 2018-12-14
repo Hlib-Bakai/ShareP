@@ -131,6 +131,7 @@ namespace ShareP.Controllers
                 Connection.clientConnection.ClPresentationStart(Connection.CurrentPresentation);
 
             app.Visible = MsoTriState.msoTrue; // Window showing
+            app.WindowState = PpWindowState.ppWindowMinimized;
             SlideShowSettings sss = ppt.SlideShowSettings;
             sss.Run();
 
