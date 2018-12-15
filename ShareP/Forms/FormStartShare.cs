@@ -16,6 +16,7 @@ namespace ShareP
         public FormStartShare()
         {
             InitializeComponent();
+            Helper.CreateBorder(this);
         }
 
 

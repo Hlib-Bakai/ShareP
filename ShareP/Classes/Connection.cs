@@ -74,6 +74,7 @@ namespace ShareP
             else if (role == Role.Host)
                 DisconnectServer();
             ChatController.CleanChat();
+            currentPresentation = null;
         }
 
         public static void GroupClosed(bool faulted = false)

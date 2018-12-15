@@ -20,6 +20,7 @@ namespace ShareP.Forms
         public FormDownloadSlide()
         {
             InitializeComponent();
+            Helper.CreateBorder(this);
         }
 
         private void StartLoading()
@@ -98,6 +99,11 @@ namespace ShareP.Forms
         private void FormProgress_Shown(object sender, EventArgs e)
         {
             StartLoading();
+        }
+
+        private void FormDownloadSlide_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

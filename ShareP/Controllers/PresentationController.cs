@@ -57,7 +57,7 @@ namespace ShareP.Controllers
 
             ppt = ppts.Open(pptPath, MsoTriState.msoFalse, MsoTriState.msoFalse, MsoTriState.msoFalse);
         
-            ExportImages(Helper.GetCurrentFolder());
+            //ExportImages(Helper.GetCurrentFolder());
         }
 
         static public void MarkCheater(User user)
@@ -183,6 +183,7 @@ namespace ShareP.Controllers
             else
                 Connection.clientConnection.ClPresentationEnd();
             Connection.CurrentPresentation = null;
+            Connection.ReservePresentation = false;
             Connection.FormMenu.OnPresentationFinished();
             CloseApp();
         }

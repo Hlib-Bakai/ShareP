@@ -8,6 +8,7 @@ namespace ShareP.Forms
         public FormAlert(string title, string message, bool oneButton = false)
         {
             InitializeComponent();
+            Helper.CreateBorder(this);
             label1.Text = title;
             label2.Text = message;
 
@@ -41,6 +42,11 @@ namespace ShareP.Forms
         private void button4_Click(object sender, System.EventArgs e)
         {
             this.Close();
+        }
+
+        private void FormAlert_Load(object sender, System.EventArgs e)
+        {
+
         }
     }
 }

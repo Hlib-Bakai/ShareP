@@ -20,6 +20,7 @@ namespace ShareP
         public FormCheater()
         {
             InitializeComponent();
+            Helper.CreateBorder(this);
             cheaters = new Dictionary<string, Cheater>();
             UpdateListOfUsers();
             this.StartPosition = FormStartPosition.Manual;

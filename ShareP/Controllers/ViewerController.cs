@@ -13,9 +13,16 @@ namespace ShareP
     {
         static private FormViewer formViewer;
         static private object _lock = new object();
+
+        static public int LastSlideDownloaded
+        {
+            get; set;
+        }
         
         static public void StartLoadingSlides()
         {
+            Log.LogInfo("Start loading slides");
+            LastSlideDownloaded = 0;
             BackgroundWorker backgroundWorker = new BackgroundWorker();
 
             if (Connection.CurrentRole == Role.Client)
@@ -23,6 +30,25 @@ namespace ShareP
 
             Connection.clientConnection.downloadingWorker = backgroundWorker;
             backgroundWorker.RunWorkerAsync();
+        }
+
+        static public void ResumeDownloading()
+        {
+            if (Connection.CurrentPresentation != null && LastSlideDownloaded < Connection.CurrentPresentation.SlidesTotal)
+            {
+                Log.LogInfo("Resuming download");
+                BackgroundWorker backgroundWorker = new BackgroundWorker();
+
+                if (Connection.CurrentRole == Role.Client)
+                    backgroundWorker.DoWork += Connection.clientConnection.DownloadPresentationSlidesOnBackground;
+
+                Connection.clientConnection.downloadingWorker = backgroundWorker;
+                backgroundWorker.RunWorkerAsync();
+            }
+            else
+            {
+                Log.LogInfo("Download is finished, nothing to resume");
+            }
         }
         
         static public void LoadViewer()

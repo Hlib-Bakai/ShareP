@@ -23,6 +23,7 @@ namespace ShareP.Forms
         public FormPassword(string groupName)
         {
             InitializeComponent();
+            //Helper.CreateBorder(this);
             this.groupName = groupName;
             textBox1.Focus();
         }

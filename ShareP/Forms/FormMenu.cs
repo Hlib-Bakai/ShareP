@@ -23,6 +23,7 @@ namespace ShareP
         {
             Application.ApplicationExit += new EventHandler(OnProcessExit);
             InitializeComponent();
+            Helper.CreateBorder(this);
             InitializeElements();
             ChangeStatusConnection();
             LoadConnectionTab();
@@ -374,6 +375,21 @@ namespace ShareP
                     buttonJoin.Visible = true;
                 else
                     buttonJoin.Visible = false;
+
+                if (ViewerController.IsWorking)
+                {
+                    if (InvokeRequired)
+                        Invoke(new Action(() => buttonJoin.Enabled = false));
+                    else
+                        buttonJoin.Enabled = false;
+                }
+                else
+                {
+                    if (InvokeRequired)
+                        Invoke(new Action(() => buttonJoin.Enabled = true));
+                    else
+                        buttonJoin.Enabled = true;
+                }
             }
             else
             {

@@ -16,6 +16,7 @@ namespace ShareP.Forms
         public FormReconnecting()
         {
             InitializeComponent();
+            Helper.CreateBorder(this);
         }
 
         private void buttonDisconnect_Click(object sender, EventArgs e)

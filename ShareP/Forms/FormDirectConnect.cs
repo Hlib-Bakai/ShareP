@@ -16,6 +16,7 @@ namespace ShareP.Forms
         public FormDirectConnect()
         {
             InitializeComponent();
+            //Helper.CreateBorder(this);
             textBox1.Text = Helper.GetMyIP();
         }
 

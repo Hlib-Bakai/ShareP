@@ -15,6 +15,7 @@ namespace ShareP.Forms
         public FormSettings()
         {
             InitializeComponent();
+            //Helper.CreateBorder(this);
             labelUsername.Text = Connection.CurrentUser.Username;
             checkBoxAutojoin.Checked = (bool)Properties.Settings.Default["autojoin"];
             checkBoxPresentation.Checked = (bool)Properties.Settings.Default["nPresentation"];

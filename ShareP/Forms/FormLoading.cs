@@ -18,6 +18,7 @@ namespace ShareP
         public FormLoading(string text, int timeout = -1)
         {
             InitializeComponent();
+            Helper.CreateBorder(this);
             label1.Text = text;
             loadingCircle1.NumberSpoke = 36;
 

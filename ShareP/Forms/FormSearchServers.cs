@@ -20,6 +20,7 @@ namespace ShareP.Forms
         public FormSearchServers(SearchController clientController)
         {
             InitializeComponent();
+            //Helper.CreateBorder(this);
             m_searchController = clientController;
             textBox1.Tag = 1;
             StartSearch();

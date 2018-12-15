@@ -60,7 +60,7 @@
             this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar1.TabIndex = 30;
             // 
-            // FormProgress
+            // FormDownloadSlide
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -70,10 +70,11 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.panel7);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "FormProgress";
+            this.Name = "FormDownloadSlide";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormProgress";
+            this.Load += new System.EventHandler(this.FormDownloadSlide_Load);
             this.Shown += new System.EventHandler(this.FormProgress_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();

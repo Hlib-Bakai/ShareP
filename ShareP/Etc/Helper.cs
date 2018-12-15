@@ -159,5 +159,44 @@ namespace ShareP
                     overlayList[id].Hide();
             }
         }
+
+        public static void CreateBorder(Form target)
+        {
+            //Top
+            Panel top = new Panel();
+            top.BackColor = Color.FromArgb(0, 162, 232);
+            top.Location = target.Location;
+            top.Size = new Size(target.Size.Width, 1);
+            top.Tag = "nodelete";
+            target.Controls.Add(top);
+            top.Show();
+
+            //Right
+            Panel right = new Panel();
+            right.BackColor = Color.FromArgb(0, 162, 232);
+            right.Location = new Point(target.Location.X + target.Size.Width - 1, target.Location.Y);
+            right.Size = new Size(1, target.Size.Height);
+            right.Tag = "nodelete";
+            target.Controls.Add(right);
+            right.Show();
+
+            //Bottom
+            Panel bottom = new Panel();
+            bottom.BackColor = Color.FromArgb(0, 162, 232);
+            bottom.Location = new Point(target.Location.X, target.Location.Y + target.Size.Height - 1);
+            bottom.Size = new Size(target.Size.Width, 1);
+            bottom.Tag = "nodelete";
+            target.Controls.Add(bottom);
+            bottom.Show();
+
+            //Left
+            Panel left = new Panel();
+            left.BackColor = Color.FromArgb(0, 162, 232);
+            left.Location = target.Location;
+            left.Size = new Size(1, target.Size.Height);
+            left.Tag = "nodelete";
+            target.Controls.Add(left);
+            left.Show();
+        }
     }
 }

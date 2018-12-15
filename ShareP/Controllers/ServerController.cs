@@ -36,7 +36,7 @@ namespace ShareP.Controllers
         Dictionary<string, string> RequestServerInfo();
 
         [OperationContract]
-        byte[] RequestSlide(int slide);
+        Stream RequestSlide(int slide);
 
         [OperationContract]
         Presentation RequestCurrentPresentation();
@@ -489,13 +489,16 @@ namespace ShareP.Controllers
             return result;
         }
 
-        public byte[] RequestSlide(int slide)
+        public Stream RequestSlide(int slide)
         {
             try
             {
+                Log.LogInfo("Slide #" + slide + " requested");
                 string pathToSlide = Helper.GetCurrentFolder() + @"tout\" + slide.ToString() + ".dat";
-                byte[] buffer = File.ReadAllBytes(pathToSlide);
-                return buffer;
+                //byte[] buffer = File.ReadAllBytes(pathToSlide);
+                Stream stream = File.OpenRead(pathToSlide);
+                Log.LogInfo("Send slide #" + slide + " with size " + stream.Length);
+                return stream;
             }
             catch (Exception ex)
             {
@@ -701,7 +704,7 @@ namespace ShareP.Controllers
 
             tcpBinding.ReceiveTimeout = new TimeSpan(24, 0, 0); 
             tcpBinding.ReliableSession.Enabled = true;
-            tcpBinding.ReliableSession.InactivityTimeout = new TimeSpan(0, 0, 5); // Disconnect after 5 seconds of inactivity 
+            tcpBinding.ReliableSession.InactivityTimeout = new TimeSpan(0, 0, 5); // Disconnect after 5 second of inactivity 
 
             SelfHost.AddServiceEndpoint(typeof(IShareP), tcpBinding, "tcp");
 

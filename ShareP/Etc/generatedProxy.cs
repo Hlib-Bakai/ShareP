@@ -293,10 +293,10 @@ public interface IShareP
     System.Threading.Tasks.Task<System.Collections.Generic.Dictionary<string, string>> RequestServerInfoAsync();
     
     [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/RequestSlide", ReplyAction="http://ShareP/IShareP/RequestSlideResponse")]
-    byte[] RequestSlide(int slide);
+    System.IO.Stream RequestSlide(int slide);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/RequestSlide", ReplyAction="http://ShareP/IShareP/RequestSlideResponse")]
-    System.Threading.Tasks.Task<byte[]> RequestSlideAsync(int slide);
+    System.Threading.Tasks.Task<System.IO.Stream> RequestSlideAsync(int slide);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/RequestCurrentPresentation", ReplyAction="http://ShareP/IShareP/RequestCurrentPresentationResponse")]
     ShareP.Presentation RequestCurrentPresentation();
@@ -477,12 +477,12 @@ public partial class SharePClient : System.ServiceModel.DuplexClientBase<IShareP
         return base.Channel.RequestServerInfoAsync();
     }
     
-    public byte[] RequestSlide(int slide)
+    public System.IO.Stream RequestSlide(int slide)
     {
         return base.Channel.RequestSlide(slide);
     }
     
-    public System.Threading.Tasks.Task<byte[]> RequestSlideAsync(int slide)
+    public System.Threading.Tasks.Task<System.IO.Stream> RequestSlideAsync(int slide)
     {
         return base.Channel.RequestSlideAsync(slide);
     }

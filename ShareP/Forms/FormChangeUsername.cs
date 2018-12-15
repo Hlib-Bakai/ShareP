@@ -22,6 +22,7 @@ namespace ShareP.Forms
         public FormChangeUsername()
         {
             InitializeComponent();
+            //Helper.CreateBorder(this);
             m_user = Connection.CurrentUser;
             
             textBox2.Text = m_user.Username;

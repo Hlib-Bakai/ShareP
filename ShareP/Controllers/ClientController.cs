@@ -85,19 +85,32 @@ namespace ShareP
             }
             di.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
 
+            
             try
             {
-                Log.LogInfo("Start loading slides (" + Connection.CurrentPresentation.SlidesTotal + ")");
-                for (int i = 1; i <= Connection.CurrentPresentation.SlidesTotal; i++)
+                int startingSlide = ViewerController.LastSlideDownloaded + 1;
+                Log.LogInfo("Start loading slides (" + Connection.CurrentPresentation.SlidesTotal + ") from slide #" + startingSlide);
+                for (int i = startingSlide; i <= Connection.CurrentPresentation.SlidesTotal; i++)
                 {
-                    byte[] file = client.RequestSlide(i);
+                    Log.LogInfo("Loading slide # " + i);
+                    Stream stream = client.RequestSlide(i);
+                    byte[] file;
+                    using (var ms = new MemoryStream())
+                    {
+                        stream.CopyTo(ms);
+                        file = ms.ToArray();
+                    }
                     if (file == null)
                     {
+                        Log.LogInfo("NULL when requesting slide");
                         i--;
                         continue;
                     }
+                    Log.LogInfo("Slide loaded. Converting");
                     FileStream fileStream = new FileStream(rcvFilesPath + (i.ToString() + ".dat"), FileMode.Create, FileAccess.ReadWrite);
                     fileStream.Write(file, 0, file.Length);
+                    Log.LogInfo("Slide converted");
+                    ViewerController.LastSlideDownloaded = i;
                     //downloadingWorker.ReportProgress((i / Connection.CurrentPresentation.SlidesTotal) * 100);
                 }
             }
@@ -211,6 +224,7 @@ namespace ShareP
             {
                 Log.LogInfo("Reconnect successful");
                 faulted = false;
+                ViewerController.ResumeDownloading();
             }
         }
 

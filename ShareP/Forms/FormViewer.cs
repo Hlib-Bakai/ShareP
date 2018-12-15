@@ -189,6 +189,8 @@ namespace ShareP.Forms
 
         private void FormViewer_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.Left || e.KeyCode == Keys.Right || e.KeyCode == Keys.Space || e.KeyCode == Keys.Escape)
+                e.Handled = true;
             if (e.KeyCode == Keys.Left)
                 PreviousSlide();
             else if (e.KeyCode == Keys.Right)

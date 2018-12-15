@@ -15,6 +15,7 @@ namespace ShareP.Forms
         public FormHelpCheater()
         {
             InitializeComponent();
+            //Helper.CreateBorder(this);
             label2.Text = "is a function designed mostly for teachers. During test students " +
             "should not use external software, internet etc. "+
             "When starting presentation, you have possibility to turn on \"Cheater\". "+

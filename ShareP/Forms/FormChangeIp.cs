@@ -15,6 +15,7 @@ namespace ShareP.Forms
         public FormChangeIp()
         {
             InitializeComponent();
+            //Helper.CreateBorder(this);
             var IPs = Helper.GetLocalIPs();
             foreach(var ip in IPs)
             {

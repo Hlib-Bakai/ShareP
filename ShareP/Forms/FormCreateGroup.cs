@@ -15,6 +15,7 @@ namespace ShareP.Forms
         public FormCreateGroup()
         {
             InitializeComponent();
+            //Helper.CreateBorder(this);
             comboBoxNavigation.SelectedIndex = 0;
         }
 

@@ -15,6 +15,7 @@ namespace ShareP.Forms
         public FormChangeGroupSettings()
         {
             InitializeComponent();
+            //Helper.CreateBorder(this);
             checkBoxDownload.Checked = Connection.CurrentGroup.settings.Download;
             checkBoxViewersPresent.Checked = Connection.CurrentGroup.settings.Viewerspresent;
             comboBoxNavigation.SelectedIndex = (int)Connection.CurrentGroup.navigation;
