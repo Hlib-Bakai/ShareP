@@ -23,7 +23,7 @@ namespace ShareP
         
         private string IPField;
         
-        private int IdField;
+        private string IdField;
         
         private string UsernameField;
         
@@ -53,7 +53,7 @@ namespace ShareP
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int Id
+        public string Id
         {
             get
             {
@@ -316,6 +316,12 @@ public interface IShareP
     [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/RequestUsersList", ReplyAction="http://ShareP/IShareP/RequestUsersListResponse")]
     System.Threading.Tasks.Task<ShareP.User[]> RequestUsersListAsync();
     
+    [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/RequestMessageHistory", ReplyAction="http://ShareP/IShareP/RequestMessageHistoryResponse")]
+    ShareP.Message[] RequestMessageHistory();
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/RequestMessageHistory", ReplyAction="http://ShareP/IShareP/RequestMessageHistoryResponse")]
+    System.Threading.Tasks.Task<ShareP.Message[]> RequestMessageHistoryAsync();
+    
     [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/RequestPresentationStart", ReplyAction="http://ShareP/IShareP/RequestPresentationStartResponse")]
     bool RequestPresentationStart();
     
@@ -515,6 +521,16 @@ public partial class SharePClient : System.ServiceModel.DuplexClientBase<IShareP
     public System.Threading.Tasks.Task<ShareP.User[]> RequestUsersListAsync()
     {
         return base.Channel.RequestUsersListAsync();
+    }
+    
+    public ShareP.Message[] RequestMessageHistory()
+    {
+        return base.Channel.RequestMessageHistory();
+    }
+    
+    public System.Threading.Tasks.Task<ShareP.Message[]> RequestMessageHistoryAsync()
+    {
+        return base.Channel.RequestMessageHistoryAsync();
     }
     
     public bool RequestPresentationStart()

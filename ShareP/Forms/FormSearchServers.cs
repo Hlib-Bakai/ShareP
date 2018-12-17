@@ -160,6 +160,13 @@ namespace ShareP.Forms
                         Helper.HideOverlay(overlay3);
                         StartSearch();
                         break;
+                    case ConnectionResult.UserBanned:
+                        int pverlay4 = Helper.ShowOverlay(this);
+                        FormAlert formAlertError4 = new FormAlert("Error", "You was banned from this group", true);
+                        formAlertError4.ShowDialog();
+                        Helper.HideOverlay(pverlay4);
+                        StartSearch();
+                        break;
                     case ConnectionResult.Success:
                         this.DialogResult = DialogResult.OK;
                         this.Close();

@@ -160,6 +160,12 @@ namespace ShareP
             }
         }
 
+        public static string GenerateUniqueId()
+        {
+            Guid guid = Guid.NewGuid();
+            return guid.ToString();
+        }
+
         public static void CreateBorder(Form target)
         {
             //Top

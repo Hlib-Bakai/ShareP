@@ -5,7 +5,8 @@ namespace ShareP.Forms
 {
     public partial class FormAlert : Form
     {
-        public FormAlert(string title, string message, bool oneButton = false)
+        public FormAlert(string title, string message, bool oneButton = false, 
+                            string customOkButtonText = "", string customCancelButtonText = "")
         {
             InitializeComponent();
             Helper.CreateBorder(this);
@@ -18,6 +19,17 @@ namespace ShareP.Forms
                 button3.Hide();
                 button4.Show();
                 buttonClose.Hide();
+            }
+
+            if (!string.IsNullOrEmpty(customOkButtonText))
+            {
+                button3.Text = customOkButtonText;
+                button4.Text = customOkButtonText;
+            }
+
+            if (!string.IsNullOrEmpty(customCancelButtonText))
+            {
+                button2.Text = customCancelButtonText;
             }
         }
 

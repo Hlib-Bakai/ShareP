@@ -47,6 +47,8 @@ namespace ShareP.Controllers
         [OperationContract]
         List<User> RequestUsersList();
 
+        [OperationContract]
+        List<Message> RequestMessageHistory();
 
         // Client presentations
         [OperationContract]
@@ -79,8 +81,8 @@ namespace ShareP.Controllers
         [OperationContract(IsOneWay = true)]
         void UserLeave(User user);
 
-        [OperationContract(IsOneWay = true)]
-        void KickUser();
+        [OperationContract(IsOneWay = true, IsTerminating = true)]
+        void BanUser();
 
         [OperationContract(IsOneWay = true)]
         void GroupSettingsChanged(Dictionary<string, string> newSettings);
@@ -111,6 +113,7 @@ namespace ShareP.Controllers
 
         List<User> usersToRemove = new List<User>();
         List<User> usersToReconnect = new List<User>();
+        List<User> usersInBan = new List<User>();
 
         public ISharePCallback CurrentCallback
         {
@@ -135,6 +138,53 @@ namespace ShareP.Controllers
             if (Connection.CurrentUser.Username.CompareTo(name) == 0)
                 return true;
             return false;
+        }
+
+        public void BanUser(string username)
+        {
+            lock (syncObj)
+            {
+                foreach (User key in users.Keys)
+                {
+                    if (key.Username.CompareTo(username) == 0)
+                    {
+                        Log.LogInfo("Banning user: " + username);
+                        ISharePCallback callback = users[key];
+                        try
+                        {
+                            callback.BanUser();
+                        }
+                        catch
+                        {
+                            usersToRemove.Add(key);
+                        }
+
+                        usersInBan.Add(key);
+                        Connection.CurrentGroup.RemoveUser(key);
+                        PresentationController.UserDisconneced(key);
+
+                        foreach (User u in users.Keys)
+                        {
+                            ISharePCallback cb = users[u];
+                            try
+                            {
+                                cb.RefreshUsers(Connection.CurrentGroup.userList);
+                                cb.UserLeave(u);
+                            }
+                            catch
+                            {
+                                usersToRemove.Add(u);
+                            }
+                        }
+
+                        if (Connection.CurrentPresentation != null && Connection.CurrentPresentation.Author.CompareTo(key.Username) == 0)
+                            ClPresentationEnd();
+
+                        break;
+                    }
+                }
+                RemoveUsers();
+            }
         }
 
         public void OnGroupClose()
@@ -297,6 +347,12 @@ namespace ShareP.Controllers
                         return ConnectionResult.WrongPassword;
                     }
 
+                    if (usersInBan.FirstOrDefault(x => x.IP == user.IP) != null)
+                    {
+                        Log.LogInfo("Refused connection from banned user. User: " + user.Username);
+                        return ConnectionResult.UserBanned;
+                    }
+
                     Connection.CurrentGroup.AddUser(user);
                     OnUserConnect(user);
                     PresentationController.UserConnected(user);
@@ -375,7 +431,7 @@ namespace ShareP.Controllers
                     bool exists = false;
                     foreach(var item in usersToReconnect)
                     {
-                        if (item.Username.CompareTo(user.Username) == 0 &&
+                        if (item.Id.CompareTo(user.Id) == 0 &&
                             item.IP == user.IP)
                             exists = true;
                     }
@@ -659,6 +715,11 @@ namespace ShareP.Controllers
                 return answer;
             }
         }
+
+        public List<Message> RequestMessageHistory()
+        {
+            return ChatController.GetMessageHistory();
+        }
     }
 
 
@@ -704,7 +765,7 @@ namespace ShareP.Controllers
 
             tcpBinding.ReceiveTimeout = new TimeSpan(24, 0, 0); 
             tcpBinding.ReliableSession.Enabled = true;
-            tcpBinding.ReliableSession.InactivityTimeout = new TimeSpan(0, 0, 5); // Disconnect after 5 second of inactivity 
+            tcpBinding.ReliableSession.InactivityTimeout = new TimeSpan(0, 0, 3); // Disconnect after 3 seconds of inactivity 
 
             SelfHost.AddServiceEndpoint(typeof(IShareP), tcpBinding, "tcp");
 
@@ -767,6 +828,10 @@ namespace ShareP.Controllers
             ((SharePService)SelfHost.SingletonInstance).Say(msg);
         }
 
+        public static void BanUser(string username)
+        {
+            ((SharePService)SelfHost.SingletonInstance).BanUser(username);
+        }
 
         public static void StopServer()
         {

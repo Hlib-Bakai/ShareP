@@ -11,6 +11,7 @@ namespace ShareP.Server
     public class Message
     {
         private string sender;
+        private string senderIp;
         private string text;
         private DateTime time;
 
@@ -50,6 +51,19 @@ namespace ShareP.Server
             set
             {
                 time = value;
+            }
+        }
+
+        [DataMember]
+        public string SenderIp
+        {
+            get
+            {
+                return senderIp;
+            }
+            set
+            {
+                senderIp = value;
             }
         }
     }

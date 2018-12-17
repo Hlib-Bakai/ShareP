@@ -13,20 +13,29 @@ namespace ShareP
         static RichTextBox richTextBox;
         static TextBox inputTextBox;
 
-        public static void RecieveMessage(Message msg, bool self = false)
+        static List<Message> messageHistory = new List<Message>();
+
+        public static void RecieveMessage(Message msg, bool self = false, bool loadingHistory = false)
         {
-            if (msg.Sender.CompareTo(Connection.CurrentUser.Username) == 0 && !self)
+            if (msg.SenderIp.CompareTo(Connection.CurrentUser.IP) == 0 && !self && !loadingHistory)
                 return;
+            
+            messageHistory.Add(msg);
 
             if (richTextBox.InvokeRequired)
                 richTextBox.Invoke(new Action<Message, bool>((m, s) => RecieveMessageActions(m, s)), msg, self);
             else
                 RecieveMessageActions(msg, self);
 
-            if ((bool)Properties.Settings.Default["nPresentation"] && !richTextBox.Visible)
+            if ((bool)Properties.Settings.Default["nPresentation"] && !richTextBox.Visible && !loadingHistory)
             {
                 Notification.Show("Chat", "New message from " + msg.Sender, NotificationType.Chat);
             }
+        }
+
+        public static List<Message> GetMessageHistory()
+        {
+            return messageHistory;
         }
 
         private static void RecieveMessageActions(Message msg, bool self)
@@ -56,6 +65,7 @@ namespace ShareP
             Message newMessage = new Message();
             newMessage.Text = inputTextBox.Text;
             newMessage.Sender = Connection.CurrentUser.Username;
+            newMessage.SenderIp = Connection.CurrentUser.IP;
             newMessage.Time = DateTime.Now;
 
             Connection.SendMessage(newMessage);
@@ -68,6 +78,8 @@ namespace ShareP
         {
             if (richTextBox != null)
                 richTextBox.Clear();
+            if (messageHistory != null)
+                messageHistory.Clear();
         }
 
         public static void SetTextBox(RichTextBox rtb, TextBox input)

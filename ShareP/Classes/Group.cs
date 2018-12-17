@@ -18,20 +18,16 @@ namespace ShareP
         public GroupNavigation navigation;
 
         public List<User> userList;
-        private int nextId;
 
 
         public Group()
         {
             userList = new List<User>();
             settings = new GroupSettings();
-            nextId = 0;
         }
 
         public void AddUser(User user)
         {
-            user.Id = nextId;
-            nextId++;
             userList.Add(user);
             if (Connection.FormMenu != null)
             {
@@ -45,7 +41,7 @@ namespace ShareP
             User toDelete = null;
             foreach (User u in userList)
             {
-                if (u.Username == user.Username)
+                if (u.Id == user.Id)
                 {
                     toDelete = u;
                     break;

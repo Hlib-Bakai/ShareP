@@ -29,7 +29,7 @@ namespace ShareP
 
         async void InnerDuplexChannel_FaultedAsync(object sender, EventArgs e)
         {
-            if (faulted)
+            if (faulted || Connection.CurrentGroup == null)
                 return;
             Log.LogInfo("Channel faulted");
             faulted = true;
@@ -172,6 +172,12 @@ namespace ShareP
                         Log.LogInfo("Successfuly connected to " + ip);
                         faulted = false;
                         Connection.CurrentPresentation = client.RequestCurrentPresentation();
+                        var messageHistory = client.RequestMessageHistory();
+                        if (messageHistory != null)
+                        {
+                            foreach (var message in messageHistory)
+                                ChatController.RecieveMessage(message, false, true);
+                        }
                     }
                     else
                     {
@@ -393,11 +399,7 @@ namespace ShareP
         {
             Connection.GroupClosed();
         }
-
-        public void KickUser()
-        {
-            // TODO ?
-        }
+       
 
         public bool ClRequestPresentationStart()
         {
@@ -472,5 +474,9 @@ namespace ShareP
             return new List<User>(client.RequestUsersList());
         }
 
+        public void BanUser()
+        {
+            Connection.UserBanned();
+        }
     }
 }

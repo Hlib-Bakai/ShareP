@@ -23,7 +23,7 @@ namespace ShareP
         
         private string IPField;
         
-        private int IdField;
+        private string IdField;
         
         private string UsernameField;
         
@@ -53,7 +53,7 @@ namespace ShareP
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int Id
+        public string Id
         {
             get
             {
@@ -88,7 +88,9 @@ namespace ShareP
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private string SenderField;
-        
+
+        private string SenderIpField;
+
         private string TextField;
         
         private System.DateTime TimeField;
@@ -117,7 +119,20 @@ namespace ShareP
                 this.SenderField = value;
             }
         }
-        
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string SenderIp
+        {
+            get
+            {
+                return this.SenderIpField;
+            }
+            set
+            {
+                this.SenderIpField = value;
+            }
+        }
+
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string Text
         {
@@ -247,6 +262,9 @@ namespace ShareP.Server
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
         UsernameExists = 3,
+
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        UserBanned = 4,
     }
 }
 
@@ -316,6 +334,12 @@ public interface IShareP
     [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/RequestUsersList", ReplyAction="http://ShareP/IShareP/RequestUsersListResponse")]
     System.Threading.Tasks.Task<ShareP.User[]> RequestUsersListAsync();
     
+    [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/RequestMessageHistory", ReplyAction="http://ShareP/IShareP/RequestMessageHistoryResponse")]
+    ShareP.Message[] RequestMessageHistory();
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/RequestMessageHistory", ReplyAction="http://ShareP/IShareP/RequestMessageHistoryResponse")]
+    System.Threading.Tasks.Task<ShareP.Message[]> RequestMessageHistoryAsync();
+    
     [System.ServiceModel.OperationContractAttribute(Action="http://ShareP/IShareP/RequestPresentationStart", ReplyAction="http://ShareP/IShareP/RequestPresentationStartResponse")]
     bool RequestPresentationStart();
     
@@ -360,8 +384,8 @@ public interface ISharePCallback
     [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/UserLeave")]
     void UserLeave(ShareP.User user);
     
-    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/KickUser")]
-    void KickUser();
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, IsTerminating = true, Action ="http://ShareP/IShareP/BanUser")]
+    void BanUser();
     
     [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://ShareP/IShareP/GroupSettingsChanged")]
     void GroupSettingsChanged(System.Collections.Generic.Dictionary<string, string> newSettings);
@@ -515,6 +539,16 @@ public partial class SharePClient : System.ServiceModel.DuplexClientBase<IShareP
     public System.Threading.Tasks.Task<ShareP.User[]> RequestUsersListAsync()
     {
         return base.Channel.RequestUsersListAsync();
+    }
+    
+    public ShareP.Message[] RequestMessageHistory()
+    {
+        return base.Channel.RequestMessageHistory();
+    }
+    
+    public System.Threading.Tasks.Task<ShareP.Message[]> RequestMessageHistoryAsync()
+    {
+        return base.Channel.RequestMessageHistoryAsync();
     }
     
     public bool RequestPresentationStart()

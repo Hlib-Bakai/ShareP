@@ -18,6 +18,7 @@ namespace ShareP
     {
         private User m_user;
         private SearchController m_searchController;
+        private bool firstTimeUser;
 
         public FormMenu()
         {
@@ -42,6 +43,7 @@ namespace ShareP
             Notification.notifyIcon = notifyIcon1;
             Notification.AddClosingEvent();
 
+            firstTimeUser = IsFirstTimeUser();
             m_user = new User();
             Connection.CurrentUser = m_user;
             FillCurrentUser();
@@ -65,6 +67,13 @@ namespace ShareP
 
             //Controllers
             m_searchController = new SearchController();
+
+        }
+        
+        private void FormMenu_Shown(object sender, EventArgs e)
+        {
+            if (firstTimeUser)
+                ShowFirstTimeInstruction();
         }
 
         [DllImport("user32.dll")]
@@ -153,9 +162,26 @@ namespace ShareP
                 ChangeUsername(Connection.CurrentUser.Username.Substring(0, 10));
 
             Connection.CurrentUser.IP = Helper.GetMyIP();
+            Connection.CurrentUser.Id = Helper.GenerateUniqueId();
         }
 
+        private bool IsFirstTimeUser()
+        {
+            return String.IsNullOrEmpty(Properties.Settings.Default["username"].ToString());
+        }
 
+        public void ShowFirstTimeInstruction()
+        {
+            Log.LogInfo("First time user. Asking for instruction");
+            int overlay = Helper.ShowOverlay(this);
+            FormAlert formAlert = new FormAlert("Welcome to ShareP", "It looks like your first time here. Want to read an instruction?",
+                                                    false, "Yes", "No");
+            if (formAlert.ShowDialog() == DialogResult.OK)
+            {
+                // Show instruction
+            }
+            Helper.HideOverlay(overlay);
+        }
 
         public void FillHostUsersList()
         {
@@ -576,6 +602,36 @@ namespace ShareP
                 this.Invoke(new Action(() => timerPresentation.Stop()));
             else
                 timerPresentation.Stop();
+        }
+
+        private void BanUser()
+        {
+            if (listBox1.SelectedItem != null)
+            {
+                if (listBox1.SelectedItem.ToString().CompareTo(Connection.CurrentUser.Username) == 0)
+                {
+                    int ov1 = Helper.ShowOverlay(this);
+                    FormAlert formAlert1 = new FormAlert("Error", "You cannot ban yourself", true);
+                    formAlert1.ShowDialog();
+                    Helper.HideOverlay(ov1);
+                    return;
+                }
+                int ov2 = Helper.ShowOverlay(this);
+                FormAlert formAlert = new FormAlert("Confirm action", "Ban " + listBox1.SelectedItem.ToString() + "?");
+                if (formAlert.ShowDialog() == DialogResult.OK)
+                {
+                    ServerController.BanUser(listBox1.SelectedItem.ToString());
+                }
+                Helper.HideOverlay(ov2);
+            }
+            else
+            {
+                int ov3 = Helper.ShowOverlay(this);
+                FormAlert formAlert1 = new FormAlert("Error", "No user is selected to ban", true);
+                formAlert1.ShowDialog();
+                Helper.HideOverlay(ov3);
+                return;
+            }
         }
 
         #region System
@@ -1025,5 +1081,11 @@ namespace ShareP
         {
             Connection.ReservePresentation = false;
         }
+
+        private void button9_Click_1(object sender, EventArgs e)
+        {
+            BanUser();
+        }
+
     }
 }

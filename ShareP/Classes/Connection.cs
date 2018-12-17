@@ -108,6 +108,33 @@ namespace ShareP
             }
         }
 
+        public static void UserBanned()
+        {
+            if (CurrentGroup == null)
+            {
+                Log.LogInfo("Trying to close group after ban when it's null");
+                return;
+            }
+            Log.LogInfo("Banned from the group.");
+            try
+            {
+                ViewerController.OnAppClosing();
+                clientConnection.Disconnect();
+                CurrentGroup = null;
+                role = Role.Notconnected;
+                formMenu.RestoreWindow();
+                FormAlert formAlert = new FormAlert("Ban", "You was banned from the group", true);
+                int overlay = Helper.ShowOverlay();
+                formAlert.ShowDialog();
+                Helper.HideOverlay(overlay);
+                ChatController.CleanChat();
+            }
+            catch (Exception e)
+            {
+                Log.LogException(e, "Error during UserBanned");
+            }
+        }
+
         public static void SendMessage(Message msg)
         {
             if (CurrentRole == Role.Host)

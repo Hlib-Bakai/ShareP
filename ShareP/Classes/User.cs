@@ -12,11 +12,8 @@ namespace ShareP.Server
     {
         string username;
         string ip;
-        int id;
+        string id;
         
-
-        
-
         [DataMember]
         public string Username
         {
@@ -44,7 +41,7 @@ namespace ShareP.Server
         }
 
         [DataMember]
-        public int Id
+        public string Id
         {
             get
             {
