@@ -72,8 +72,8 @@ namespace ShareP
         
         private void FormMenu_Shown(object sender, EventArgs e)
         {
-            if (firstTimeUser)
-                ShowFirstTimeInstruction();
+            //if (firstTimeUser)
+            //    ShowFirstTimeInstruction();           // Finish the instruction
         }
 
         [DllImport("user32.dll")]

@@ -46,12 +46,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_5A32FB9B8DCF33022DBB1D73CE3D45F6"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_B79ABD3ED84541278C625D8C1A64EBCE"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -59,6 +53,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_023AF828C4DB1DCFBABD8DC4E39DE5BB"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_5A32FB9B8DCF33022DBB1D73CE3D45F6"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -79,6 +79,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -95,6 +103,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
+                    }
+                }
+            }
         }
     }
     "Deployable"
@@ -282,15 +306,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:ShareP"
-        "ProductCode" = "8:{950AA500-3329-4DFE-B6DE-16DF8FAFD974}"
-        "PackageCode" = "8:{31E29D5D-BC63-4F63-8FB2-C6CF3726FD96}"
+        "ProductCode" = "8:{87E06882-AF84-4635-B3F9-F4745FA8499D}"
+        "PackageCode" = "8:{539790BC-E1EE-417D-A817-23E53A223D60}"
         "UpgradeCode" = "8:{2CD3E61B-9A3C-46B3-892A-B4103574E9C8}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:1.0.1"
         "Manufacturer" = "8:ShareP"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -832,7 +856,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_B79ABD3ED84541278C625D8C1A64EBCE"
             {
-            "SourcePath" = "8:..\\ShareP\\obj\\Debug\\ShareP.exe"
+            "SourcePath" = "8:..\\ShareP\\obj\\Release\\ShareP.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_0F0F624A48914AF38DEF0BE420448B83"
